@@ -36,345 +36,2617 @@
 
 	<body>
 
+	<div class="theme-font-montserrat theme-color-white-blue" style="width: 100%; height: 100%;">
 		<div class="reveal">
-
-			<!-- Any section element inside of this container is displayed as a slide -->
 			<div class="slides">
-				<section>
-					<h1>Reveal.js</h1>
-					<h3>The HTML Presentation Framework</h3>
-					<p>
-						<small>Created by <a href="http://hakim.se">Hakim El Hattab</a> / <a href="http://twitter.com/hakimel">@hakimel</a></small>
-					</p>
+				<section class="has-light-background" data-background-color="#ffffff">
+					<div class="sl-block" data-block-type="text" style="width: 800px; left: 81px; top: 70px; height: auto;">
+						<div class="sl-block-content" data-has-custom-html="">
+							<h1 style="color:rgba(0, 0, 0, 0.952941); font-size:2.375rem">Reading Legacy Code</h1>
+							<h1 style="color:rgba(0, 0, 0, 0.952941); font-size:2.375rem">to Harmonize</h1>
+							<h1 style="color:rgba(0, 0, 0, 0.952941); font-size:2.375rem">Ruby</h1>
+							<h1 style="color:rgba(0, 0, 0, 0.952941); font-size:2.375rem">and</h1>
+							<h1 style="color:rgba(0, 0, 0, 0.952941); font-size:2.375rem">Rails</h1>
+							<h1 style="color:rgba(0, 0, 0, 0.952941); font-size:2.375rem">Code Loaders</h1>
+							<p>&nbsp;</p>
+							<p>Luke Imhoff</p>
+							<table>
+								<tbody>
+								<tr>
+									<th>
+										<svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Capa_1" x="0px" y="0px" width="14px" height="10px" viewBox="0 0 14 10" enable-background="new 0 0 14 10" xml:space="preserve">
+                                            <g>
+                                                <path d="M7,7L5.268,5.484L0.316,9.729C0.496,9.896,0.739,10,1.007,10h11.986c0.267,0,0.509-0.104,0.688-0.271L8.732,5.484L7,7z"></path>
+                                                <path d="M13.684,0.271C13.504,0.103,13.262,0,12.993,0H1.007C0.74,0,0.498,0.104,0.318,0.273L7,6L13.684,0.271z"></path>
+                                                <polygon points="0,0.878 0,9.186 4.833,5.079  "></polygon>
+                                                <polygon points="9.167,5.079 14,9.186 14,0.875  "></polygon>
+                                            </g>
+                                        </svg>
+									</th>
+									<td>luke_imhoff@rapid7.com</td>
+									<td>Kronic.Deth@gmail.com</td>
+								</tr>
+								<tr>
+									<th>
+										<svg version="1.1" class="github-icon-svg"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 16 16" enable-background="new 0 0 16 16" xml:space="preserve">
+                                            <path fill-rule="evenodd" clip-rule="evenodd" fill="#C2C2C2" d="M7.999,0.431c-4.285,0-7.76,3.474-7.76,7.761
+                c0,3.428,2.223,6.337,5.307,7.363c0.388,0.071,0.53-0.168,0.53-0.374c0-0.184-0.007-0.672-0.01-1.32
+                c-2.159,0.469-2.614-1.04-2.614-1.04c-0.353-0.896-0.862-1.135-0.862-1.135c-0.705-0.481,0.053-0.472,0.053-0.472
+                c0.779,0.055,1.189,0.8,1.189,0.8c0.692,1.186,1.816,0.843,2.258,0.645c0.071-0.502,0.271-0.843,0.493-1.037
+                C4.86,11.425,3.049,10.76,3.049,7.786c0-0.847,0.302-1.54,0.799-2.082C3.768,5.507,3.501,4.718,3.924,3.65
+                c0,0,0.652-0.209,2.134,0.796C6.677,4.273,7.34,4.187,8,4.184c0.659,0.003,1.323,0.089,1.943,0.261
+                c1.482-1.004,2.132-0.796,2.132-0.796c0.423,1.068,0.157,1.857,0.077,2.054c0.497,0.542,0.798,1.235,0.798,2.082
+                c0,2.981-1.814,3.637-3.543,3.829c0.279,0.24,0.527,0.713,0.527,1.437c0,1.037-0.01,1.874-0.01,2.129
+                c0,0.208,0.14,0.449,0.534,0.373c3.081-1.028,5.302-3.935,5.302-7.362C15.76,3.906,12.285,0.431,7.999,0.431z"></path>
+                                        </svg>
+									</th>
+									<td>
+										<a href="https://github.com/limhoff-r7" target="_blank">@limhoff-r7</a>
+									</td>
+									<td>
+										<a href="https://github.com/KronicDeth" target="_blank">@KronicDeth</a>
+									</td>
+								</tr>
+								<tr>
+									<th>
+										<svg version="1.1" class="twitter-icon-svg"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 16 16" enable-background="new 0 0 16 16" xml:space="preserve">
+                                            <path fill="#C2C2C2" d="M15.969,3.058c-0.586,0.26-1.217,0.436-1.878,0.515c0.675-0.405,1.194-1.045,1.438-1.809
+                c-0.632,0.375-1.332,0.647-2.076,0.793c-0.596-0.636-1.446-1.033-2.387-1.033c-1.806,0-3.27,1.464-3.27,3.27
+                c0,0.256,0.029,0.506,0.085,0.745C5.163,5.404,2.753,4.102,1.14,2.124C0.859,2.607,0.698,3.168,0.698,3.767
+                c0,1.134,0.577,2.135,1.455,2.722C1.616,6.472,1.112,6.325,0.671,6.08c0,0.014,0,0.027,0,0.041c0,1.584,1.127,2.906,2.623,3.206
+                C3.02,9.402,2.731,9.442,2.433,9.442c-0.211,0-0.416-0.021-0.615-0.059c0.416,1.299,1.624,2.245,3.055,2.271
+                c-1.119,0.877-2.529,1.4-4.061,1.4c-0.264,0-0.524-0.015-0.78-0.046c1.447,0.928,3.166,1.469,5.013,1.469
+                c6.015,0,9.304-4.983,9.304-9.304c0-0.142-0.003-0.283-0.009-0.423C14.976,4.29,15.531,3.714,15.969,3.058z"></path>
+                                        </svg>
+									</th>
+									<td></td>
+									<td>
+										<a href="https://twitter.com/KronicDeth" target="_blank">@KronicDeth</a>
+									</td>
+								</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
 				</section>
-
 				<section>
-					<h2>Hello There</h2>
-					<p>
-						reveal.js enables you to create beautiful interactive slide decks using HTML. This presentation will show you examples of what it can do.
-					</p>
+					<div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 190px; height: auto;">
+						<div class="sl-block-content">
+							<h1>Background</h1>
+						</div>
+					</div>
+					<div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 287px; height: auto;">
+						<div class="sl-block-content">
+							<h2>Code-Loading</h2>
+						</div>
+					</div>
 				</section>
-
-				<!-- Example of nested vertical slides -->
-				<section>
+				<section class="stack">
 					<section>
-						<h2>Vertical Slides</h2>
-						<p>Slides can be nested inside of each other.</p>
-						<p>Use the <em>Space</em> key to navigate through all slides.</p>
-						<br>
-						<a href="#" class="navigate-down">
-							<img width="178" height="238" data-src="https://s3.amazonaws.com/hakim-static/reveal-js/arrow.png" alt="Down arrow">
-						</a>
+						<div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 190px; height: auto;">
+							<div class="sl-block-content" style="z-index: 10;">
+								<h2>Code-Loading in Ruby</h2>
+							</div>
+						</div>
+						<div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 264px; height: auto;">
+							<div class="sl-block-content" style="z-index: 11;">
+								<ul>
+									<li>
+										<code>load</code>
+									</li>
+									<li>
+										<code>require</code>
+									</li>
+									<li>
+										<code>autoload</code>
+									</li>
+								</ul>
+							</div>
+						</div>
 					</section>
 					<section>
-						<h2>Basement Level 1</h2>
-						<p>Nested slides are useful for adding additional detail underneath a high level horizontal slide.</p>
+						<div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 190px; height: auto;">
+							<div class="sl-block-content">
+								<h2>
+									<code>load</code>,
+									<code>require</code>,
+									<code>autoload</code>
+								</h2>
+							</div>
+						</div>
+						<div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 264px; height: auto;">
+							<div class="sl-block-content">
+								<ul>
+									<li>Search
+										<code>$LOAD_PATH</code>
+									</li>
+								</ul>
+							</div>
+						</div>
 					</section>
 					<section>
-						<h2>Basement Level 2</h2>
-						<p>That's it, time to go back up.</p>
-						<br>
-						<a href="#/2">
-							<img width="178" height="238" data-src="https://s3.amazonaws.com/hakim-static/reveal-js/arrow.png" alt="Up arrow" style="-webkit-transform: rotate(180deg);">
-						</a>
-					</section>
-				</section>
-
-				<section>
-					<h2>Slides</h2>
-					<p>
-						Not a coder? Not a problem. There's a fully-featured visual editor for authoring these, try it out at <a href="http://slides.com" target="_blank">http://slides.com</a>.
-					</p>
-				</section>
-
-				<section>
-					<h2>Point of View</h2>
-					<p>
-						Press <strong>ESC</strong> to enter the slide overview.
-					</p>
-					<p>
-						Hold down alt and click on any element to zoom in on it using <a href="http://lab.hakim.se/zoom-js">zoom.js</a>. Alt + click anywhere to zoom back out.
-					</p>
-				</section>
-
-				<section>
-					<h2>Touch Optimized</h2>
-					<p>
-						Presentations look great on touch devices, like mobile phones and tablets. Simply swipe through your slides.
-					</p>
-				</section>
-
-				<section data-markdown>
-					<script type="text/template">
-						## Markdown support
-
-						Write content using inline or external Markdown.
-						Instructions and more info available in the [readme](https://github.com/hakimel/reveal.js#markdown).
-
-						```
-						<section data-markdown>
-						  ## Markdown support
-
-						  Write content using inline or external Markdown.
-						  Instructions and more info available in the [readme](https://github.com/hakimel/reveal.js#markdown).
-						</section>
-						```
-					</script>
-				</section>
-
-				<section>
-					<section id="fragments">
-						<h2>Fragments</h2>
-						<p>Hit the next arrow...</p>
-						<p class="fragment">... to step through ...</p>
-						<p><span class="fragment">... a</span> <span class="fragment">fragmented</span> <span class="fragment">slide.</span></p>
-
-						<aside class="notes">
-							This slide has fragments which are also stepped through in the notes window.
-						</aside>
+						<div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 190px; height: auto;">
+							<div class="sl-block-content">
+								<h2>
+									<code>load</code>
+								</h2>
+							</div>
+						</div>
+						<div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 264px; height: auto;">
+							<div class="sl-block-content">
+								<ul>
+									<li>File extension must be given</li>
+									<li>Will reload already loaded files</li>
+									<li>Reads file immediately</li>
+								</ul>
+							</div>
+						</div>
 					</section>
 					<section>
-						<h2>Fragment Styles</h2>
-						<p>There's different types of fragments, like:</p>
-						<p class="fragment grow">grow</p>
-						<p class="fragment shrink">shrink</p>
-						<p class="fragment roll-in">roll-in</p>
-						<p class="fragment fade-out">fade-out</p>
-						<p class="fragment current-visible">current-visible</p>
-						<p class="fragment highlight-red">highlight-red</p>
-						<p class="fragment highlight-blue">highlight-blue</p>
+						<div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 190px; height: auto;">
+							<div class="sl-block-content">
+								<h2>require</h2>
+							</div>
+						</div>
+						<div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 264px; height: auto;">
+							<div class="sl-block-content">
+								<ul>
+									<li>File extensions are automatic</li>
+									<li>Will not reload already loaded files</li>
+									<li>Read file immediately</li>
+								</ul>
+							</div>
+						</div>
 					</section>
-				</section>
+					<section>
+						<div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 190px; height: auto;">
+							<div class="sl-block-content" style="z-index: 10;">
+								<h2>autoload</h2>
+							</div>
+						</div>
+						<div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 264px; height: auto;">
+							<div class="sl-block-content" style="z-index: 11;">
+								<ul>
+									<li>File extensions are automatic</li>
+									<li>Will not reload already loaded files</li>
+									<li>Read file when constant accessed</li>
+								</ul>
+							</div>
+						</div>
+						<div class="sl-block" data-block-type="code" style="min-width: 30px; min-height: 30px; width: 500px; height: 179px; left: 233px; top: 380px;">
+							<div class="sl-block-content" style="z-index: 13;">
+                            <pre><code># lib/parent.rb
+								module Parent
+								autoload :Child, 'parent/child'
+								end
 
-				<section id="transitions">
-					<h2>Transition Styles</h2>
-					<p>
-						You can select from different transitions, like: <br>
-						<a href="?transition=none#/transitions">None</a> -
-						<a href="?transition=fade#/transitions">Fade</a> -
-						<a href="?transition=slide#/transitions">Slide</a> -
-						<a href="?transition=convex#/transitions">Convex</a> -
-						<a href="?transition=concave#/transitions">Concave</a> -
-						<a href="?transition=zoom#/transitions">Zoom</a>
-					</p>
-				</section>
-
-				<section id="themes">
-					<h2>Themes</h2>
-					<p>
-						reveal.js comes with a few themes built in: <br>
-						<!-- Hacks to swap themes after the page has loaded. Not flexible and only intended for the reveal.js demo deck. -->
-						<a href="#" onclick="document.getElementById('theme').setAttribute('href','css/theme/black.css'); return false;">Black (default)</a> -
-						<a href="#" onclick="document.getElementById('theme').setAttribute('href','css/theme/white.css'); return false;">White</a> -
-						<a href="#" onclick="document.getElementById('theme').setAttribute('href','css/theme/league.css'); return false;">League</a> -
-						<a href="#" onclick="document.getElementById('theme').setAttribute('href','css/theme/sky.css'); return false;">Sky</a> -
-						<a href="#" onclick="document.getElementById('theme').setAttribute('href','css/theme/beige.css'); return false;">Beige</a> -
-						<a href="#" onclick="document.getElementById('theme').setAttribute('href','css/theme/simple.css'); return false;">Simple</a> <br>
-						<a href="#" onclick="document.getElementById('theme').setAttribute('href','css/theme/serif.css'); return false;">Serif</a> -
-						<a href="#" onclick="document.getElementById('theme').setAttribute('href','css/theme/night.css'); return false;">Night</a> -
-						<a href="#" onclick="document.getElementById('theme').setAttribute('href','css/theme/moon.css'); return false;">Moon</a> -
-						<a href="#" onclick="document.getElementById('theme').setAttribute('href','css/theme/solarized.css'); return false;">Solarized</a>
-					</p>
-				</section>
-
-				<section>
-					<section data-background="#dddddd">
-						<h2>Slide Backgrounds</h2>
-						<p>
-							Set <code>data-background="#dddddd"</code> on a slide to change the background color. All CSS color formats are supported.
-						</p>
-						<a href="#" class="navigate-down">
-							<img width="178" height="238" data-src="https://s3.amazonaws.com/hakim-static/reveal-js/arrow.png" alt="Down arrow">
-						</a>
-					</section>
-					<section data-background="https://s3.amazonaws.com/hakim-static/reveal-js/image-placeholder.png">
-						<h2>Image Backgrounds</h2>
-						<pre><code>&lt;section data-background="image.png"&gt;</code></pre>
-					</section>
-					<section data-background="https://s3.amazonaws.com/hakim-static/reveal-js/image-placeholder.png" data-background-repeat="repeat" data-background-size="100px">
-						<h2>Tiled Backgrounds</h2>
-						<pre><code style="word-wrap: break-word;">&lt;section data-background="image.png" data-background-repeat="repeat" data-background-size="100px"&gt;</code></pre>
-					</section>
-					<section data-background-video="https://s3.amazonaws.com/static.slid.es/site/homepage/v1/homepage-video-editor.mp4,https://s3.amazonaws.com/static.slid.es/site/homepage/v1/homepage-video-editor.webm" data-background-color="#000000">
-						<div style="background-color: rgba(0, 0, 0, 0.9); color: #fff; padding: 20px;">
-							<h2>Video Backgrounds</h2>
-							<pre><code style="word-wrap: break-word;">&lt;section data-background-video="video.mp4,video.webm"&gt;</code></pre>
+								# lib/parent/child.rb
+								module Parent::Child
+								end</code></pre>
+							</div>
 						</div>
 					</section>
 				</section>
+				<section class="stack">
+					<section>
+						<div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 190px; height: auto;">
+							<div class="sl-block-content">
+								<h2>Code-Loading in Rails</h2>
+							</div>
+						</div>
+						<div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 264px; height: auto;">
+							<div class="sl-block-content">
+								<ul>
+									<li>
+										<code>ActiveSupport::Autoload</code>
+									</li>
+									<li>
+										<code>ActiveSupport::Dependencies.autoload_paths</code>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</section>
+					<section>
+						<div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 190px; height: auto;">
+							<div class="sl-block-content" style="z-index: 10;">
+								<h2>ActiveSupport::Autoload</h2>
+							</div>
+						</div>
+						<div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 264px; height: auto;">
+							<div class="sl-block-content" style="z-index: 11;">
+								<ul>
+									<li>File
 
-				<section data-transition="slide" data-background="#4d7e65" data-background-transition="zoom">
-					<h2>Background Transitions</h2>
-					<p>
-						Different background transitions are available via the backgroundTransition option. This one's called "zoom".
-					</p>
-					<pre><code>Reveal.configure({ backgroundTransition: 'zoom' })</code></pre>
+										<strong>paths&nbsp;</strong>are automatic
+
+									</li>
+									<li>Will not reload already loaded files</li>
+									<li>Read file when constant accessed</li>
+								</ul>
+							</div>
+						</div>
+						<div class="sl-block" data-block-type="code" style="min-width: 30px; min-height: 30px; width: 329px; height: 179px; left: 551px; top: 381px;">
+							<div class="sl-block-content" style="z-index: 12;">
+                            <pre><code># lib/parent.rb
+								module Parent
+								extend ActiveSupport::Autoload
+
+								autoload :Child
+								end</code></pre>
+							</div>
+						</div>
+						<div class="sl-block" data-block-type="code" style="min-width: 30px; min-height: 30px; width: 340px; height: 179px; left: 80px; top: 381px;">
+							<div class="sl-block-content" style="z-index: 14;">
+                            <pre><code># lib/parent.rb
+								module Parent
+								autoload :Child, 'parent/child'
+								end
+
+								# lib/parent/child.rb
+								module Parent::Child
+								end</code></pre>
+							</div>
+						</div>
+					</section>
+					<section>
+						<div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 190px; height: auto;">
+							<div class="sl-block-content">
+								<h2>
+									<span style="font-size:32px">ActiveSupport::Dependencies.autoload_paths</span>
+								</h2>
+							</div>
+						</div>
+						<div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 338px; height: auto;">
+							<div class="sl-block-content">
+								<ul>
+									<li>Specify root directories</li>
+									<li>File paths and&nbsp;
+
+										<strong>constants</strong>&nbsp;are automatic
+
+									</li>
+									<li>Powers
+										<code>config.autoload_paths</code>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</section>
 				</section>
-
-				<section data-transition="slide" data-background="#b5533c" data-background-transition="zoom">
-					<h2>Background Transitions</h2>
-					<p>
-						You can override background transitions per-slide.
-					</p>
-					<pre><code style="word-wrap: break-word;">&lt;section data-background-transition="zoom"&gt;</code></pre>
-				</section>
-
 				<section>
-					<h2>Pretty Code</h2>
-					<pre><code data-trim contenteditable>
-function linkify( selector ) {
-  if( supports3DTransforms ) {
-
-    var nodes = document.querySelectorAll( selector );
-
-    for( var i = 0, len = nodes.length; i &lt; len; i++ ) {
-      var node = nodes[i];
-
-      if( !node.className ) {
-        node.className += ' roll';
-      }
-    }
-  }
-}
-					</code></pre>
-					<p>Code syntax highlighting courtesy of <a href="http://softwaremaniacs.org/soft/highlight/en/description/">highlight.js</a>.</p>
+					<div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 122px; height: auto;">
+						<div class="sl-block-content">
+							<h2>
+								<span style="font-size:32px">Code-Loading in Ruby and Rails</span>
+							</h2>
+						</div>
+					</div>
+					<div class="sl-block" data-block-type="text" style="width: 960px; left: 0px; top: 219px; height: auto;">
+						<div class="sl-block-content" style="font-size: 68%;">
+							<table>
+								<thead>
+								<tr>
+									<th>Loader</th>
+									<th>Extension Required</th>
+									<th>Loads Only Once</th>
+									<th>Thread-safe</th>
+								</tr>
+								</thead>
+								<tbody>
+								<tr>
+									<td>Kernel.load</td>
+									<td>Yes</td>
+									<td>No</td>
+									<td>No</td>
+								</tr>
+								<tr>
+									<td>Kernel.require</td>
+									<td>No</td>
+									<td>Yes</td>
+									<td>Yes</td>
+								</tr>
+								<tr>
+									<td>Kernel.autoload</td>
+									<td>No</td>
+									<td>Yes</td>
+									<td>No (1.9) / Yes (2.0+)</td>
+								</tr>
+								<tr>
+									<td>ActiveSupport::Autoload#autoload</td>
+									<td>No</td>
+									<td>Yes</td>
+									<td>No (1.9) / Yes (2.0+)</td>
+								</tr>
+								<tr>
+									<td>ActiveSupport::Dependencies#autoload_paths</td>
+									<td>No</td>
+									<td>Either</td>
+									<td>No</td>
+								</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
 				</section>
-
 				<section>
-					<h2>Marvelous List</h2>
-					<ul>
-						<li>No order here</li>
-						<li>Or here</li>
-						<li>Or here</li>
-						<li>Or here</li>
-					</ul>
+					<div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 190px; height: auto;">
+						<div class="sl-block-content">
+							<h2>Setting</h2>
+						</div>
+					</div>
+					<div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 264px; height: auto;">
+						<div class="sl-block-content">
+							<ul>
+								<li>metasploit-framework: 9 years old (5&nbsp;ruby / 4 perl)</li>
+								<li>Metasploit Pro: 2 years old</li>
+								<li>Rails 3.2.2</li>
+							</ul>
+						</div>
+					</div>
 				</section>
-
 				<section>
-					<h2>Fantastic Ordered List</h2>
-					<ol>
-						<li>One is smaller than...</li>
-						<li>Two is smaller than...</li>
-						<li>Three!</li>
-					</ol>
+					<div class="sl-block" data-block-type="text" style="width: 410px; left: 49px; top: 106px; height: auto;">
+						<div class="sl-block-content" style="text-align: left;">
+							<h2>UI</h2>
+						</div>
+					</div>
+					<div class="sl-block" data-block-type="text" style="width: 410px; left: 49px; top: 200px; height: auto;">
+						<div class="sl-block-content" style="text-align: left;">
+							<p>A standard Rails application</p>
+						</div>
+					</div>
+					<div class="sl-block" data-block-type="text" style="width: 410px; left: 499px; top: 106px; height: auto;">
+						<div class="sl-block-content" style="text-align: left;">
+							<h2>prosvc</h2>
+						</div>
+					</div>
+					<div class="sl-block" data-block-type="text" style="width: 410px; left: 499px; top: 200px; height: auto;">
+						<div class="sl-block-content" style="text-align: left;">
+							<p>daemon UI uses to run metasploit-framework</p>
+						</div>
+					</div>
 				</section>
-
+				<section class="stack">
+					<section>
+						<div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 190px; height: auto;">
+							<div class="sl-block-content">
+								<h1>prosvc</h1>
+							</div>
+						</div>
+						<div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 287px; height: auto;">
+							<div class="sl-block-content">
+								<h2>it had a few problems</h2>
+							</div>
+						</div>
+					</section>
+					<section>
+						<div class="sl-block" data-block-type="text" style="width: 800px; left: 79px; top: 50px; height: auto;">
+							<div class="sl-block-content" style="z-index: 10;">
+								<h2>Too long</h2>
+							</div>
+						</div>
+						<div class="sl-block" data-block-type="image" style="min-width: 30px; min-height: 30px; width: 170.428888888889px; height: 566px; left: 412px; top: 124px;">
+							<div class="sl-block-content" style="z-index: 13;">
+								<img src="https://s3.amazonaws.com/media-p.slid.es/uploads/lukeimhoff/images/1013845/Screen_Shot_2015-01-24_at_10.04.23_PM.png" data-natural-width="271" data-natural-height="900" style="visibility: visible;">
+							</div>
+						</div>
+					</section>
+					<section>
+						<div class="sl-block" data-block-type="text" style="width: 800px; left: 79px; top: 23px; height: auto;">
+							<div class="sl-block-content">
+								<h2>Duplicating Bundler</h2>
+							</div>
+						</div>
+						<div class="sl-block" data-block-type="image" style="width: 700px; height: 589.856957087126px; left: 129px; top: 110px;">
+							<div class="sl-block-content">
+								<img src="https://s3.amazonaws.com/media-p.slid.es/uploads/lukeimhoff/images/1013847/Screen_Shot_2015-01-24_at_10.10.09_PM.png" style="visibility: visible;" data-natural-width="769" data-natural-height="648">
+							</div>
+						</div>
+					</section>
+					<section>
+						<div class="sl-block" data-block-type="text" style="width: 800px; left: 79px; top: 50px; height: auto;">
+							<div class="sl-block-content">
+								<h2>Platform-specifics</h2>
+							</div>
+						</div>
+						<div class="sl-block" data-block-type="image" style="width: 700px; height: 252.368421052632px; left: 129px; top: 255.5px;">
+							<div class="sl-block-content">
+								<img src="https://s3.amazonaws.com/media-p.slid.es/uploads/lukeimhoff/images/1013851/Screen_Shot_2015-01-24_at_10.11.04_PM.png" data-natural-width="380" data-natural-height="137" style="visibility: visible;">
+							</div>
+						</div>
+					</section>
+					<section>
+						<div class="sl-block" data-block-type="text" style="width: 800px; left: 79px; top: 50px; height: auto;">
+							<div class="sl-block-content">
+								<h2>
+									<span style="font-size:32px">Emulating config.autoload_paths</span>
+								</h2>
+							</div>
+						</div>
+						<div class="sl-block" data-block-type="image" style="width: 700px; height: 513.11084624553px; left: 129px; top: 125px;">
+							<div class="sl-block-content">
+								<img src="https://s3.amazonaws.com/media-p.slid.es/uploads/lukeimhoff/images/1013853/Screen_Shot_2015-01-24_at_10.12.06_PM.png" data-natural-width="839" data-natural-height="615" style="visibility: visible;">
+							</div>
+						</div>
+					</section>
+				</section>
 				<section>
-					<h2>Tabular Tables</h2>
-					<table>
-						<thead>
-							<tr>
-								<th>Item</th>
-								<th>Value</th>
-								<th>Quantity</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr>
-								<td>Apples</td>
-								<td>$1</td>
-								<td>7</td>
-							<tr>
-							<tr>
-								<td>Lemonade</td>
-								<td>$2</td>
-								<td>18</td>
-							<tr>
-							<tr>
-								<td>Bread</td>
-								<td>$3</td>
-								<td>2</td>
-							<tr>
-						</tbody>
-					</table>
+					<div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 190px; height: auto;">
+						<div class="sl-block-content">
+							<h2>Goals</h2>
+						</div>
+					</div>
+					<div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 264px; height: auto;">
+						<div class="sl-block-content">
+							<ul>
+								<li>Eliminate
+									<code>relative_requires</code>
+								</li>
+								<li>Eliminate explicit
+									<code>require</code>s in
+									<code>prosvc</code>
+								</li>
+								<li>Share
+									<code>autoload_paths</code> between UI and
+									<code>prosvc</code>
+								</li>
+							</ul>
+						</div>
+					</div>
 				</section>
-
 				<section>
-					<h2>Clever Quotes</h2>
-					<p>
-						These guys come in two forms, inline: <q cite="http://searchservervirtualization.techtarget.com/definition/Our-Favorite-Technology-Quotations">
-						&ldquo;The nice thing about standards is that there are so many to choose from&rdquo;</q> and block:
-					</p>
-					<blockquote cite="http://searchservervirtualization.techtarget.com/definition/Our-Favorite-Technology-Quotations">
-						&ldquo;For years there has been a theory that millions of monkeys typing at random on millions of typewriters would
-						reproduce the entire works of Shakespeare. The Internet has proven this theory to be untrue.&rdquo;
-					</blockquote>
+					<div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 190px; height: auto;">
+						<div class="sl-block-content">
+							<h2>Outline</h2>
+						</div>
+					</div>
+					<div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 264px; height: auto;">
+						<div class="sl-block-content">
+							<ul>
+								<li>Add config.autoload_paths outside Rails</li>
+								<li>Learn about a new type of code-loading</li>
+								<li>Learn about&nbsp;anonymous modules</li>
+								<li>Read ActiveSupport::Dependencies internals</li>
+								<li>Learn about lexical scope</li>
+								<li>Learn about constant resolution</li>
+							</ul>
+						</div>
+					</div>
 				</section>
+				<section class="stack">
+					<section>
+						<div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 190px; height: auto;">
+							<div class="sl-block-content">
+								<h1>
+                                                <span style="font-size:32px">
+                                                    <code>config.autoload_paths</code> outside Rails
+                                                </span>
+								</h1>
+							</div>
+						</div>
+						<div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 250px; height: auto;">
+							<div class="sl-block-content">
+								<h2>
+                                                <span style="font-size:24px">The search for the
+                                                    <code>set_autoload_path</code> initializer
+                                                </span>
+								</h2>
+							</div>
+						</div>
+					</section>
+					<section>
+						<div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 190px; height: auto;">
+							<div class="sl-block-content">
+								<h2>
+                                                <span style="font-size:32px">Barriers to
 
+                                                    <code>config.autoload_paths</code> in
+
+                                                    <code>prosvc</code>
+                                                </span>
+								</h2>
+							</div>
+						</div>
+						<div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 258px; height: auto;">
+							<div class="sl-block-content">
+								<ul>
+									<li>Don't know how to use outside of Rails</li>
+									<li>Don't know how
+										<code>config.autoload_paths</code> works
+									</li>
+									<li>Don't know which gem handles
+										<code>config.autoload_paths</code>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</section>
+					<section>
+						<div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 190px; height: auto;">
+							<div class="sl-block-content" style="z-index: 10;">
+								<h2>RTF
+									<s>M</s>G
+								</h2>
+							</div>
+						</div>
+						<div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 264px; height: auto;">
+							<div class="sl-block-content" style="z-index: 11;">
+								<p style="text-align: left;">
+									<code>config.autoload_paths</code> is mentioned in the Configuring guide
+
+								</p>
+							</div>
+						</div>
+						<div class="sl-block" data-block-type="image" style="min-width: 30px; min-height: 30px; width: 955.808823529412px; height: 105px; left: 0px; top: 385px;">
+							<div class="sl-block-content" style="z-index: 13;">
+								<img src="https://s3.amazonaws.com/media-p.slid.es/uploads/lukeimhoff/images/1016629/configuring-set_autoload_paths.png" style="visibility: visible;" data-natural-width="619" data-natural-height="68">
+							</div>
+						</div>
+					</section>
+					<section>
+						<div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 0px; height: auto;">
+							<div class="sl-block-content" style="z-index: 10;">
+								<h2>
+                                                    <span style="font-size:32px">Where is
+
+
+
+                                                        <code>set_autoload_paths</code>?
+
+
+
+                                                    </span>
+								</h2>
+							</div>
+						</div>
+						<div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 70px; height: auto;">
+							<div class="sl-block-content" style="z-index: 11;">
+								<ol>
+									<li>Search rubygem.org for rails</li>
+									<li>Show all versions</li>
+									<li>Find 3.2.2</li>
+								</ol>
+							</div>
+						</div>
+						<div class="sl-block" data-block-type="text" style="height: auto; min-width: 30px; min-height: 30px; width: 600px; left: 180px; top: 210px;">
+							<div class="sl-block-content" style="z-index: 13;">
+								<table>
+									<thead>
+									<tr>
+										<th>Gem</th>
+										<th>Purpose</th>
+									</tr>
+									</thead>
+									<tbody>
+									<tr>
+										<td>actionmailer</td>
+										<td>sending mail</td>
+									</tr>
+									<tr>
+										<td>activerecord</td>
+										<td>database records</td>
+									</tr>
+									<tr>
+										<td>activeresource</td>
+										<td>non-database records</td>
+									</tr>
+									<tr>
+										<td>bundler</td>
+										<td>dependency management</td>
+									</tr>
+									<tr>
+										<td>actionpack</td>
+										<td>?</td>
+									</tr>
+									<tr>
+										<td>activesupport</td>
+										<td>?</td>
+									</tr>
+									<tr>
+										<td>railties</td>
+										<td>?</td>
+									</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</section>
+					<section>
+						<div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 70px; height: auto;">
+							<div class="sl-block-content" style="z-index: 10;">
+								<h2>
+									<span style="font-size:24px">Check actionpack, activesupport, and railties</span>
+								</h2>
+							</div>
+						</div>
+						<div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 152px; height: auto;">
+							<div class="sl-block-content" style="z-index: 11;">
+								<ul>
+									<li>No Source Links</li>
+									<li>Assume rails Source Links</li>
+								</ul>
+							</div>
+						</div>
+						<div class="sl-block" data-block-type="image" style="min-width: 30px; min-height: 30px; width: 238.834498834499px; height: 470px; left: 378px; top: 230px;">
+							<div class="sl-block-content" style="z-index: 13;">
+								<img src="https://s3.amazonaws.com/media-p.slid.es/uploads/lukeimhoff/images/1016707/Screen_Shot_2015-01-26_at_8.53.55_AM.png" style="visibility: visible;" data-natural-width="218" data-natural-height="429">
+							</div>
+						</div>
+					</section>
+					<section>
+						<div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 66px; height: auto;">
+							<div class="sl-block-content" style="z-index: 10;">
+								<h2>Searching Legacy Code</h2>
+							</div>
+						</div>
+						<div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 140px; height: auto;">
+							<div class="sl-block-content" style="z-index: 11;">
+								<ol>
+									<li>Try Github search</li>
+									<li>Realize Github search only works on master&nbsp;</li>
+									<li>Clone rails</li>
+									<li>Checkout 3.2.2</li>
+									<li>Search locally</li>
+								</ol>
+							</div>
+						</div>
+						<div class="sl-block" data-block-type="code" style="min-width: 30px; min-height: 30px; width: 500px; height: 150px; left: 230px; top: 350px;">
+							<div class="sl-block-content" style="z-index: 13;">
+                                                    <pre><code>cd ~/git
+														mkdir rails
+														cd rails
+														git clone git@github.com:rails/rails.git
+														cd rails
+														git checkout v3.2.2
+														ack set_autoload_paths</code></pre>
+							</div>
+						</div>
+					</section>
+					<section>
+						<div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 190px; height: auto;">
+							<div class="sl-block-content" style="z-index: 10;">
+								<h2>ack</h2>
+							</div>
+						</div>
+						<div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 264px; height: auto;">
+							<div class="sl-block-content" style="z-index: 11;">
+								<ul>
+									<li>Like grep, but smarter</li>
+									<li>Automatically searches current directory tree</li>
+									<li>Ignores .git</li>
+									<li>Automatically prints matching lines with line numbers and highlights</li>
+								</ul>
+							</div>
+						</div>
+					</section>
+					<section>
+						<div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 190px; height: auto;">
+							<div class="sl-block-content" style="z-index: 10;">
+								<h2>
+									<code>ack set_autoload_path</code>
+								</h2>
+							</div>
+						</div>
+						<div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 333px; height: auto;">
+							<div class="sl-block-content" style="z-index: 11;">
+								<ol>
+									<li>Configuring guide source</li>
+									<li>DSL call to define initializer</li>
+								</ol>
+							</div>
+						</div>
+						<div class="sl-block" data-block-type="image" style="min-width: 30px; min-height: 30px; width: 960px; height: 69.3408134642356px; left: 0px; top: 264px;">
+							<div class="sl-block-content" style="z-index: 13;">
+								<img src="https://s3.amazonaws.com/media-p.slid.es/uploads/lukeimhoff/images/1016771/ack-set_autoload_paths.png" style="visibility: visible;" data-natural-width="1426" data-natural-height="103">
+							</div>
+						</div>
+					</section>
+					<section>
+						<div class="sl-block" data-block-type="text" style="width: 627px; left: 167px; top: 66px; height: auto;">
+							<div class="sl-block-content">
+								<h2>
+                                                            <span style="font-size:32px">
+                                                                <code>railties/lib/rails/engine.rb:536</code>
+                                                            </span>
+								</h2>
+							</div>
+						</div>
+						<div class="sl-block" data-block-type="image" style="width: 960px; height: 302.738589211618px; left: 0px; top: 231px;">
+							<div class="sl-block-content">
+								<img src="https://s3.amazonaws.com/media-p.slid.es/uploads/lukeimhoff/images/1016869/railties-lib-rails-engine-line-536.png" style="visibility: visible;" data-natural-width="723" data-natural-height="228">
+							</div>
+						</div>
+					</section>
+					<section>
+						<div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 163px; height: auto;">
+							<div class="sl-block-content" style="z-index: 10;">
+								<h2>
+									<code>_all_autoload_paths</code>
+								</h2>
+							</div>
+						</div>
+						<div class="sl-block" data-block-type="image" style="width: 960px; height: 53.1525423728814px; left: 0px; top: 261px;">
+							<div class="sl-block-content" style="z-index: 11;">
+								<img src="https://s3.amazonaws.com/media-p.slid.es/uploads/lukeimhoff/images/1016928/all_autoload_paths.png" style="visibility: visible;" data-natural-width="885" data-natural-height="49">
+							</div>
+						</div>
+						<div class="sl-block" data-block-type="text" style="height: auto; min-width: 30px; min-height: 30px; width: 600px; left: 180px; top: 332px;">
+							<div class="sl-block-content" style="z-index: 13;">
+								<ul>
+									<li>
+										<code>config.autoload_paths</code>
+									</li>
+									<li>
+										<code>config.eager_load_paths</code>
+									</li>
+									<li>
+										<code>config.autoload_once_paths</code>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</section>
+				</section>
 				<section>
-					<h2>Intergalactic Interconnections</h2>
-					<p>
-						You can link between slides internally,
-						<a href="#/2/3">like this</a>.
-					</p>
-				</section>
+					<div class="sl-block" data-block-type="text" style="width: 880px; left: 40px; top: 188px; height: auto;">
+						<div class="sl-block-content" style="z-index: 11;">
+							<h2>Emulate
 
+
+
+								<code>set_autoload_paths</code>
+							</h2>
+						</div>
+					</div>
+					<div class="sl-block" data-block-type="text" style="height: auto; min-width: 30px; min-height: 30px; width: 600px; left: 186px; top: 286px;">
+						<div class="sl-block-content" style="z-index: 12;">
+							<ul>
+								<li>
+									<code>config.autoload_paths</code>
+								</li>
+								<li>
+									<s>
+										<code>config.eager_load_paths</code>
+									</s>
+								</li>
+								<li>
+									<s>
+										<code>config.autoload_once_paths</code>
+									</s>
+								</li>
+							</ul>
+						</div>
+					</div>
+					<div class="sl-block" data-block-type="code" style="min-width: 30px; min-height: 30px; width: 741px; height: 30px; left: 110px; top: 432px;">
+						<div class="sl-block-content" style="z-index: 13;">
+							<pre><code>ActiveSupport::Dependencies.autoload_paths.unshift(config.autoload_paths)</code></pre>
+						</div>
+					</div>
+				</section>
+				<section class="stack">
+					<section>
+						<div class="sl-block" data-block-type="text" style="width: 960px; left: 0px; top: 190px; height: auto;">
+							<div class="sl-block-content" style="z-index: 10;">
+								<h1>
+                                                                    <span style="font-size:32px">Calling initializers without
+                                                                        <code>Rails::Engine</code>
+                                                                    </span>
+								</h1>
+							</div>
+						</div>
+						<div class="sl-block" data-block-type="text" style="height: auto; min-width: 30px; min-height: 30px; width: 600px; left: 180px; top: 280px;">
+							<div class="sl-block-content" style="z-index: 12;">
+								<ul>
+									<li>Initializers are just methods</li>
+									<li>Need to emulate calling convention too</li>
+								</ul>
+							</div>
+						</div>
+					</section>
+					<section>
+						<div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 173px; height: auto;">
+							<div class="sl-block-content" style="z-index: 10;">
+								<h2>Back to the Guide</h2>
+							</div>
+						</div>
+						<div class="sl-block" data-block-type="image" style="width: 960px; height: 76.5px; left: 0px; top: 280px;">
+							<div class="sl-block-content" style="z-index: 11;">
+								<img src="https://s3.amazonaws.com/media-p.slid.es/uploads/lukeimhoff/images/1017037/configuring-rails-railtie-initializer.png" style="visibility: visible;" data-natural-width="640" data-natural-height="51">
+							</div>
+						</div>
+						<div class="sl-block" data-block-type="text" style="height: auto; min-width: 30px; min-height: 30px; width: 600px; left: 180px; top: 368px;">
+							<div class="sl-block-content" style="z-index: 13;">
+								<ul>
+									<li>Check earlier in file for other initializer</li>
+									<li>Check for other initializers with
+										<code>:before =&gt; :set_autoload_paths</code>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</section>
+					<section>
+						<div class="sl-block" data-block-type="text" style="width: 800px; left: 79px; top: 50px; height: auto;">
+							<div class="sl-block-content">
+								<h2>
+									<code>set_load_path</code>
+								</h2>
+							</div>
+						</div>
+						<div class="sl-block" data-block-type="image" style="width: 700px; height: 335px; left: 129px; top: 214px;">
+							<div class="sl-block-content">
+								<img src="https://s3.amazonaws.com/media-p.slid.es/uploads/lukeimhoff/images/1017275/set_load_paths.png" style="visibility: visible;" data-natural-width="700" data-natural-height="335">
+							</div>
+						</div>
+					</section>
+					<section>
+						<div class="sl-block" data-block-type="text" style="width: 800px; left: 79px; top: 50px; height: auto;">
+							<div class="sl-block-content" style="z-index: 10;">
+								<h2>
+									<code>_all_load_paths</code>
+								</h2>
+							</div>
+						</div>
+						<div class="sl-block" data-block-type="image" style="width: 959px; top: 177.167993630573px; left: 1px; height: 65.6640127388535px;">
+							<div class="sl-block-content" style="z-index: 11;">
+								<img src="https://s3.amazonaws.com/media-p.slid.es/uploads/lukeimhoff/images/1017426/all_load_paths.png" data-natural-width="628" data-natural-height="43" style="visibility: visible;">
+							</div>
+						</div>
+						<div class="sl-block" data-block-type="text" style="height: auto; min-width: 30px; min-height: 30px; width: 717px; left: 122px; top: 322px;">
+							<div class="sl-block-content" style="z-index: 13;">
+								<ul>
+									<li>
+										<code>_all_load_paths</code> →
+										<code>_all_autoload_paths</code>
+									</li>
+									<li>
+										<code>set_autoload_paths</code> →
+										<code>set_load_paths</code>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</section>
+					<section>
+						<div class="sl-block" data-block-type="text" style="width: 800px; left: 79px; top: 48px; height: auto;">
+							<div class="sl-block-content">
+								<h2>prosvc load paths</h2>
+							</div>
+						</div>
+						<div class="sl-block" data-block-type="image" style="width: 960px; height: 529.2px; left: 0px; top: 140px;">
+							<div class="sl-block-content">
+								<img src="https://s3.amazonaws.com/media-p.slid.es/uploads/lukeimhoff/images/1017529/3370204851ac2d93ba2b3816b3762350799c21df-engine-prosvc-diff.png" style="visibility: visible;" data-natural-width="1600" data-natural-height="882">
+							</div>
+						</div>
+					</section>
+				</section>
 				<section>
-					<h2>Speaker View</h2>
-					<p>There's a <a href="https://github.com/hakimel/reveal.js#speaker-notes">speaker view</a>. It includes a timer, preview of the upcoming slide as well as your speaker notes.</p>
-					<p>Press the <em>S</em> key to try it out.</p>
-
-					<aside class="notes">
-						Oh hey, these are some notes. They'll be hidden in your presentation, but you can see them if you open the speaker notes window (hit 's' on your keyboard).
-					</aside>
+					<div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 190px; height: auto;">
+						<div class="sl-block-content">
+							<h1>Separating initializers and configuration</h1>
+						</div>
+					</div>
 				</section>
+				<section class="stack">
+					<section>
+						<div class="sl-block" data-block-type="text" style="height: auto; min-width: 30px; min-height: 30px; top: 282px; width: 960px; left: 0px;">
+							<div class="sl-block-content" style="z-index: 11; font-size: 87%;">
+								<table>
+									<tbody>
+									<tr>
+										<th>System</th>
+										<th>Initializers</th>
+										<th>Configuration</th>
+									</tr>
+									<tr>
+										<td>Rails</td>
+										<td>
+											<code>Rails::Engine</code>
+										</td>
+										<td>
+											<code>Rails::Engine::Configuration</code>
+										</td>
+									</tr>
+									<tr>
+										<td>prosvc</td>
+										<td>
+											<code>Metasploit::Configured</code>
+										</td>
+										<td>
+											<code>Metasploit::Configuration</code>
+										</td>
+									</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</section>
+					<section>
+						<div class="sl-block" data-block-type="code" style="width: 960px; height: 700px; left: 0px; top: 0px;">
+							<div class="sl-block-content" style="z-index: 12; font-size: 57%;">
+                                                                                <pre><code>require 'active_support/concern'
 
+																					# TODO this should be a Rails::Engine if engine is ever moved under ui
+																					module Metasploit::Configured
+																					extend ActiveSupport::Concern
+
+																					module ClassMethods
+																					def configuration
+																					@configuration ||= self::Configuration.new
+																					end
+
+																					def initialize!
+																					configuration.initializers.each do |initializer|
+																					send(initializer)
+																					end
+																					end
+
+																					def eager_load!
+																					configuration.dependencies.each(&amp;:eager_load!)
+
+																					# Adapted from Rails::Engine#eager_load!
+																					configuration.eager_load_paths.each do |load_path|
+																					# strip the load_path itself from the name because the load_path is already add to $LOAD_PATH by
+																					# {#set_load_path}.
+																					# strip extension as it's not normally passed to require.
+																					require_path_regex = /\A#{Regexp.escape(load_path)}\/(.*)\.rb\Z/
+																					glob = "#{load_path}/**/*.rb"
+
+																					Dir.glob(glob) do |path|
+																					require_path = path.sub(require_path_regex, '\1')
+
+																					require_dependency require_path
+																					end
+																					end
+																					end
+
+																					def root
+																					configuration.root
+																					end
+
+																					def set_load_path
+																					configuration.dependencies.each(&amp;:set_load_path)
+
+																					# reverse because unshift is pushing onto the front
+																					configuration.all_autoload_paths.reverse_each do |path|
+																					if File.directory?(path)
+																					$LOAD_PATH.unshift(path)
+																					end
+
+																					# uniq at end in case all_autoload_paths include paths already in $LOAD_PATH
+																					$LOAD_PATH.uniq!
+																					end
+																					end
+
+																					def set_autoload_paths
+																					configuration.dependencies.each(&amp;:set_autoload_paths)
+
+																					ActiveSupport::Dependencies.autoload_paths.unshift(*configuration.all_autoload_paths)
+
+																					# Freeze so future modifications error out instead of being silently ignored
+																					configuration.autoload_paths.freeze
+																					configuration.eager_load_paths.freeze
+																					end
+
+
+																					end
+																					end</code></pre>
+							</div>
+						</div>
+					</section>
+					<section>
+						<div class="sl-block" data-block-type="code" style="width: 960px; height: 280px; left: 0px; top: 0px;">
+							<div class="sl-block-content" style="z-index: 11;">
+                                                                                <pre><code>require 'active_support/concern'
+
+																					# TODO this should be a Rails::Engine if engine is ever moved under ui
+																					module Metasploit::Configured
+																					extend ActiveSupport::Concern
+
+																					module ClassMethods
+																					def configuration
+																					@configuration ||= self::Configuration.new
+																					end
+																					end
+																					end</code></pre>
+							</div>
+						</div>
+						<div class="sl-block" data-block-type="text" style="height: auto; min-width: 30px; min-height: 30px; width: 600px; left: 180px; top: 331px;">
+							<div class="sl-block-content" style="z-index: 12;">
+								<table>
+									<tbody>
+									<tr>
+										<th>
+											<code>self::Configuration</code>
+										</th>
+										<th>
+											<code>Configuration</code>
+										</th>
+									</tr>
+									<tr>
+										<td>Scoped to subclass</td>
+										<td>Scoped to </td>
+									</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</section>
+					<section>
+						<div class="sl-block" data-block-type="code" style="width: 960px; height: 296px; left: 0px; top: 0px;">
+							<div class="sl-block-content" style="z-index: 11;">
+                                                                                <pre><code>require 'active_support/concern'
+
+																					# TODO this should be a Rails::Engine if engine is ever moved under ui
+																					module Metasploit::Configured
+																					extend ActiveSupport::Concern
+
+																					module ClassMethods
+																					def initialize!
+																					configuration.initializers.each do |initializer|
+																					send(initializer)
+																					end
+																					end
+																					end
+																					end</code></pre>
+							</div>
+						</div>
+						<div class="sl-block" data-block-type="text" style="height: auto; min-width: 30px; min-height: 30px; width: 600px; left: 180px; top: 331px;">
+							<div class="sl-block-content" style="z-index: 12;">
+								<ul>
+									<li>initializers are assumed to be in order</li>
+									<li>initializers are assumed to be methods</li>
+									<li>
+										<code>initialize!</code> to match Rails convention
+									</li>
+								</ul>
+							</div>
+						</div>
+						<div class="sl-block" data-block-type="code" style="min-width: 30px; min-height: 30px; width: 960px; height: 245px; left: 0px; top: 455px;">
+							<div class="sl-block-content" style="z-index: 13;">
+                                                                                <pre><code># Load the rails application
+																					require File.expand_path('../application', __FILE__)
+
+																					# Initialize the rails application
+																					Pro::Application.initialize!</code></pre>
+							</div>
+						</div>
+					</section>
+					<section>
+						<div class="sl-block" data-block-type="code" style="width: 960px; height: 700px; left: 0px; top: 0px;">
+							<div class="sl-block-content" style="z-index: 12;">
+                                                                                <pre><code>require 'active_support/concern'
+
+																					# TODO this should be a Rails::Engine if engine is ever moved under ui
+																					module Metasploit::Configured
+																					extend ActiveSupport::Concern
+
+																					module ClassMethods
+																					def eager_load!
+																					configuration.dependencies.each(&amp;:eager_load!)
+
+																					# Adapted from Rails::Engine#eager_load!
+																					configuration.eager_load_paths.each do |load_path|
+																					# strip the load_path itself from the name because the load_path is
+																					# already add to $LOAD_PATH by {#set_load_path}.
+																					# strip extension as it's not normally passed to require.
+																					require_path_regex = /\A#{Regexp.escape(load_path)}\/(.*)\.rb\Z/
+																					glob = "#{load_path}/**/*.rb"
+
+																					Dir.glob(glob) do |path|
+																					require_path = path.sub(require_path_regex, '\1')
+
+																					require_dependency require_path
+																					end
+																					end
+																					end
+																					end
+																					end</code></pre>
+							</div>
+						</div>
+					</section>
+					<section>
+						<div class="sl-block" data-block-type="code" style="width: 960px; height: 247px; left: 0px; top: 0px;">
+							<div class="sl-block-content" style="z-index: 11;">
+                                                                                <pre><code>require 'active_support/concern'
+
+																					module Metasploit::Configured
+																					extend ActiveSupport::Concern
+
+																					module ClassMethods
+																					def root
+																					configuration.root
+																					end
+																					end
+																					end</code></pre>
+							</div>
+						</div>
+						<div class="sl-block" data-block-type="text" style="height: auto; min-width: 30px; min-height: 30px; width: 600px; left: 180px; top: 331px;">
+							<div class="sl-block-content" style="z-index: 12;">
+								<ul>
+									<li>Allow Metasploit::Pro.root</li>
+									<li>Emulate Rails.application.root</li>
+								</ul>
+							</div>
+						</div>
+					</section>
+					<section>
+						<div class="sl-block" data-block-type="code" style="width: 480px; height: 430px; left: 480px; top: 262px;">
+							<div class="sl-block-content" style="z-index: 11; font-size: 76%;">
+                                                                                <pre><code>require 'active_support/concern'
+
+																					module Metasploit::Configured
+																					extend ActiveSupport::Concern
+
+																					module ClassMethods
+																					def set_load_path
+																					configuration.dependencies.each(&amp;:set_load_path)
+
+																					# reverse because unshift is pushing onto the front
+																					configuration.all_autoload_paths.reverse_each do |path|
+																					if File.directory?(path)
+																					$LOAD_PATH.unshift(path)
+																					end
+
+																					# uniq at end in case all_autoload_paths include paths
+																					# already in $LOAD_PATH
+																					$LOAD_PATH.uniq!
+																					end
+																					end
+																					end
+																					end</code></pre>
+							</div>
+						</div>
+						<div class="sl-block" data-block-type="code" style="width: 480px; height: 430px; left: 0px; top: 262px;">
+							<div class="sl-block-content" style="z-index: 12; font-size: 107%;">
+                                                                                <pre><code>module Rails
+																					class Engine &lt; Railtie
+																					def ordered_railties
+																					railties.all + [self]
+																					end
+
+																					def initializers
+																					initializers = []
+																					ordered_railties.each do |r|
+																					if r == self
+																					initializers += super
+																					else
+																					initializers += r.initializers
+																					end
+																					end
+																					initializers
+																					end
+																					end
+																					end</code></pre>
+							</div>
+						</div>
+						<div class="sl-block" data-block-type="text" style="height: auto; min-width: 30px; min-height: 30px; width: 600px; left: 180px; top: 15px;">
+							<div class="sl-block-content" style="z-index: 13;">
+								<ul>
+									<li>There are multiple initializers with same name&nbsp;(one per engine/application)</li>
+									<li>Engine initializers are called before application initializers</li>
+								</ul>
+							</div>
+						</div>
+					</section>
+					<section>
+						<div class="sl-block" data-block-type="code" style="width: 480px; height: 430px; left: 480px; top: 262px;">
+							<div class="sl-block-content" style="z-index: 11; font-size: 76%;">
+                                                                                <pre><code>require 'active_support/concern'
+
+																					module Metasploit::Configured
+																					extend ActiveSupport::Concern
+
+																					module ClassMethods
+																					def set_load_path
+																					configuration.dependencies.each(&amp;:set_load_path)
+
+																					# reverse because unshift is pushing onto the front
+																					configuration.all_autoload_paths.reverse_each do |path|
+																					if File.directory?(path)
+																					$LOAD_PATH.unshift(path)
+																					end
+
+																					# uniq at end in case all_autoload_paths include paths
+																					# already in $LOAD_PATH
+																					$LOAD_PATH.uniq!
+																					end
+																					end
+																					end
+																					end</code></pre>
+							</div>
+						</div>
+						<div class="sl-block" data-block-type="code" style="width: 480px; height: 430px; left: 0px; top: 262px;">
+							<div class="sl-block-content" style="z-index: 12; font-size: 78%;">
+                                                                                <pre><code>module Rails
+																					class Engine &lt; Railtie
+																					initializer :set_load_path, :before =&gt; :bootstrap_hook do
+																					_all_load_paths.reverse_each do |path|
+																					$LOAD_PATH.unshift(path) if File.directory?(path)
+																					end
+																					$LOAD_PATH.uniq!
+																					end
+																					end
+																					end</code></pre>
+							</div>
+						</div>
+						<div class="sl-block" data-block-type="text" style="height: auto; width: 600px; left: 180px; top: 82px;">
+							<div class="sl-block-content" style="z-index: 13;">
+								<ul>
+									<li>Engine (dependency) initializer calling is explicit</li>
+									<li>Rest is code style differences</li>
+								</ul>
+							</div>
+						</div>
+					</section>
+					<section>
+						<div class="sl-block" data-block-type="code" style="min-width: 30px; min-height: 30px; width: 960px; height: 700px; left: 0px; top: 0px;">
+							<div class="sl-block-content" style="z-index: 12; font-size: 99%;">
+                                                                                <pre><code>module Metasploit
+																					class Configuration
+																					def all_autoload_paths
+																					all_autoload_paths = autoload_paths + eager_load_paths
+																					unique_autoload_paths = all_autoload_paths.uniq
+
+																					unique_autoload_paths
+																					end
+
+																					def autoload_paths
+																					@autoload_paths ||= []
+																					end
+
+																					def dependencies
+																					@dependencies ||= []
+																					end
+
+																					def eager_load_paths
+																					@eager_load_paths ||= []
+																					end
+
+																					def initializers
+																					# XXX not sure I like that initializer methods that only exist in
+																					# Metasploit::Configured are used here.
+																					@initializers ||= [
+																					:set_load_path,
+																					:set_autoload_paths,
+																					:eager_load!
+																					]
+																					end
+
+																					attr_reader :root
+																					end
+																					end</code></pre>
+							</div>
+						</div>
+					</section>
+					<section>
+						<div class="sl-block" data-block-type="code" style="width: 960px; height: 280px; left: 0px; top: 0px;">
+							<div class="sl-block-content" style="z-index: 11; font-size: 99%;">
+                                                                                <pre><code>module Metasploit
+																					class Configuration
+																					def initializers
+																					# XXX not sure I like that initializer methods that only exist in
+																					# Metasploit::Configured are used here.
+																					@initializers ||= [
+																					:set_load_path,
+																					:set_autoload_paths,
+																					:eager_load!
+																					]
+																					end
+																					end
+																					end</code></pre>
+							</div>
+						</div>
+						<div class="sl-block" data-block-type="text" style="height: auto; min-width: 30px; min-height: 30px; width: 600px; left: 180px; top: 331px;">
+							<div class="sl-block-content" style="z-index: 12;">
+								<ul>
+									<li>No :before</li>
+									<li>No :after</li>
+									<li>Order is explicit</li>
+									<li>Simplified ordering code</li>
+								</ul>
+							</div>
+						</div>
+					</section>
+				</section>
+				<section class="stack">
+					<section>
+						<div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 270px; height: auto;">
+							<div class="sl-block-content">
+								<h1>Porting prosvc</h1>
+							</div>
+						</div>
+					</section>
+					<section>
+						<div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 0px; height: auto;">
+							<div class="sl-block-content" style="z-index: 11;">
+								<h2>prosvc requires</h2>
+							</div>
+						</div>
+						<div class="sl-block" data-block-type="code" style="min-width: 30px; min-height: 30px; width: 480px; height: 626px; left: 0px; top: 74px;">
+							<div class="sl-block-content" style="z-index: 12; font-size: 38%;">
+                                                                                <pre><code>#
+																					# Load our own library path and the standard Metasploit Framework path
+																					#
+																					$:.unshift(File.expand_path(File.join(File.dirname(__FILE__), 'lib')))
+																					$:.unshift(File.expand_path(File.join(File.dirname(__FILE__), '..', 'msf3', 'lib')))
+
+																					if ENV['RAILS_ENV'] == "development"
+																					$stdout.puts "[!] Starting Pro service in a development environment"
+
+																					#
+																					# Development mode explicitly enables bundler
+																					#
+
+																					ENV['BUNDLE_GEMFILE'] = File.expand_path(File.join(File.dirname(__FILE__), '..', 'ui', 'Gemfile'))
+																					ENV['BUNDLE_PATH'] = ENV['GEM_HOME']
+
+																					require "bundler/setup"
+																					else
+
+																					#
+																					# Production mode configures the search path via framework's lib/msf/env/gemcache.rb
+																					#
+
+																					# Accept binary gems from the cache
+																					ENV['MSF_BUNDLE_BINARY_GEMS'] = "1"
+
+																					require 'msf/env/gemcache'
+
+																					#
+																					# Explicitly require the libraries we need
+																					#
+
+																					require 'eventmachine'
+																					require 'nokogiri'
+																					require 'msgpack'
+																					require 'pg'
+																					end
+
+																					# AuthLogic needed by Mdm::User
+																					require 'authlogic'
+
+																					# Load gem deps they share
+																					require 'state_machine'
+																					require 'liquid'
+																					require 'acts_as_list'
+																					require 'action_mailer'
+																					require 'carrierwave'
+																					require 'carrierwave/orm/activerecord'
+																					require_relative '../ui/config/initializers/carrierwave'
+
+																					#
+																					# Load specific patches for system libraries
+																					#
+																					if arch == "win32"
+																					require "win32/registry"
+																					require "patches/win32_registry"
+																					end
+
+																					if arch == "linux32" or arch == "linux64"
+																					# require 'openssl_nonblock'
+
+																					# Expand our maximum file limit as high as it will go
+																					while true
+																					begin; Process.setrlimit(Process::RLIMIT_NOFILE, 32768, 32768); break; rescue ::Exception; end
+																					begin; Process.setrlimit(Process::RLIMIT_NOFILE, 16384, 16384); break; rescue ::Exception; end
+																					begin; Process.setrlimit(Process::RLIMIT_NOFILE, 8192, 8192); break; rescue ::Exception; end
+																					begin; Process.setrlimit(Process::RLIMIT_NOFILE, 4096, 4096); break; rescue ::Exception; end
+																					begin; Process.setrlimit(Process::RLIMIT_NOFILE, 1024, 1024); break; rescue ::Exception; end
+																					break
+																					end
+																					end
+
+																					#
+																					# Configure the process environment to work with java and other tools
+																					#
+																					pdel = (arch == "win32") ? ";" : ":"
+																					bins = %W{ common/bin ruby/bin nmap/bin postgresql/bin apache2/bin java/bin jruby/bin }
+																					pathparts = ENV['PATH'].split(pdel)
+																					bins.each do |bpath|
+																					pathparts.unshift File.expand_path(File.join(File.dirname(__FILE__), "..", "..", "..", bpath))
+																					end
+																					ENV['PATH'] = pathparts.uniq.join(pdel)
+																					ENV['JAVA_HOME'] = File.expand_path(File.join(File.dirname(__FILE__), "..", "..", "..", 'java'))
+																					ENV['TERMINFO'] = File.expand_path(File.join(File.dirname(__FILE__), "..", "..", "..", 'common', 'share', 'terminfo'))
+																					ENV['DISPLAY'] = nil
+																				</code></pre>
+							</div>
+						</div>
+						<div class="sl-block" data-block-type="code" style="min-width: 30px; min-height: 30px; width: 480px; height: 626px; left: 480px; top: 74px;">
+							<div class="sl-block-content" style="z-index: 13; font-size: 28%;">
+                                                                                <pre><code>
+																					# Convert path delimiters for Windows
+																					if arch == "win32"
+																					ENV['PATH']      = ENV['PATH'].gsub("/", "\\")
+																					ENV['JAVA_HOME'] = ENV['JAVA_HOME'].gsub("/", "\\")
+																					end
+
+																					#
+																					# Require our basic libraries and start loading
+																					#
+																					require 'metasploit_data_models'
+																					include MetasploitDataModels
+																					# Figure out the rails path
+																					rails_app_path = File.expand_path(File.dirname(__FILE__)) + "/../ui/app"
+																					# Bring all Mdm::* models into view
+																					Dir.glob("#{rails_app_path}/models/mdm/*.rb").each do |mdm_model_path|
+																					require mdm_model_path
+																					end
+
+
+																					# ---- BEGIN - Load all things SocialEngineering from Rails ----
+																					module LiquidTemplating; end
+																					liquid_files = Dir.glob("#{rails_app_path}/../lib/liquid_templating/*.rb")
+																					liquid_files.sort.each do |liquid_path|
+																					require liquid_path
+																					end
+
+																					# TODO: any better way to have both Rails and prosvc happy w/ talking to License?
+																					require "#{rails_app_path}/models/license.rb"
+
+
+																					# Declare the module manually - Rails does this from directory structure
+																					module SocialEngineering; end
+																					require "#{rails_app_path}/uploaders/social_engineering/campaign_file_uploader.rb"
+
+																					manually_loaded_models = ["human_target", "email", "web_page_attack_config_interface"]
+																					skippable_files = ["campaign_task"]
+																					require "#{rails_app_path}/models/social_engineering/human_target.rb" # avoid chicken-egg
+																					require "#{rails_app_path}/models/social_engineering/web_page_attack_config_interface.rb" # avoid chicken-egg
+
+																					se_files = Dir.glob("#{rails_app_path}/models/social_engineering/*.rb")
+																					se_files.sort.each do |se_model_path|
+																					file_name = File.basename(se_model_path).split('.').first
+																					next if skippable_files.include? file_name
+																					next if manually_loaded_models.include? file_name
+																					require se_model_path
+																					end
+																					# ---- END - Load all things SocialEngineering from Rails ----
+
+
+																					require 'msf/ui'
+																					require 'rex'
+
+																					# Metasploit Core API
+																					require 'msf/core/rpc/v10/service'
+
+																					# Pro API
+																					require 'pro/filters'
+																					require 'pro/config'
+																					require 'pro/rpc/v10/rpc_pro'
+
+																					# Pro Mixins
+																					require 'pro/mixins'
+
+																					# Pro Hooks
+																					require 'pro/hooks'
+
+																					# Pro Client
+																					require 'pro/client'
+
+																					# Background Daemon
+																					require 'pro/bgdaemon'
+
+																					# NginX
+																					require "pro/nginx"
+
+																					#
+																					# This is required to dynamically load all MDM modules
+																					# since we have namespace classes which AR tries to log
+																					#
+
+																					require 'logger'
+																					::FileUtils.mkdir_p(File.expand_path(File.join(File.dirname(__FILE__), "config", "logs")))
+																					ActiveRecord::Base.logger = Logger.new( File.expand_path(File.join(File.dirname(__FILE__), "config", "logs", "db.log" )))
+
+
+
+																					# Load individual namespaces and models
+																					require_relative "#{rails_app_path}/models/user_session.rb"
+																					require_relative "#{rails_app_path}/models/task_chain.rb"
+																					require_relative "#{rails_app_path}/models/scheduled_task.rb"
+																					require_relative "#{rails_app_path}/models/campaign.rb"
+																					require_relative "#{rails_app_path}/models/attachment.rb"
+																					require_relative "#{rails_app_path}/models/email_template.rb"
+																					require_relative "#{rails_app_path}/models/email_address.rb"
+																					require_relative "#{rails_app_path}/models/web_template.rb"
+
+
+																					# Load classes in lib root
+																					ui_lib_path = File.expand_path(File.dirname(__FILE__)) + "/../ui/lib"
+																					require "#{ui_lib_path}/sender.rb"
+																					lib_files = Dir.glob("#{ui_lib_path}/*.rb")
+																					lib_files.sort.each do |lib_class|
+																					require lib_class
+																					end</code></pre>
+							</div>
+						</div>
+					</section>
+				</section>
+				<section class="stack">
+					<section>
+						<div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 190px; height: auto;">
+							<div class="sl-block-content">
+								<h2>Roots</h2>
+							</div>
+						</div>
+						<div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 264px; height: auto;">
+							<div class="sl-block-content">
+								<ol>
+									<li>msf3 (metasploit-framework)</li>
+									<li>ui</li>
+									<li>engine</li>
+								</ol>
+							</div>
+						</div>
+					</section>
+					<section>
+						<div class="sl-block" data-block-type="code" style="min-width: 30px; min-height: 30px; width: 960px; height: 700px; left: 0px; top: 0px;">
+							<div class="sl-block-content" style="z-index: 11;">
+                                                                                <pre><code>module Metasploit::Framework
+																					class Configuration &lt; Metasploit::Configuration
+																					def initialize
+																					@root = Metasploit::Pro.root.join('msf3')
+
+																					lib_pathname = root.join('lib')
+																					lib_path = lib_pathname.to_s
+																					autoload_paths &lt;&lt; lib_path
+
+																					base_pathname = root.join('lib', 'base')
+																					base_path = base_pathname.to_s
+																					autoload_paths &lt;&lt; base_path
+																					end
+																					end
+																					end</code></pre>
+							</div>
+						</div>
+					</section>
+					<section>
+						<div class="sl-block" data-block-type="code" style="width: 960px; height: 700px; left: 0px; top: 0px;">
+							<div class="sl-block-content" style="z-index: 11;">
+                                                                                <pre><code>module Metasploit::Pro::Engine
+																					class Configuration &lt; Metasploit::Configuration
+																					def initialize
+																					@dependencies = [
+																					Metasploit::Framework,
+																					Metasploit::Pro::UI
+																					]
+
+																					@root = Metasploit::Pro.root.join('engine')
+
+																					lib_pathname = root.join('lib')
+																					lib_path = lib_pathname.to_s
+																					autoload_paths &lt;&lt; lib_path
+																					end
+																					end
+																					end</code></pre>
+							</div>
+						</div>
+					</section>
+					<section>
+						<div class="sl-block" data-block-type="code" style="width: 960px; height: 700px; left: 0px; top: 0px;">
+							<div class="sl-block-content" style="z-index: 11;">
+                                                                                <pre><code>module Metasploit::Pro::UI
+																					class Configuration &lt; Metasploit::Configuration
+																					def initialize
+																					@root = Metasploit::Pro.root.join('ui')
+
+																					lib_pathname = root.join('lib')
+																					lib_path = lib_pathname.to_s
+																					autoload_paths &lt;&lt; lib_path
+
+																					# Some models reference the controllers,
+																					# so app/controllers needs to be added to autoload paths
+																					controllers_pathname = root.join('app', 'controllers')
+																					controllers_path = controllers_pathname.to_s
+																					autoload_paths &lt;&lt; controllers_path
+
+																					uploaders_pathname = root.join('app', 'uploaders')
+																					uploaders_path = uploaders_pathname.to_s
+																					autoload_paths &lt;&lt; uploaders_path
+
+																					models_pathname = root.join('app', 'models')
+																					models_path = models_pathname.to_s
+																					autoload_paths &lt;&lt; models_path
+																					end
+																					end
+																					end</code></pre>
+							</div>
+						</div>
+					</section>
+				</section>
+				<section class="stack">
+					<section>
+						<div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 190px; height: auto;">
+							<div class="sl-block-content">
+								<h1>Testing with Metasploit Module Loader</h1>
+							</div>
+						</div>
+					</section>
+					<section>
+						<div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 190px; height: auto;">
+							<div class="sl-block-content">
+								<h2>A Side Note on Narrative</h2>
+							</div>
+						</div>
+						<div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 264px; height: auto;">
+							<div class="sl-block-content">
+								<ul>
+									<li>I didn't know this use case when I wrote this originally</li>
+									<li>I was just restart prosvc over and over for a couple weeks</li>
+									<li>Egypt pointed out&nbsp;this use case in the PR</li>
+								</ul>
+							</div>
+						</div>
+					</section>
+					<section>
+						<div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 190px; height: auto;">
+							<div class="sl-block-content">
+								<h2>msfpro start-up</h2>
+							</div>
+						</div>
+						<div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 264px; height: auto;">
+							<div class="sl-block-content">
+								<ol>
+									<li>Loads all modules
+
+										<ol>
+											<li>Loads all autoload_paths</li>
+										</ol>
+									</li>
+									<li>Presents prompt</li>
+								</ol>
+							</div>
+						</div>
+					</section>
+					<section>
+						<div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 190px; height: auto;">
+							<div class="sl-block-content">
+								<h2>msfpro test</h2>
+							</div>
+						</div>
+						<div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 264px; height: auto;">
+							<div class="sl-block-content">
+								<ol>
+									<li>Loads all modules
+
+										<ol>
+											<li>Loads all autoload_paths</li>
+										</ol>
+									</li>
+									<li>Presents prompt</li>
+									<li>
+										<strong>Remove autoload_path class constant</strong>
+									</li>
+									<li>
+										<strong>Force reload of autoload_path class</strong>
+									</li>
+								</ol>
+							</div>
+						</div>
+					</section>
+				</section>
+				<section class="stack">
+					<section>
+						<div class="sl-block" data-block-type="image" style="width: 960px; height: 743.465634075508px; left: 0px; top: -21px;">
+							<div class="sl-block-content" style="z-index: 10;">
+								<img src="https://s3.amazonaws.com/media-p.slid.es/uploads/lukeimhoff/images/1017857/wrong-constant-name.png" style="visibility: visible;" data-natural-width="1033" data-natural-height="800">
+							</div>
+						</div>
+					</section>
+					<section>
+						<div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 190px; height: auto;">
+							<div class="sl-block-content">
+								<h2>How did I break the code?</h2>
+							</div>
+						</div>
+						<div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 264px; height: auto;">
+							<div class="sl-block-content">
+								<ul>
+									<li>NameError</li>
+									<li>Wrong constant name</li>
+									<li>Gibberish constant name (#&lt;Module:0x10x916448&gt;)</li>
+								</ul>
+							</div>
+						</div>
+					</section>
+					<section>
+						<div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 190px; height: auto;">
+							<div class="sl-block-content" style="z-index: 11;">
+								<h2>How do I fix the code?</h2>
+							</div>
+						</div>
+						<div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 264px; height: auto;">
+							<div class="sl-block-content" style="z-index: 12;">
+								<ul>
+									<li>Use Call stack (backtrace)</li>
+									<li>Look at first line</li>
+								</ul>
+							</div>
+						</div>
+						<div class="sl-block" data-block-type="image" style="min-width: 30px; min-height: 30px; width: 960px; height: 164.540295119183px; left: 0px; top: 389.729852440409px;">
+							<div class="sl-block-content" style="z-index: 13;">
+								<img src="https://s3.amazonaws.com/media-p.slid.es/uploads/lukeimhoff/images/1017866/activesupport-3-2-2-lib-active-support-inflector-methods-line-229.png" data-natural-width="881" data-natural-height="151" style="visibility: visible;">
+							</div>
+						</div>
+					</section>
+					<section>
+						<div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 190px; height: auto;">
+							<div class="sl-block-content">
+								<h2>Where next?</h2>
+							</div>
+						</div>
+						<div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 264px; height: auto;">
+							<div class="sl-block-content">
+								<ul>
+									<li>constantize is pure, so follow arguments up stack</li>
+								</ul>
+							</div>
+						</div>
+					</section>
+					<section>
+						<div class="sl-block" data-block-type="image" style="min-width: 30px; min-height: 30px; width: 960px; height: 570.876747141042px; left: 0px; top: 65px;">
+							<div class="sl-block-content" style="z-index: 13;">
+								<img src="https://s3.amazonaws.com/media-p.slid.es/uploads/lukeimhoff/images/1017875/module-const-missing-const-missing.png" style="visibility: visible;" data-natural-width="787" data-natural-height="468">
+							</div>
+						</div>
+					</section>
+					<section>
+						<div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 190px; height: auto;">
+							<div class="sl-block-content">
+								<h2>What called const_missing?</h2>
+							</div>
+						</div>
+						<div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 338px; height: auto;">
+							<div class="sl-block-content">
+								<ul>
+									<li>Follow the backtrace</li>
+								</ul>
+							</div>
+						</div>
+					</section>
+					<section>
+						<div class="sl-block" data-block-type="image" style="width: 960px; height: 124.207980652963px; left: 0px; top: 70px;">
+							<div class="sl-block-content" style="z-index: 10;">
+								<img src="https://s3.amazonaws.com/media-p.slid.es/uploads/lukeimhoff/images/1017889/auxiliary-pro-social-engineering-web-phish-run.png" style="visibility: visible;" data-natural-width="827" data-natural-height="107">
+							</div>
+						</div>
+						<div class="sl-block" data-block-type="text" style="height: auto; min-width: 30px; min-height: 30px; width: 600px; left: 180px; top: 331px;">
+							<div class="sl-block-content" style="z-index: 12;">
+								<p>const_missing is implicitly called by Ruby VM when accessing SocialEngineering</p>
+							</div>
+						</div>
+					</section>
+					<section>
+						<div class="sl-block" data-block-type="text" style="height: auto; min-width: 30px; min-height: 30px; width: 600px; left: 180px; top: 169px;">
+							<div class="sl-block-content" style="z-index: 12; color: rgb(0, 255, 0);">
+								<ol>
+									<li>name</li>
+									<li>name.presence</li>
+									<li>klass_name</li>
+									<li>klass_name.to_s</li>
+									<li>klass_name.to_s.scan</li>
+									<li>nesting</li>
+								</ol>
+							</div>
+						</div>
+						<div class="sl-block" data-block-type="image" style="min-width: 30px; min-height: 30px; width: 960px; height: 570.876747141042px; left: 0px; top: 3px;">
+							<div class="sl-block-content" style="z-index: 11; opacity: 0.5;">
+								<img src="https://s3.amazonaws.com/media-p.slid.es/uploads/lukeimhoff/images/1017875/module-const-missing-const-missing.png" style="visibility: visible;" data-natural-width="787" data-natural-height="468">
+							</div>
+						</div>
+						<div class="sl-block" data-block-type="text" style="height: auto; min-width: 30px; min-height: 30px; width: 600px; left: 180px; top: 78px;">
+							<div class="sl-block-content" style="z-index: 13; color: rgb(0, 255, 0);">
+								<p>Dataflow</p>
+							</div>
+						</div>
+					</section>
+					<section>
+						<div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 190px; height: auto;">
+							<div class="sl-block-content">
+								<h2>Origin of wrong name</h2>
+							</div>
+						</div>
+						<div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 264px; height: auto;">
+							<div class="sl-block-content">
+								<ol>
+									<li>Entire
+										<code>Module#name</code>
+									</li>
+									<li>Part of
+										<code>Module#name</code> containing
+										<code>::</code>
+									</li>
+								</ol>
+							</div>
+						</div>
+					</section>
+					<section>
+						<div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 190px; height: auto;">
+							<div class="sl-block-content">
+								<h2>To the debugger!</h2>
+							</div>
+						</div>
+						<div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 264px; height: auto;">
+							<div class="sl-block-content">
+								<ul>
+									<li>symlinks prevent ruby-debug-ide breakpoints from triggering</li>
+									<li>pry not built for production</li>
+									<li>debugger not built for production</li>
+								</ul>
+							</div>
+						</div>
+					</section>
+					<section>
+						<div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 103px; height: auto;">
+							<div class="sl-block-content" style="z-index: 10;">
+								<h1>print debugging</h1>
+							</div>
+						</div>
+						<div class="sl-block" data-block-type="image" style="min-width: 30px; min-height: 30px; width: 960px; height: 391.535836177474px; left: 0px; top: 213.732086181641px;">
+							<div class="sl-block-content" style="z-index: 12;">
+								<img src="https://s3.amazonaws.com/media-p.slid.es/uploads/lukeimhoff/images/1017992/module-const-missing-const-missing-debugging.png" data-natural-width="586" data-natural-height="239" style="visibility: visible;">
+							</div>
+						</div>
+					</section>
+					<section>
+						<div class="sl-block" data-block-type="image" style="width: 960px; height: 129.72972972973px; left: 0px; top: 280px;">
+							<div class="sl-block-content" style="z-index: 11;">
+								<img src="https://s3.amazonaws.com/media-p.slid.es/uploads/lukeimhoff/images/1018000/debugging-output.png" data-natural-width="555" data-natural-height="75" style="visibility: visible;">
+							</div>
+						</div>
+						<div class="sl-block" data-block-type="text" style="height: auto; min-width: 30px; min-height: 30px; width: 600px; left: 190px; top: 121px;">
+							<div class="sl-block-content" style="z-index: 12;">
+								<h2>Namespace Module is wrong</h2>
+							</div>
+						</div>
+					</section>
+					<section>
+						<div class="sl-block" data-block-type="text" style="width: 800px; left: 79px; top: 50px; height: auto;">
+							<div class="sl-block-content">
+								<h2>Where is Metasploit3?</h2>
+							</div>
+						</div>
+						<div class="sl-block" data-block-type="image" style="width: 700px; height: 530.232558139535px; left: 129px; top: 170px;">
+							<div class="sl-block-content">
+								<img src="https://s3.amazonaws.com/media-p.slid.es/uploads/lukeimhoff/images/1018013/auxiliary-pro-social-engineering-web-phish-class.png" data-natural-width="301" data-natural-height="228" style="visibility: visible;">
+							</div>
+						</div>
+					</section>
+					<section>
+						<div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 190px; height: auto;">
+							<div class="sl-block-content">
+								<h2>Metasploit Module Naming Convention</h2>
+							</div>
+						</div>
+						<div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 338px; height: auto;">
+							<div class="sl-block-content">
+								<ul>
+									<li>MetasploitN
+
+										<ul>
+											<li>N is minimum&nbsp;major version of Metasploit Framework</li>
+										</ul>
+									</li>
+									<li>1821 Metasploit3 classes or modules</li>
+									<li>32 Metasploit4 classes or modules</li>
+								</ul>
+							</div>
+						</div>
+					</section>
+				</section>
+				<section class="stack">
+					<section>
+						<div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 270px; height: auto;">
+							<div class="sl-block-content">
+								<h1>Tracking anonymous Module creation</h1>
+							</div>
+						</div>
+					</section>
+					<section>
+						<div class="sl-block" data-block-type="text" style="width: 800px; left: 79px; top: 50px; height: auto;">
+							<div class="sl-block-content">
+								<h2>Module.new Usages</h2>
+							</div>
+						</div>
+						<div class="sl-block" data-block-type="image" style="width: 700px; height: 234.129692832765px; left: 129px; top: 264.5px;">
+							<div class="sl-block-content">
+								<img src="https://s3.amazonaws.com/media-p.slid.es/uploads/lukeimhoff/images/1018104/module-new-in-metasploit-framework-lib.png" data-natural-width="293" data-natural-height="98" style="visibility: visible;">
+							</div>
+						</div>
+					</section>
+					<section>
+						<div class="sl-block" data-block-type="text" style="width: 800px; left: 79px; top: 50px; height: auto;">
+							<div class="sl-block-content">
+								<h2>
+                                                                                                                        <span style="font-size:24px">
+                                                                                                                            <span style="text-align:start">Msf::ModuleManager#reload_module</span>
+                                                                                                                        </span>
+								</h2>
+							</div>
+						</div>
+						<div class="sl-block" data-block-type="image" style="width: 960px; height: 329.320388349515px; left: 0px; top: 217.339805825243px;">
+							<div class="sl-block-content">
+								<img src="https://s3.amazonaws.com/media-p.slid.es/uploads/lukeimhoff/images/1018115/module-new-in-msf-module-manager-reload-module.png" data-natural-width="618" data-natural-height="212" style="visibility: visible;">
+							</div>
+						</div>
+					</section>
+					<section>
+						<div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 0px; height: auto;">
+							<div class="sl-block-content">
+								<h2>
+                                                                                                                            <span style="font-size:24px">
+                                                                                                                                <span style="text-align:start">
+                                                                                                                                    <code>Msf::ModuleManager#load_module_from_file</code>
+                                                                                                                                </span>
+                                                                                                                            </span>
+								</h2>
+							</div>
+						</div>
+						<div class="sl-block" data-block-type="image" style="width: 810.879518072289px; height: 629px; left: 75px; top: 70px;">
+							<div class="sl-block-content">
+								<img src="https://s3.amazonaws.com/media-p.slid.es/uploads/lukeimhoff/images/1018118/module-new-in-msf-module-manager-load-module-from-file.png" data-natural-width="642" data-natural-height="498" style="visibility: visible;">
+							</div>
+						</div>
+					</section>
+					<section>
+						<div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 0px; height: auto;">
+							<div class="sl-block-content">
+								<h2>
+                                                                                                                                <span style="font-size:24px">
+                                                                                                                                    <span style="text-align:start">
+                                                                                                                                        <code>Msf::ModuleManager#load_module_from_archive</code>
+                                                                                                                                    </span>
+                                                                                                                                </span>
+								</h2>
+							</div>
+						</div>
+						<div class="sl-block" data-block-type="image" style="width: 933.545454545455px; height: 630px; left: 13px; top: 70px;">
+							<div class="sl-block-content">
+								<img src="https://s3.amazonaws.com/media-p.slid.es/uploads/lukeimhoff/images/1018122/module-new-in-msf-module-manager-load-module-from-archive.png" data-natural-width="652" data-natural-height="440" style="visibility: visible;">
+							</div>
+						</div>
+					</section>
+				</section>
 				<section>
-					<h2>Export to PDF</h2>
-					<p>Presentations can be <a href="https://github.com/hakimel/reveal.js#pdf-export">exported to PDF</a>, here's an example:</p>
-					<iframe src="//www.slideshare.net/slideshow/embed_code/42840540" width="445" height="355" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:3px solid #666; margin-bottom:5px; max-width: 100%;" allowfullscreen> </iframe>
+					<div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 270px; height: auto;">
+						<div class="sl-block-content">
+							<h1>De-anonymizing namespace Modules</h1>
+						</div>
+					</div>
 				</section>
-
+				<section class="stack">
+					<section>
+						<div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 190px; height: auto;">
+							<div class="sl-block-content">
+								<h2>Replace Module.new</h2>
+							</div>
+						</div>
+						<div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 264px; height: auto;">
+							<div class="sl-block-content">
+								<ol>
+									<li>The name must be unique to prevent naming collisions</li>
+									<li>The name must be deterministic to allow replacement on reload</li>
+								</ol>
+							</div>
+						</div>
+					</section>
+					<section>
+						<div class="sl-block" data-block-type="image" style="width: 710.111111111111px; height: 700px; left: 125px; top: 0px;">
+							<div class="sl-block-content">
+								<img src="https://s3.amazonaws.com/media-p.slid.es/uploads/lukeimhoff/images/1018133/msf-module-manager-wrapper-module.png" style="visibility: visible;" data-natural-width="913" data-natural-height="900">
+							</div>
+						</div>
+					</section>
+					<section>
+						<div class="sl-block" data-block-type="text" style="height: auto; min-width: 30px; min-height: 30px; width: 960px; left: 0px; top: 118px;">
+							<div class="sl-block-content" style="z-index: 11;">
+								<ul>
+									<li>
+										<code>name</code> is
+										<code>/</code> separated (
+										<code>auxiliary/pro/social_engineering/web_phish</code>)
+									</li>
+									<li>
+										<code>String#camelize</code> will convert
+										<code>/</code> separated to
+										<code>Module#name</code>
+									</li>
+								</ul>
+							</div>
+						</div>
+						<div class="sl-block" data-block-type="image" style="min-width: 30px; min-height: 30px; width: 360px; height: 18.8950276243094px; left: 300px; top: 265px;">
+							<div class="sl-block-content" style="z-index: 12;">
+								<img src="https://s3.amazonaws.com/media-p.slid.es/uploads/lukeimhoff/images/1018152/msf-module-manager-wrapper-module-name.png" data-natural-width="362" data-natural-height="19" style="visibility: visible;">
+							</div>
+						</div>
+						<div class="sl-block" data-block-type="code" style="min-width: 30px; min-height: 30px; width: 570px; height: 53px; left: 195px; top: 324px;">
+							<div class="sl-block-content" style="z-index: 13;">
+                                                                                                                                        <pre><code>&gt;&gt; "auxiliary/pro/social/engineering/web_phish".camelize
+																																			=&gt; "Auxiliary::Pro::SocialEngineering::WebPhish"</code></pre>
+							</div>
+						</div>
+					</section>
+					<section>
+						<div class="sl-block" data-block-type="text" style="width: 880px; left: 40px; top: 70px; height: auto;">
+							<div class="sl-block-content" style="z-index: 11;">
+								<h1>Why start with Object?</h1>
+							</div>
+						</div>
+						<div class="sl-block" data-block-type="text" style="height: auto; min-width: 30px; min-height: 30px; width: 600px; left: 180px; top: 210px;">
+							<div class="sl-block-content" style="z-index: 12;">
+								<ul>
+									<li>Object is root of constant names</li>
+									<li>Derived from ModuleConstMissing#const_missing</li>
+								</ul>
+							</div>
+						</div>
+						<div class="sl-block" data-block-type="image" style="min-width: 30px; min-height: 30px; width: 960px; height: 97.7928692699491px; left: 0px; top: 420px;">
+							<div class="sl-block-content" style="z-index: 13;">
+								<img src="https://s3.amazonaws.com/media-p.slid.es/uploads/lukeimhoff/images/1018177/module-const-missing-const-missing-object.png" style="visibility: visible;" data-natural-width="589" data-natural-height="60">
+							</div>
+						</div>
+					</section>
+					<section>
+						<div class="sl-block" data-block-type="image" style="width: 883.495145631068px; height: 700px; left: 39px; top: 0px;">
+							<div class="sl-block-content">
+								<img src="https://s3.amazonaws.com/media-p.slid.es/uploads/lukeimhoff/images/1018165/msf-module-manager-wrapper-module-until.png" style="visibility: visible;" data-natural-width="910" data-natural-height="721">
+							</div>
+						</div>
+					</section>
+					<section>
+						<div class="sl-block" data-block-type="text" style="width: 800px; left: 74px; top: 33px; height: auto;">
+							<div class="sl-block-content" style="z-index: 11;">
+								<h2>Complications</h2>
+							</div>
+						</div>
+						<div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 101px; height: auto;">
+							<div class="sl-block-content" style="z-index: 12;">
+								<ul>
+									<li>Some directories aren't valid constant names</li>
+								</ul>
+							</div>
+						</div>
+						<div class="sl-block" data-block-type="image" style="min-width: 30px; min-height: 30px; width: 960px; height: 177.181208053691px; left: 0px; top: 140px;">
+							<div class="sl-block-content" style="z-index: 13;">
+								<img src="https://s3.amazonaws.com/media-p.slid.es/uploads/lukeimhoff/images/1018187/msf-module-manager-wrapper-module-hex-encoding.png" style="visibility: visible;" data-natural-width="894" data-natural-height="165">
+							</div>
+						</div>
+						<div class="sl-block" data-block-type="text" style="height: auto; min-width: 30px; min-height: 30px; width: 600px; left: 180px; top: 331px;">
+							<div class="sl-block-content" style="z-index: 14;">
+								<p>Hex-escaping</p>
+							</div>
+						</div>
+						<div class="sl-block" data-block-type="text" style="height: auto; min-width: 30px; min-height: 30px; width: 600px; left: 180px; top: 381px;">
+							<div class="sl-block-content" style="z-index: 15;">
+								<ul>
+									<li>Reversibility preserves uniqueness</li>
+									<li>Prefix with 'X' to prevent decimal digits at start of escaped name</li>
+								</ul>
+							</div>
+						</div>
+					</section>
+					<section>
+						<div class="sl-block" data-block-type="text" style="width: 800px; left: 79px; top: 50px; height: auto;">
+							<div class="sl-block-content">
+								<h2>Reloading</h2>
+							</div>
+						</div>
+						<div class="sl-block" data-block-type="image" style="width: 960px; height: 209.203539823009px; left: 0px; top: 276.898230088496px;">
+							<div class="sl-block-content">
+								<img src="https://s3.amazonaws.com/media-p.slid.es/uploads/lukeimhoff/images/1018195/msf-module-manager-wrapper-module-leaf-removal.png" data-natural-width="904" data-natural-height="197" style="visibility: visible;">
+							</div>
+						</div>
+					</section>
+					<section>
+						<div class="sl-block" data-block-type="text" style="width: 800px; left: 79px; top: 50px; height: auto;">
+							<div class="sl-block-content">
+								<h2>Walking Down the Tree</h2>
+							</div>
+						</div>
+						<div class="sl-block" data-block-type="image" style="width: 960px; height: 211.81935483871px; left: 0px; top: 276.090322580645px;">
+							<div class="sl-block-content">
+								<img src="https://s3.amazonaws.com/media-p.slid.es/uploads/lukeimhoff/images/1018199/msf-module-manager-wrapper-module-walk.png" style="visibility: visible;" data-natural-width="775" data-natural-height="171">
+							</div>
+						</div>
+					</section>
+					<section>
+						<div class="sl-block" data-block-type="text" style="width: 800px; left: 79px; top: 50px; height: auto;">
+							<div class="sl-block-content">
+								<h2>Partial existence</h2>
+							</div>
+						</div>
+						<div class="sl-block" data-block-type="image" style="width: 960px; height: 69.0337078651685px; left: 0px; top: 175.983146067416px;">
+							<div class="sl-block-content">
+								<img src="https://s3.amazonaws.com/media-p.slid.es/uploads/lukeimhoff/images/1018200/msf-module-manager-wrapper-module-child-defined.png" data-natural-width="445" data-natural-height="32" style="visibility: visible;">
+							</div>
+						</div>
+					</section>
+					<section>
+						<div class="sl-block" data-block-type="text" style="width: 960px; left: 0px; top: 50px; height: auto;">
+							<div class="sl-block-content" style="z-index: 11;">
+								<h2>Anonymous?! Module Creation</h2>
+							</div>
+						</div>
+						<div class="sl-block" data-block-type="image" style="width: 700px; height: 87.2727272727273px; left: 141px; top: 140px;">
+							<div class="sl-block-content" style="z-index: 12;">
+								<img src="https://s3.amazonaws.com/media-p.slid.es/uploads/lukeimhoff/images/1018282/msf-module-manager-wrapper-module-module-new.png" data-natural-width="385" data-natural-height="48" style="visibility: visible;">
+							</div>
+						</div>
+						<div class="sl-block" data-block-type="text" style="height: auto; min-width: 30px; min-height: 30px; width: 600px; left: 180px; top: 241px;">
+							<div class="sl-block-content" style="z-index: 13;">
+								<ul>
+									<li>child_name not passed to Module.new</li>
+								</ul>
+							</div>
+						</div>
+						<div class="sl-block" data-block-type="image" style="min-width: 30px; min-height: 30px; width: 960px; height: 54.8223350253807px; left: 0px; top: 295px;">
+							<div class="sl-block-content" style="z-index: 14;">
+								<img src="https://s3.amazonaws.com/media-p.slid.es/uploads/lukeimhoff/images/1018292/msf-module-manager-wrapper-module-const-set.png" style="visibility: visible;" data-natural-width="788" data-natural-height="45">
+							</div>
+						</div>
+						<div class="sl-block" data-block-type="text" style="height: auto; min-width: 30px; min-height: 30px; width: 600px; left: 180px; top: 374px;">
+							<div class="sl-block-content" style="z-index: 15;">
+								<ul>
+									<li>Module#name is set on first const_set</li>
+									<li>Module#name cannot be reset</li>
+								</ul>
+							</div>
+						</div>
+					</section>
+				</section>
 				<section>
-					<h2>Global State</h2>
-					<p>
-						Set <code>data-state="something"</code> on a slide and <code>"something"</code>
-						will be added as a class to the document element when the slide is open. This lets you
-						apply broader style changes, like switching the page background.
-					</p>
+					<div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 190px; height: auto;">
+						<div class="sl-block-content">
+							<h2>Module.new</h2>
+						</div>
+					</div>
+					<div class="sl-block" data-block-type="text" style="width: 880px; left: 0px; top: 264px; height: auto;">
+						<div class="sl-block-content">
+							<table>
+								<tbody>
+								<tr>
+									<td>Msf::ModuleManager#load_module_from_file</td>
+									<td>Named</td>
+								</tr>
+								<tr>
+									<td>Msf::ModuleManager#load_module_from_archive</td>
+									<td>Anonymous</td>
+								</tr>
+								<tr>
+									<td>Msf::ModuleManager#reload_module</td>
+									<td>Anonymous</td>
+								</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
 				</section>
-
-				<section data-state="customevent">
-					<h2>State Events</h2>
-					<p>
-						Additionally custom events can be triggered on a per slide basis by binding to the <code>data-state</code> name.
-					</p>
-					<pre><code class="javascript" data-trim contenteditable style="font-size: 18px;">
-Reveal.addEventListener( 'customevent', function() {
-	console.log( '"customevent" has fired' );
-} );
-					</code></pre>
-				</section>
-
 				<section>
-					<h2>Take a Moment</h2>
-					<p>
-						Press B or . on your keyboard to pause the presentation. This is helpful when you're on stage and want to take distracting slides off the screen.
-					</p>
+					<div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 190px; height: auto;">
+						<div class="sl-block-content">
+							<h1>Refactoring to ease understanding</h1>
+						</div>
+					</div>
+					<div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 384px; height: auto;">
+						<div class="sl-block-content">
+							<h2>Don't just read the code</h2>
+						</div>
+					</div>
 				</section>
-
-				<section>
-					<h2>Much more</h2>
-					<ul>
-						<li>Right-to-left support</li>
-						<li><a href="https://github.com/hakimel/reveal.js#api">Extensive JavaScript API</a></li>
-						<li><a href="https://github.com/hakimel/reveal.js#auto-sliding">Auto-progression</a></li>
-						<li><a href="https://github.com/hakimel/reveal.js#parallax-background">Parallax backgrounds</a></li>
-						<li><a href="https://github.com/hakimel/reveal.js#keyboard-bindings">Custom keyboard bindings</a></li>
-					</ul>
+				<section class="stack">
+					<section>
+						<div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 190px; height: auto;">
+							<div class="sl-block-content">
+								<h2>One Class/Module per file</h2>
+							</div>
+						</div>
+						<div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 264px; height: auto;">
+							<div class="sl-block-content">
+								<ul>
+									<li>Make code easier to find</li>
+									<li>Follows Rails convention for loading</li>
+								</ul>
+							</div>
+						</div>
+					</section>
+					<section>
+						<div class="sl-block" data-block-type="image" style="width: 700px; height: 542.253521126761px; left: 129px; top: 110.5px;">
+							<div class="sl-block-content">
+								<img src="https://s3.amazonaws.com/media-p.slid.es/uploads/lukeimhoff/images/1019191/module-manager-structure.png" data-natural-width="213" data-natural-height="165" style="visibility: visible;">
+							</div>
+						</div>
+					</section>
 				</section>
-
-				<section style="text-align: left;">
-					<h1>THE END</h1>
-					<p>
-						- <a href="http://slides.com">Try the online editor</a> <br>
-						- <a href="https://github.com/hakimel/reveal.js">Source code &amp; documentation</a>
-					</p>
+				<section class="stack">
+					<section>
+						<div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 190px; height: auto;">
+							<div class="sl-block-content">
+								<h2>Group related method into included Modules</h2>
+							</div>
+						</div>
+						<div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 338px; height: auto;">
+							<div class="sl-block-content">
+								<ul>
+									<li>Intermediate step before extracting Classes</li>
+									<li>Moves ensure no method calling changes required</li>
+									<li>Less thorough testing required than extract Class</li>
+								</ul>
+							</div>
+						</div>
+					</section>
+					<section>
+						<div class="sl-block" data-block-type="image" style="width: 567.241379310345px; height: 700px; left: 0px; top: 0px;">
+							<div class="sl-block-content" style="z-index: 11;">
+								<img src="https://s3.amazonaws.com/media-p.slid.es/uploads/lukeimhoff/images/1019216/msf-module-manager-structure.png" data-natural-width="611" data-natural-height="754" style="visibility: visible;">
+							</div>
+						</div>
+						<div class="sl-block" data-block-type="text" style="height: auto; min-width: 30px; min-height: 30px; width: 393px; left: 567px; top: 50px;">
+							<div class="sl-block-content" style="z-index: 12; font-size: 59%;">
+								<ul>
+									<li>cache (
+										<code>#cache_entires</code>,
+										<code>#rebuild_cache</code>,
+										<code>#refresh_cache</code>)
+									</li>
+									<li>creating
+										<code>Msf::Module</code> instances (
+										<code>#create</code>)
+									</li>
+									<li>loading (
+										<code>#demand_load_module</code>,
+										<code>#failed</code>,
+										<code>#has_archive_file_changed?</code>,
+										<code>#has_module_file_changed?</code>,
+										<code>#load_module_from_archive</code>,
+										<code>#load_module_from_file</code>,
+										<code>#load_module_source</code>,
+										<code>#load_modules</code>,
+										<code>#load_modules_from_archive</code>,
+										<code>#load_modules_from_directory</code>,
+										<code>#on_module_load</code>)
+									</li>
+									<li>module sets (
+										<code>#auxiliary</code>,
+										<code>#encoders</code>,
+										<code>#exploits</code>,
+										<code>#init_module_set</code>,
+										<code>#module_names</code>,
+										<code>#module_set</code>,
+										<code>#module_types</code>,
+										<code>#nops</code>,
+										<code>#payloads</code>,
+										<code>#post</code>)
+									</li>
+									<li>module paths (
+										<code>#add_module_path</code>,
+										<code>#remove_module_path</code>)
+									</li>
+									<li>reloading (
+										<code>#reload_module</code>,
+										<code>#reload_modules</code>)
+									</li>
+									<li>unknown (
+										<code>#add_module</code>,
+										<code>#auto_subscribe_module</code>,
+										<code>#register_type_extension</code>)
+									</li>
+								</ul>
+							</div>
+						</div>
+						<div class="sl-block" data-block-type="text" style="height: auto; min-width: 30px; min-height: 30px; width: 393px; left: 567px; top: 0px;">
+							<div class="sl-block-content" style="z-index: 13;">
+								<p>Categories</p>
+							</div>
+						</div>
+					</section>
+					<section>
+						<div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 313px; height: auto;">
+							<div class="sl-block-content">
+								<h2>Unknowns</h2>
+							</div>
+						</div>
+					</section>
+					<section>
+						<div class="sl-block" data-block-type="text" style="width: 960px; left: 0px; top: 50px; height: auto;">
+							<div class="sl-block-content" style="z-index: 11;">
+								<h2>
+                                                                                                                                                                                    <span style="font-size:24px">
+                                                                                                                                                                                        <code>Msf::ModuleManager#add_module</code>
+                                                                                                                                                                                    </span>
+								</h2>
+							</div>
+						</div>
+						<div class="sl-block" data-block-type="image" style="width: 700px; height: 318.718381112985px; left: 130px; top: 140px;">
+							<div class="sl-block-content" style="z-index: 12;">
+								<img src="https://s3.amazonaws.com/media-p.slid.es/uploads/lukeimhoff/images/1019272/msf-module-manager-add-module.png" style="visibility: visible;" data-natural-width="593" data-natural-height="270">
+							</div>
+						</div>
+						<div class="sl-block" data-block-type="text" style="height: auto; min-width: 30px; min-height: 30px; width: 600px; left: 174px; top: 490px;">
+							<div class="sl-block-content" style="z-index: 13;">
+								<ul>
+									<li>Calls #auto_subscribe_module</li>
+									<li>Calls framework.events.on_module_load</li>
+								</ul>
+							</div>
+						</div>
+						<div class="sl-block" data-block-type="text" style="height: auto; min-width: 30px; min-height: 30px; width: 600px; left: 180px; top: 630px;">
+							<div class="sl-block-content" style="z-index: 14;">
+								<p>Probably loading related...</p>
+							</div>
+						</div>
+					</section>
+					<section>
+						<div class="sl-block" data-block-type="image" style="width: 700px; height: 623.889739663094px; left: 130px; top: 0px;">
+							<div class="sl-block-content" style="z-index: 10;">
+								<img src="https://s3.amazonaws.com/media-p.slid.es/uploads/lukeimhoff/images/1019278/msf-module-manager-add-module-find-usages.png" style="visibility: visible;" data-natural-width="653" data-natural-height="582">
+							</div>
+						</div>
+						<div class="sl-block" data-block-type="text" style="height: auto; min-width: 30px; min-height: 30px; width: 600px; left: 160px; top: 622px;">
+							<div class="sl-block-content" style="z-index: 12;">
+								<p>Called from #on_module_load, so definitely loading</p>
+							</div>
+						</div>
+					</section>
+					<section>
+						<div class="sl-block" data-block-type="text" style="width: 800px; left: 79px; top: 50px; height: auto;">
+							<div class="sl-block-content" style="z-index: 10;">
+								<h2>
+                                                                                                                                                                                            <span style="font-size:24px">
+                                                                                                                                                                                                <code>Msf::ModuleManager#register_type_extension</code>
+                                                                                                                                                                                            </span>
+								</h2>
+							</div>
+						</div>
+						<div class="sl-block" data-block-type="image" style="width: 700px; height: 63.8176638176638px; left: 129px; top: 140px;">
+							<div class="sl-block-content" style="z-index: 11;">
+								<img src="https://s3.amazonaws.com/media-p.slid.es/uploads/lukeimhoff/images/1019285/msf-module-manager-register-type-extension.png" data-natural-width="351" data-natural-height="32" style="visibility: visible;">
+							</div>
+						</div>
+						<div class="sl-block" data-block-type="text" style="height: auto; min-width: 30px; min-height: 30px; width: 600px; left: 180px; top: 331px;">
+							<div class="sl-block-content" style="z-index: 13;">
+								<p>Dead Code?</p>
+							</div>
+						</div>
+					</section>
+					<section>
+						<div class="sl-block" data-block-type="text" style="width: 800px; left: 79px; top: 50px; height: auto;">
+							<div class="sl-block-content">
+								<h2>Only occurrence is def</h2>
+								<h2>=</h2>
+								<h2>dead</h2>
+							</div>
+						</div>
+						<div class="sl-block" data-block-type="image" style="width: 700px; height: 193.637621023513px; left: 129px; top: 284.5px;">
+							<div class="sl-block-content">
+								<img src="https://s3.amazonaws.com/media-p.slid.es/uploads/lukeimhoff/images/1019287/find-register-typye-extension.png" style="visibility: visible;" data-natural-width="723" data-natural-height="200">
+							</div>
+						</div>
+					</section>
+					<section>
+						<div class="sl-block" data-block-type="image" style="width: 489.222222222222px; height: 700px; left: 236px; top: 0px;">
+							<div class="sl-block-content">
+								<img src="https://s3.amazonaws.com/media-p.slid.es/uploads/lukeimhoff/images/1019295/msf-module-manager-module-paths.png" style="visibility: visible;" data-natural-width="629" data-natural-height="900">
+							</div>
+						</div>
+					</section>
+					<section>
+						<div class="sl-block" data-block-type="image" style="width: 893.265993265993px; height: 700px; left: 34px; top: 0px;">
+							<div class="sl-block-content">
+								<img src="https://s3.amazonaws.com/media-p.slid.es/uploads/lukeimhoff/images/1019297/msf-module-manager-cache.png" style="visibility: visible;" data-natural-width="758" data-natural-height="594">
+							</div>
+						</div>
+					</section>
+					<section>
+						<div class="sl-block" data-block-type="image" style="width: 248.111111111111px; height: 700px; left: 356.5px; top: 0px;">
+							<div class="sl-block-content">
+								<img src="https://s3.amazonaws.com/media-p.slid.es/uploads/lukeimhoff/images/1019302/msf-module-manager-module-sets.png" style="visibility: visible;" data-natural-width="319" data-natural-height="900">
+							</div>
+						</div>
+					</section>
+					<section>
+						<div class="sl-block" data-block-type="image" style="width: 343.777777777778px; height: 700px; left: 309.5px; top: 0px;">
+							<div class="sl-block-content">
+								<img src="https://s3.amazonaws.com/media-p.slid.es/uploads/lukeimhoff/images/1019306/msf-module-manager-reloading.png" style="visibility: visible;" data-natural-width="442" data-natural-height="900">
+							</div>
+						</div>
+					</section>
+					<section>
+						<div class="sl-block" data-block-type="image" style="width: 133px; height: 700px; left: 415px; top: 0px;">
+							<div class="sl-block-content">
+								<img src="https://s3.amazonaws.com/media-p.slid.es/uploads/lukeimhoff/images/1019309/msf-module-manager-loading.png" style="visibility: visible;" data-natural-width="171" data-natural-height="900">
+							</div>
+						</div>
+					</section>
 				</section>
-
+				<section class="stack">
+					<section>
+						<div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 190px; height: auto;">
+							<div class="sl-block-content">
+								<h2>Breaking up into Classes</h2>
+							</div>
+						</div>
+						<div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 264px; height: auto;">
+							<div class="sl-block-content">
+								<ul>
+									<li>Common methods for base class</li>
+									<li>2 or more set of methods that follow pattern for subclasses</li>
+								</ul>
+							</div>
+						</div>
+					</section>
+					<section>
+						<div class="sl-block" data-block-type="image" style="width: 700px; height: 391.692789968652px; left: 130px; top: 70px;">
+							<div class="sl-block-content" style="z-index: 10;">
+								<img src="https://s3.amazonaws.com/media-p.slid.es/uploads/lukeimhoff/images/1019319/msf-module-manager-loading-structure.png" data-natural-width="638" data-natural-height="357" style="visibility: visible;">
+							</div>
+						</div>
+						<div class="sl-block" data-block-type="text" style="height: auto; min-width: 30px; min-height: 30px; width: 600px; left: 180px; top: 490px;">
+							<div class="sl-block-content" style="z-index: 12;">
+								<ul>
+									<li>Too long (466 lines)</li>
+									<li>Too many methods (13)</li>
+								</ul>
+							</div>
+						</div>
+					</section>
+					<section>
+						<div class="sl-block" data-block-type="image" style="width: 700px; height: 391.692789968652px; left: 130px; top: 0px;">
+							<div class="sl-block-content" style="z-index: 11;">
+								<img src="https://s3.amazonaws.com/media-p.slid.es/uploads/lukeimhoff/images/1019319/msf-module-manager-loading-structure.png" data-natural-width="638" data-natural-height="357" style="visibility: visible;">
+							</div>
+						</div>
+						<div class="sl-block" data-block-type="text" style="height: auto; width: 960px; left: 0px; top: 512px;">
+							<div class="sl-block-content" style="z-index: 12; font-size: 56%;">
+								<ul>
+									<li>file_changed? (
+										<code>#has_archive_file_changed?</code>,
+										<code>#has_module_file_changed?</code>)
+									</li>
+									<li>load_module (
+										<code>#add_module</code>,
+										<code>#auto_subscribe_module</code>,
+										<code>#demand_load_module</code>,
+										<code>#failed</code>,
+										<code>#load_module_from_archive</code>,
+										<code>#load_module_from_file</code>,
+										<code>#load_module_source</code>,
+										<code>#on_module_load</code>)
+									</li>
+									<li>load_modules (
+										<code>#load_modules</code>,
+										<code>#load_modules_from_archive</code>,
+										<code>#load_modules_from_directory</code>)
+									</li>
+								</ul>
+							</div>
+						</div>
+						<div class="sl-block" data-block-type="text" style="height: auto; min-width: 30px; min-height: 30px; width: 600px; left: 180px; top: 441px;">
+							<div class="sl-block-content" style="z-index: 13;">
+								<p>Horizontal integration</p>
+							</div>
+						</div>
+					</section>
+					<section>
+						<div class="sl-block" data-block-type="image" style="width: 700px; height: 391.692789968652px; left: 130px; top: 0px;">
+							<div class="sl-block-content" style="z-index: 11;">
+								<img src="https://s3.amazonaws.com/media-p.slid.es/uploads/lukeimhoff/images/1019319/msf-module-manager-loading-structure.png" data-natural-width="638" data-natural-height="357" style="visibility: visible;">
+							</div>
+						</div>
+						<div class="sl-block" data-block-type="text" style="height: auto; width: 960px; left: 0px; top: 512px;">
+							<div class="sl-block-content" style="z-index: 12; font-size: 56%;">
+								<ul>
+									<li>archive (
+										<code>#has_archive_file_changed?</code>,
+										<code>#load_module_from_archive</code>,
+										<code>#load_modules_from_archive</code>)
+									</li>
+									<li>common (
+										<code>#add_module</code>,
+										<code>#auto_subscribe_module</code>,
+										<code>#demand_load_module</code>,
+										<code>#failed</code>,
+										<code>#load_modules</code>,
+										<code>#on_module_load</code>)
+									</li>
+									<li>directory (
+										<code>#has_module_file_changed?</code>,
+										<code>#load_module_from_file</code>,
+										<code>#load_module_source</code>,
+										<code>#load_modules_from_directory</code>)
+									</li>
+								</ul>
+							</div>
+						</div>
+						<div class="sl-block" data-block-type="text" style="height: auto; width: 600px; left: 180px; top: 441px;">
+							<div class="sl-block-content" style="z-index: 13;">
+								<p>Vertical integration</p>
+							</div>
+						</div>
+					</section>
+					<section>
+						<div class="sl-block" data-block-type="text" style="height: auto; width: 960px; top: 239px; left: 0px;">
+							<div class="sl-block-content" style="font-size: 74%;">
+								<table>
+									<tbody>
+									<tr>
+										<th colspan="2" rowspan="2"></th>
+										<th colspan="2">Category</th>
+									</tr>
+									<tr>
+										<td>archive</td>
+										<td>directory</td>
+									</tr>
+									<tr>
+										<td rowspan="4">Method</td>
+										<td>#file_changed?</td>
+										<td>#has_archive_file_changed?</td>
+										<td>#has_module_file_changed?</td>
+									</tr>
+									<tr>
+										<td>#load_module</td>
+										<td>#load_module_from_archive</td>
+										<td>#load_module_from_file</td>
+									</tr>
+									<tr>
+										<td>#load_source</td>
+										<td>Fastlib.load</td>
+										<td>#load_module_source</td>
+									</tr>
+									<tr>
+										<td>#load_modules</td>
+										<td>#load_modules_from_archive</td>
+										<td>#load_modules_from_directory</td>
+									</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</section>
+				</section>
+				<section class="stack">
+					<section>
+						<div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 190px; height: auto;">
+							<div class="sl-block-content">
+								<h2>Separating extracted&nbsp;class from source class</h2>
+							</div>
+						</div>
+						<div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 338px; height: auto;">
+							<div class="sl-block-content">
+								<ol>
+									<li>Read each method</li>
+									<li>If override of source class, keep in source class</li>
+									<li>If public interface of source class, keep in source class</li>
+									<li>If overridden in extracted class subclasses, move to extracted class</li>
+									<li>If helper for extracted class subclasses, move to extracted class</li>
+								</ol>
+							</div>
+						</div>
+					</section>
+					<section>
+						<div class="sl-block" data-block-type="text" style="width: 800px; left: 79px; top: 50px; height: auto;">
+							<div class="sl-block-content">
+								<h2>Title Text</h2>
+							</div>
+						</div>
+						<div class="sl-block" data-block-type="image" style="width: 700px; height: 318.718381112985px; left: 129px; top: 222px;">
+							<div class="sl-block-content">
+								<img src="https://s3.amazonaws.com/media-p.slid.es/uploads/lukeimhoff/images/1020617/msf-module-manager-add-module.png" style="visibility: visible;" data-natural-width="593" data-natural-height="270">
+							</div>
+						</div>
+					</section>
+				</section>
 			</div>
-
 		</div>
+	</div>
 
 		<script src="lib/js/head.min.js"></script>
 		<script src="js/reveal.js"></script>
