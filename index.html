@@ -18,7 +18,7 @@
     <link rel="stylesheet" href="css/reveal.css">
     <link rel="stylesheet" href="css/theme/black.css" id="theme">
     <style>
-        ul.procon {
+        ul.procon, ul ul.procon {
             list-style: none;
         }
 
@@ -1955,6 +1955,236 @@ end
                 <section>
                     <p>Congratulation! The test case works, but... does the test case cover all ways that all 1851 Metasploit Modules are actually written?</p><p class="fragment">NOPE!</p>
                 </section>
+            </section>
+            <section class="stack">
+                <section>
+                    <h1>When refactoring introduces you to lexical scope</h1>
+                </section>
+                <section>
+                    <img class="stretch" src="images/msf-modules-loader-base-load-module-module-eval-with-lexical-scope.png">
+                    <table>
+                        <tr>
+                            <th>Module Creation</th>
+                            <td><code>#create_module_namespace</code></td>
+                        </tr>
+                        <tr>
+                            <th>Module Evaluation</th>
+                            <td><code>#module_eval_with_lexical_scope</code></td>
+                        </tr>
+                    </table>
+                </section>
+                <section>
+                    <h1>Why doesn't <code>Module#module_eval</code> work?</h1>
+                    <ul>
+                        <li>Refactoring lost <code>Msf</code> from lexical scope</li>
+                        <li>Some Metasploit Modules didn't fully-qualify constants</li>
+                    </ul>
+                    <img class="stretch" src="images/auxiliary-dos-ssl-dtls-changecipherspec.png">
+                    <aside class="notes">
+                        There is no top-level <code>Exploit::Remote::Tcp</code>, but there is a <code>Msf::Exploit::Remote::Tcp</code>,
+                        so how is <code>include Exploit::Remote::Tcp</code> finding
+                        <code>Msf::Exploit::Remote::Tcp</code>?
+                    </aside>
+                </section>
+            </section>
+            <section class="stack">
+                <section>
+                    <h1>Constant look-up in Ruby</h1>
+                    <ol>
+                        <li>Look at the lexically scoped constants</li>
+                        <li>Look at the ancestors of the current <code>Module</code> or <code>Class</code></li>
+                    </ol>
+                </section>
+                <section>
+                    <pre><code>
+module Msf::ModuleManager
+  puts Module.nesting.inspect # [Msf::ModuleManager]
+end
+                    </code></pre>
+                    <pre><code>
+module Msf
+  module ModuleManager
+    puts Module.nesting.inspect # [Msf::ModuleManager, Msf]
+  end
+end
+                    </code></pre>
+                    <aside class="notes">
+                        The tricky part comes in what counts as the lexical scope. It turns out that the lexical scope
+                        is not as simple as listing the namespace modules.
+                    </aside>
+                </section>
+                <section>
+                    <h1>Constant look-up when loading Metasploit Modules</h1>
+                    <figure style="float: left; width: 50%">
+                        <img src="images/msf-module-manager-nested-modules.png">
+                        <figcaption><code>[Msf::ModuleManager, Msf]</code></figcaption>
+                    </figure>
+                    <figure style="float: right; width: 50%">
+                        <img src="images/msf-modules-loader-base-unnested-modules.png">
+                        <figcaption><code>[Msf::Modules::Loader::Base]</code></figcaption>
+                    </figure>
+                    <aside class="notes">
+                        <p>In the original <code>Msf::ModuleManager</code> that called <code>module_eval</code>, the
+                            lexical scope was <code>[Msf::ModuleManager, Msf]</code> because of the nested module
+                            declaration.</p>
+
+                        <p>But, because I didn’t want deeply indented code (or for the namespace modules to be defined
+                            in more than one file), I went with compact, unnested module declarations during the
+                            refactor:</p>
+                    </aside>
+                </section>
+            </section>
+            <section class="stack">
+                <section>
+                    <h1>Fixing constant look-up in <code>Msf::Modules::Loader::Base</code></h1>
+                    <h2><code>#module_eval_with_lexical_scope</code></h2>
+                </section>
+                <section>
+                    <h1>Ways to fix constant look-up</h1>
+                    <ul>
+                        <li>
+                            Restore nested namespaces
+                            <ul class="procon">
+                                <li class="pro">Easy, small change</li>
+                                <li class="con">Adds 3 levels of indentation</li>
+                                <li class="con">Ties loading behavior to implementation detail (loader namespace)</li>
+                                <li class="con">Forces loader to remain in <code>Msf</code> namespace, which is invalid for metasploit-framework (<code>Metasploit::Framework</code> is correct)</li>
+                            </ul>
+                        </li>
+                        <li>
+                            Fake lexical scope
+                            <ul class="procon">
+                                <li class="con">Hard, large change</li>
+                                <li class="con"><code>Module#module_eval</code> with block doesn't capture lexical scope; have to use <code>String</code></li>
+                                <li class="pro">Namespace for loaded module is separated from namespace of loader</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </section>
+                <section>
+                    <figure>
+                        <img src="images/msf-module-manager-wrapper-module-hex-encoding.png">
+                        <figcaption><code>wrapper_module (bugged)</code></figcaption>
+                    </figure>
+                    <figure>
+                        <img src="images/msf-modules-loader-base-namespace-module-names.png">
+                        <figcaption><code>namespace_module_names (fixed)</code></figcaption>
+                    </figure>
+                    <aside class="notes">
+                        After the escaping, <code>NAMESPACE_MODULE_NAMES</code> is prefixed. <code>NAMESPACE_MODULE_NAMES</code>
+                        is <code>['Msf', 'Modules']</code>. The <code>'Msf'</code> as the first element of the namespace
+                        is the key to reintroducing the <code>Msf</code> into the lexical scope.
+                    </aside>
+                </section>
+                <section>
+                    <img class="stretch" src="images/msf-modules-loader-base-create-namespace-module.png">
+                </section>
+                <section>
+                    <h1>Nesting string Modules</h1>
+                    <img class="stretch" src="images/msf-modules-loader-base-create-namespace-module-namespace-module-content.png">
+                    <aside class="notes">
+                        To build up a lexical scope, the code needs to wrap child modules in <code>module Parent ...
+                        end</code> blocks. Instead of have to prepend <code>module Parent</code> to the front of a
+                        string and append <code>end</code> to the end of the a string, I reverse the <code>namespace_module_names</code>
+                        so I can build the inner <code>module</code>s first and then wrap them with the parent module
+                        like Russian nesting dolls.
+                    </aside>
+                </section>
+                <section>
+                    <h1>Better backtraces with <code>module_eval</code></h1>
+                    <img class="stretch" src="images/msf-modules-loader-base-create-namespace-module-module-eval.png">
+                    <aside class="notes">
+                        To make nicer backtrace and allow for easier debugging, the code evaluates <code>namespace_module_content</code>
+                        by giving it’s path as the current file and it’s starting line as the first line of <code>NAMESPACE_MODULE_CONTENT</code>,
+                        but it needs to be adjusted for all the outer namespaces.
+                    </aside>
+                </section>
+                <section>
+                    <iframe class="stretch" src="//www.youtube.com/embed/blKRYmbpDas" frameborder="0" allowfullscreen>
+                    </iframe>
+                    <aside class="notes">
+                        With the path and line correct we get the neat power to put break points in body of the `NAMESPACE_MODULE_CONTENT` string:
+                        <ol>
+                            <li>Open ~/git/rapid7/metasploit-framework master in Rubymine</li>
+                            <li>Place break point at /Users/luke.imhoff/git/limhoff-r7/metasploit-framework/lib/msf/core/modules/loader/base.rb:52</li>
+                            <li>Run `rdebug-ide --host 0.0.0.0 --port 1234 --dispatcher-port 26162 -- $PWD/msfconsole --environment development` in Terminal Pane</li>
+                            <li>Run msfconsole remote debugger run configuration in Rubymine</li>
+                            <li>Click up stack</li>
+                            <li>Step through string to Metasploit Module being loaded</li>
+                        </ol>
+                    </aside>
+                </section>
+            </section>
+            <section>
+                <h1>Accomplished</h1>
+                <ul>
+                    <li><code>prosvc</code> uses <code>ActiveSupport::Dependencies.autoload_paths</code> to laod the same code as Metasploit Pro UI</li>
+                    <li>Loaded Metasploit Modules are assigned namespace names</li>
+                    <li>Loading process is debuggable</li>
+                </ul>
+            </section>
+            <section>
+                <h1>Review</h1>
+                <ul>
+                    <li>There are 3 ways to load entire files in the Ruby standard library:
+                        <ol>
+                            <li><code>#load</code></li>
+                            <li><code>#require</code></li>
+                            <li><code>#autoload</code></li>
+                        </ol>
+                    </li>
+                    <li>There are 2 ways to load entire files in ActiveSupport:
+                        <ol>
+                            <li><code>ActiveSupport::Autoload</code></li>
+                            <li><code>ActiveSupport::Dependencies.autoload_paths</code></li>
+                        </ol>
+                    </li>
+                    <li><code>Module.new</code> creates anonymous modules
+                        <ul>
+                            <li>They get a <code>Module#name</code> when a constant is set to the <code>Module</code></li>
+                            <li>They break <code>ActiveSupport::Dependencies</code>’s <code>const_missing</code></li>
+                        </ul>
+                    </li>
+                    <li>When files are too big they can be broken up
+                        <ul>
+                            <li>Ensure there is one <code>Class</code> or <code>Module</code> per file</li>
+                            <li>Group related methods into <code>include</code>d <code>Module</code>s</li>
+                            <li>Break up hierarchies of methods into <code>Class</code> hierarchies</li>
+                        </ul>
+                    </li>
+                    <li>Parts of files or entire files can be loaded by <code>module_eval</code>
+                        <ul>
+                            <li><code>module_eval</code> captures the lexical scope only with String</li>
+                        </ul>
+                    </li>
+                    <li>Lexical scope influences constant look-up
+                        <ul>
+                            <li>Nesting <code>module</code> declaration has a different lexical scope than <code>::</code> separated names</li>
+                            <li>The lexical scope can be retrieved with <code>Module.new</code></li>
+                        </ul>
+                    </li>
+                    <li>Passing the path and line to <code>module_eval</code> allows debugging in string code.</li>
+                </ul>
+            </section>
+            <section>
+                <h1>Acknowledgements</h1>
+
+                <p>I’d like to thank <a href="https://github.com/jlee-r7">James “Egypt” Lee</a> for <a
+                        href="https://github.com/rapid7/metasploit-framework/pull/843">imparting his knowledge of how to
+                    use the various msfconsole commands to ensure my changes didn’t break anything</a>, fixing my <a
+                        href="https://github.com/rapid7/metasploit-framework/commit/3a572625f5d264fff38bb83c97a76167f45ccf04">lambda
+                    vs proc bug</a>, and <a
+                        href="https://github.com/rapid7/metasploit-framework/commit/10dafcd09f2764b8b3e1239752a5b8654b795af4">Ruby
+                    1.8-incompatibility</a>. I’d like to thank <a href="https://github.com/shuckins-r7">Samuel
+                    “Shuckins” Huckins</a> for <a
+                        href="https://github.com/rapid7/metasploit-framework/pull/843#issuecomment-9045438">testing
+                    these changes against Metasploit Pro</a>. I’d like to thank <a href="https://github.com/hmoore-r7">HD
+                    Moore</a> for <a
+                        href="https://github.com/rapid7/metasploit-framework/commit/2dce6e63472a7594bf53a6793163cd7cb088d484">spotting</a>
+                    when I missed automatic namespace names colliding with real Modules. I’d like to thank <a
+                            href="https:/github.com/trosen-r7">Trevor Rosen</a> for allowing me to spend weeks to fix
+                    this the right way. I’d like to thank <a href="https://github.com/StabbyMcDuck">Regina Imhoff</a>
+                    for reviewing this presentation and accompanying article.</p>
             </section>
         </div>
     </div>
