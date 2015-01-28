@@ -122,6 +122,9 @@
             <section>
                 <h1>Background</h1>
                 <h2>Code-Loading</h2>
+                <aside class="notes">
+                    I'll first cover the pre-existing code-loading in Ruby and Rails in case you're unfamiliar with the term.
+                </aside>
             </section>
             <section class="stack">
                 <section>
@@ -144,7 +147,6 @@
                         <code>require</code>,
                         <code>autoload</code>
                     </h2>
-
                     <ul>
                         <li>Search
                             <code>$LOAD_PATH</code>
@@ -155,12 +157,16 @@
                     <h2>
                         <code>load</code>
                     </h2>
-
                     <ul>
                         <li>File extension must be given</li>
                         <li>Will reload already loaded files</li>
                         <li>Reads file immediately</li>
                     </ul>
+                    <aside class="notes">
+                        Explicit .rb extension needed (or .dll, .so, or .dylib extension for C extensions). Reload is a
+                        good thing if you want to reload code in development, but a bad thing if you’re trying to be
+                        efficient when starting up a slow application with multiple way to load a file.
+                    </aside>
                 </section>
                 <section>
                     <h2>require</h2>
@@ -223,6 +229,9 @@ module Parent
   autoload :Child
 end
                     </code></pre>
+                    <aside class="notes">
+                        Follow Rails naming convention where namespace = directory and class/module = file.
+                    </aside>
                 </section>
                 <section>
                     <h2>
@@ -283,6 +292,9 @@ end
                     </tr>
                     </tbody>
                 </table>
+                <aside class="notes">
+                    autoload_paths isn't thread-safe even when using require because it goes through const_missing
+                </aside>
             </section>
             <section>
                 <h2>Setting</h2>
@@ -324,6 +336,10 @@ end
                         Emulating <code>config.autoload_paths</code>
                     </h2>
                     <img src="images/prosvc-emulating-config-autoload-paths.png">
+                    <aside class="notes">
+                        This was the big problem: having to manually declare requires when using files from ui in
+                        engine that UI handled for free with config.autoload_paths
+                    </aside>
                 </section>
             </section>
             <section>
@@ -436,6 +452,10 @@ end
                         </tr>
                         </tbody>
                     </table>
+                    <aside class="notes">
+                        I know rails is just a metagem for grouping the dependencies, so I need to figure out which gem
+                        contains set_autoload_paths.  I'll use rubygems to get the dependencies for 3.2.2
+                    </aside>
                 </section>
                 <section>
                     <h2>
@@ -491,6 +511,11 @@ ack set_autoload_paths
                         <code>railties/lib/rails/engine.rb:536</code>
                     </h2>
                     <img src="images/railties-lib-rails-engine-line-536.png">
+                    <aside class="notes">
+                        In Rubymine.   I don’t see config.autoload_paths being read except for the
+                        config.autoload_paths.freeze on line 541, so I Cmd+Click _all_autoload_paths to see it’s
+                        definition.
+                    </aside>
                 </section>
                 <section>
                     <h2>
@@ -558,6 +583,11 @@ ack set_autoload_paths
                         <code>set_load_path</code>
                     </h2>
                     <img src="images/set_load_paths.png">
+                    <aside class="notes">
+                        From the naming scheme, I’d assume that _all_load_paths is a superset of _all_autoload_paths
+                        because there’s no auto in its name, but to confirm, I CMD+Click _all_load_paths to see its
+                        definition
+                    </aside>
                 </section>
                 <section>
                     <h2>
@@ -575,6 +605,10 @@ ack set_autoload_paths
                             <code>set_load_paths</code>
                         </li>
                     </ul>
+                    <aside class="notes">
+                        _all_load_paths → _all_autoload_paths, which means that any autoload path must be added as a
+                        normal load path and I should port set_load_paths in addition to set_autoload_paths.
+                    </aside>
                 </section>
                 <section>
                     <h2>prosvc load paths</h2>
@@ -613,9 +647,14 @@ ack set_autoload_paths
                         </tr>
                         </tbody>
                     </table>
+                    <aside class="notes">
+                        Looking at the structure for the Rails code, I can see that the initializers are kept in
+                        Rails::Engine, which can be used across all engines, while the customization of the paths is in
+                        Rails::Engine::Configuration, so I adopt a similar pattern
+                    </aside>
                 </section>
                 <section>
-                  <pre class="stretch"><code>
+                    <pre class="stretch"><code>
 require 'active_support/concern'
 
 # TODO this should be a Rails::Engine if engine is ever moved under ui
@@ -681,7 +720,10 @@ module Metasploit::Configured
     end
   end
 end
-                  </code></pre>
+                    </code></pre>
+                    <aside class="notes">
+                        Metasploit::Configured mirrors Rails::Engine
+                    </aside>
                 </section>
                 <section>
                     <pre><code>
@@ -711,6 +753,10 @@ end
                         </tr>
                         </tbody>
                     </table>
+                    <aside class="notes">
+                        Metasploit::Configured can automatically look up by name the module for a
+                        Class&lt;Metasploit::Configured&gt;'s configuration.
+                    </aside>
                 </section>
                 <section>
                     <pre><code>
@@ -764,6 +810,9 @@ module Metasploit::Configured
   end
 end
                     </code></pre>
+                    <aside class="notes">
+                        I ended up implementing eager_load! initializer because Rails uses eager_load! to load `lib`.
+                    </aside>
                 </section>
                 <section>
                     <pre><code>
@@ -904,6 +953,9 @@ module Metasploit
   end
 end
                     </code></pre>
+                    <aside class="notes">
+                        Metasploit::Configuration mirrors Rails::Engine::Configuration
+                    </aside>
                 </section>
                 <section>
                     <pre><code>
@@ -927,6 +979,10 @@ end
                         <li>Order is explicit</li>
                         <li>Simplified ordering code</li>
                     </ul>
+                    <aside class="notes">
+                        True initializers in Rails require a class and a second class for a collection of initializers
+                        to handle the before, after, and default ordering based on declaration order of DSL calls.
+                    </aside>
                 </section>
             </section>
             <section class="stack">
@@ -1137,6 +1193,9 @@ lib_files.sort.each do |lib_class|
   require lib_class
 end
                     </code></pre>
+                    <aside class="notes">
+                        Let's look at the prosvc requires.  Ah, right, it's really long.
+                    </aside>
                 </section>
             </section>
             <section class="stack">
@@ -1147,6 +1206,10 @@ end
                         <li>ui</li>
                         <li>engine</li>
                     </ol>
+                    <aside class="notes">
+                        I can see there are 3 roots from which files are being loaded.  Each root can act as a fake
+                        Rail::Engine and should get its own Metasploit::Configuration.
+                    </aside>
                 </section>
                 <section>
                     <pre class="stretch"><code>
@@ -1279,6 +1342,12 @@ end
                     </ul>
                     <br/>
                     <img class="stretch" src="images/activesupport-3-2-2-lib-active-support-inflector-methods-line-229.png">
+                    <aside class="notes">
+                        const_defined? itself raised the exception and name is malformed. Name is a String (and not a
+                        symbol or object that responds to #to_s) since it comes from names and names comes from
+                        camel_cased_word, which calls split, which looks like String#split. #&lt;KLASS:HEX&gt; is the
+                        MRI format for no inspect
+                    </aside>
                 </section>
                 <section>
                     <h2>Where next?</h2>
@@ -1288,6 +1357,12 @@ end
                 </section>
                 <section>
                     <img class="stretch" src="images/module-const-missing-const-missing.png">
+                    <aside class="notes">
+                        From line 192, we now know that the camel_case_word argument in
+                        ActiveSupport::Inspect#constantize is the namespace local here in
+                        ModuleConstMissing#const_missing. namespace is an element of nesting. nesting could either be
+                        passed in or derived from klass_name.
+                    </aside>
                 </section>
                 <section>
                     <h2>What called const_missing?</h2>
@@ -1310,6 +1385,10 @@ end
                         <li><code>klass_name.to_s.scan</code></li>
                         <li><code>nesting</code></li>
                     </ol>
+                    <aside class="notes">
+                        The original messed up namespace, which was #&lt;Module:0x0000010c916448&gt; must either be
+                        either the direct Module#name if Module#name contains no :: or be part of Module#name.
+                    </aside>
                 </section>
                 <section>
                     <h2>Origin of wrong name</h2>
@@ -1367,24 +1446,40 @@ end
                 <section>
                     <h2><code>Module.new</code> Usages</h2>
                     <img class="stretch" src="images/module-new-in-metasploit-framework-lib.png">
+                    <aside class="notes">
+                        If I was declaring an anonymous Module to wrap something, wrap would be a good name, so let’s
+                        look at each of those.
+                    </aside>
                 </section>
                 <section>
                     <h2>
                         <code>Msf::ModuleManager#reload_module</code>
                     </h2>
                     <img class="stretch" src="images/module-new-in-msf-module-manager-reload-module.png">
+                    <aside class="notes">
+                        It is unlikely that the only way to load modules is to use a function call reload, so moving on…
+                    </aside>
                 </section>
                 <section>
                     <h2>
                         <code>Msf::ModuleManager#load_module_from_file</code>
                     </h2>
                     <img class="stretch" src="images/module-new-in-msf-module-manager-load-module-from-file.png">
+                    <aside class="notes">
+                        Msf::ModuleManager#load_module_from_file is probably the correct method, but let’s check the
+                        last line.
+                    </aside>
                 </section>
                 <section>
                     <h2>
                         <code>Msf::ModuleManager#load_module_from_archive</code>
                     </h2>
                     <img class="stretch" src="images/module-new-in-msf-module-manager-load-module-from-archive.png">
+                    <aside class="notes">
+                        Looks really similar, except one is using Msf::ModuleManager#load_module_source and the other is
+                        using Fastlib.load. We’ll skip over what Fastlib is for now and stick with the Module.new in
+                        Msf::ModuleManager#load_module_from_path.
+                    </aside>
                 </section>
             </section>
             <section>
@@ -1432,6 +1527,10 @@ end
                 </section>
                 <section>
                     <img class="stretch" src="images/msf-module-manager-wrapper-module-until.png">
+                    <aside class="notes">
+                        Because this now gives us a hierarchy of namespace modules, we need to ensure that each paren
+                        module is created before any child modules
+                    </aside>
                 </section>
                 <section>
                     <h2>Complications</h2>
@@ -1449,6 +1548,11 @@ end
                 <section>
                     <h2>Reloading</h2>
                     <img class="stretch" src="images/msf-module-manager-wrapper-module-leaf-removal.png">
+                    <aside class="notes">
+                        Module reloading is handled by removing the leaf constant if it already exist when the loop gets
+                        to it (module_names.empty? is true). false is passed to const_defined? to speed constant lookup
+                        and to prevent false positives from constants defined in ancestors.
+                    </aside>
                 </section>
                 <section>
                     <h2>Walking Down the Tree</h2>
@@ -1457,6 +1561,11 @@ end
                 <section>
                     <h2>Partial existence</h2>
                     <img class="stretch" src="images/msf-module-manager-wrapper-module-child-defined.png">
+                    <aside class="notes">
+                        The if handles if we created this part of the hierarchy before, which would be the case during
+                        reload, but also for common parts of the Metasploit Module names like
+                        auxiliary/pro/social_engineering, which is used by multiple Metasploit Modules.
+                    </aside>
                 </section>
                 <section>
                     <h2>Anonymous?! Module Creation</h2>
@@ -1507,6 +1616,10 @@ end
                 </section>
                 <section>
                     <img class="stretch" src="images/module-manager-structure.png">
+                    <aside class="notes">
+                        The first step is that lib/msf/core/module_manager.rb actually contained 2 classes,
+                        Msf::ModuleSet and Msf::ModuleManager.  Msf::ModuleSet is moved to lib/msf/core/module_set.rb.
+                    </aside>
                 </section>
             </section>
             <section class="stack">
@@ -1668,6 +1781,10 @@ end
                             </li>
                         </ul>
                     </div>
+                    <aside class="notes">
+                        By aligning the methods in each category, and using the naming patterns from the horizontal
+                        integration we can see there is a shared interface that can be used in a class hierarchy.
+                    </aside>
                 </section>
                 <section>
                     <img class="stretch" src="images/msf-module-manager-loading-structure.png" style="float: left; max-width: 50%">
