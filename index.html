@@ -17,6 +17,19 @@
 
     <link rel="stylesheet" href="css/reveal.css">
     <link rel="stylesheet" href="css/theme/black.css" id="theme">
+    <style>
+        ul.procon {
+            list-style: none;
+        }
+
+        ul.procon li.con:before {
+            content: "- "
+        }
+
+        ul.procon li.pro:before {
+            content: "+ "
+        }
+    </style>
 
     <!-- Code syntax highlighting -->
     <link rel="stylesheet" href="lib/css/zenburn.css">
@@ -1721,10 +1734,10 @@ end
             </section>
             <section class="stack">
                 <section>
-                    <h2>Separating extracted&nbsp;class from source class</h2>
+                    <h2>Separating extracted class from source class</h2>
                     <ol>
                         <li>Read each method</li>
-                        <li>If override of source class, keep in source class</li>
+                        <li>If override of source class's superclass, keep in source class</li>
                         <li>Use Find Usages</li>
                         <li>If public interface of source class, keep in source class</li>
                         <li>If overridden in extracted class subclasses, move to extracted class</li>
@@ -1732,7 +1745,215 @@ end
                     </ol>
                 </section>
                 <section>
-                    <img class="stretch" src="images/msf-module-manager-add-module.png">
+                    <img class="stretch" src="images/msf-module-manager-loading-add-module.png">
+                    <ul>
+                        <li>
+                            Override of <code>Msf::ModuleSet#add_module</code>
+                            <ul>
+                                <li>Keep in <code>Msf::ModuleManager::Loading</code></li>
+                            </ul>
+                        </li>
+                        <li>Keep <code>#auto_subscribe_module</code> too due to usage</li>
+                    </ul>
+                </section>
+                <section>
+                    <img class="stretch" src="images/msf-module-manager-loading-demand-load-module.png">
+                    <ul>
+                        <li>
+                            Calls <code>#load_module_from_file</code> in directory category, so extract to <code>Msf::Modules::Loader::Directory</code>
+                            <ul>
+                                <li><strong>BUG: This method is just missing handling for <code>#load_module_from_archive</code></strong></li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <p>Check Usages to confirm category</p>
+                </section>
+                <section>
+                    <img class="stretch" src="images/msf-module-manager-loading-demand-load-module-find-usage.png">
+                    <ul>
+                        <li>Used by <code>Msf::ModuleSet</code></li>
+                        <li>Part of public interface from <code>framework.modules.demand_load_module</code></li>
+                    </ul>
+                    <p>Keep in <code>Msf::ModuleManager::Loading</code></p>
+                </section>
+                <section>
+                    <img class="stretch" src="images/msf-module-manager-loading-failed.png">
+                    <ul>
+                        <li>Only uses <code>modules_failed</code> attribute.</li>
+                    </ul>
+                    <p>Find usages to check for public interface</p>
+                </section>
+                <section>
+                    <img class="stretch" src="images/msf-module-manager-loading-failed-find-usage.png">
+                    <ul>
+                        <li>Used thoroughout CLI as <code>framework.modules.failed</code>, so part of public interface</li>
+                    </ul>
+                    <p>Keep in <code>Msf::ModuleManager::Loading</code></p>
+                </section>
+                <section>
+                    <img class="stretch" src="images/msf-module-manager-loading-load-modules.png">
+                    <ul>
+                        <li>
+                            Code forks to archive (<code>#load_modules_from_archive</code>) and directory (<code>#load_modules_from_directory</code>)
+                            <ul>
+                                <li>Rewrite to call loaders</li>
+                                <li>Rewrite to eliminate <code>Msf::Modules::Loader::Archive</code> internal <code>.fastlib</code> extension</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </section>
+                <section>
+                    <h1>The Rewrite</h1>
+                    <img class="stretch" src="images/msf-module-manger-loading-load-modules-with-loaders.png">
+                </section>
+                <section>
+                    <img class="stretch" src="images/msf-module-manager-loading-on-module-load.png">
+                    <ul>
+                        <li><code>on_*</code> implies callback</li>
+                        <li>Only deal with manipulating <code>Msf::ModuelManager</code> or <code>Msf::ModuleSet</code> state</li>
+                    </ul>
+                    <p>Keep in <code>Msf::ModuleManager::Loading</code></p>
+                </section>
+                <section>
+                    <h1>Separating extracted class from source class</h1>
+                    <h2>Outcome</h2>
+                    <ul>
+                        <li>All common methods stayed in source class (<code>Msf::ModuleManager</code>)</li>
+                        <li>Determined integration point (<code>#load_modules</code>) with extracted class</li>
+                    </ul>
+                </section>
+            </section>
+            <section class="stack">
+                <section>
+                    <h1>Extracting superclass from subclasses</h1>
+                    <ol>
+                        <li>Write first subclass</li>
+                        <li>Copy first subclass to second subclass</li>
+                        <li>Change code for second subclass differences</li>
+                        <li>Extract anything that's still duplicated between subclasses to superclass</li>
+                    </ol>
+                </section>
+                <section>
+                    <h1>Extracting superclass from already written classes</h1>
+                    <ol>
+                        <li>Examine each method</li>
+                        <li>Look for duplicate lines</li>
+                        <li>Refactor lines if necessary to produce duplication</li>
+                        <li>Extract prefix/suffix duplication to superclass method</li>
+                        <li>Extract duplication around subclass behavior to superclass helper method that takes a block</li>
+                    </ol>
+                    <aside class="notes">
+                        Those steps are great for new code that we think will have a superclass, but what if presented with pre-existing code where a superclass should be extracted?
+                    </aside>
+                </section>
+                <section>
+                    <img class="stretch" src="images/msf-module-manager-loading-load-modules-from-archive-vs-load-modules-from-directory.png">
+                </section>
+                <section>
+                    <img class="stretch" src="images/msf-modules-loader-base-load-modules.png">
+                    <aside class="notes">
+                        <p>I moved everything before the call to <code>#load_module_from_archive</code> or <code>#load_module_from_file</code> out into <code>#each_module_reference_name</code>, which can deal with the path filters.  This allows the common features to be shared.</p>
+                    </aside>
+                </section>
+                <section>
+                    <img class="stretch" src="images/msf-modules-loader-archive-vs-directory-each-module-reference-name.png">
+                    <aside class="notes">
+                        Unfortunately, due to the slight difference between Fastlib’s paths and real filesystem paths,
+                        <code>Msf::Modules::Loader::Archive#each_module_reference_name</code> and
+                        <code>Msf::Modules::Loader::Directory#each_module_reference_name</code> are still very similar,
+                        but to pull out the commonalities would just make the code more confusing to read.  There is
+                        such a thing as too DRY code.
+                    </aside>
+                </section>
+                <section>
+                    <img class="stretch" src="images/msf-modules-loader-base-is-module-path.png">
+                    <br/>
+                    <h1>Filters</h1>
+                    <ol>
+                        <li>Hidden Files</li>
+                        <li>Non-<code>.rb</code> files</li>
+                        <li>Unit test files</li>
+                    </ol>
+                    <aside class="notes">
+                        Even with the duplication in the <code>#each_module_reference_name</code>s, they still share
+                        helpers like this.  This code follows best practices of extracting any literals to constants so
+                        that they are not magic Strings or Regexps.
+                    </aside>
+                </section>
+                <section>
+                    <img class="stretch" src="images/msf-modules-loader-base-module-reference-name-from-path.png">
+                    <ul>
+                        <li>Just strips extension</li>
+                        <li>Worth making a method because...
+                            <ul>
+                                <li>intention revealing name</li>
+                                <li>Eliminate duplicating cryptic gsub</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </section>
+                <section>
+                    <img class="stretch" src="images/msf-modules-loader-base-load-module.png">
+                    <aside class="notes">
+                        Jumping out of #each_module_reference_name into #load_modules, each yielded
+                        <code>[parent_path, type, module_reference_name]</code> is passed to <code>#load_module</code>
+                    </aside>
+                </section>
+                <section>
+                    <h1><code>Msf::Modules::Loader::Base&#8203;#load_module</code></h1>
+                    <ul class="procon">
+                        <li class="con">Still huge (~130 lines)</li>
+                        <li class="pro">
+                            Commonality between archive and directory extracted to methods:
+                            <ul>
+                                <li><code>#module_path</code></li>
+                                <li><code>#read_module_content</code></li>
+                                <li><code>#namespace_module_transaction</code></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </section>
+                <section>
+                    <img class="stretch" src="images/msf-modules-loader-archive-vs-directory-module-path.png">
+                    <ul>
+                        <li>Path to <code>.fastlib</code> is normal, but separated from internal path by <code>::</code></li>
+                    </ul>
+                </section>
+                <section>
+                    <img class="stretch" src="images/msf-modules-loader-archive-vs-directory-read-module-content.png">
+                    <aside class="notes">
+                        This method abstracts over the difference between reading from a .fastlib and a normal file.
+                    </aside>
+                </section>
+                <section>
+                    <img class="stretch" src="images/msf-modules-loader-base-namespace-module-transaction.png" style="float: left; width: 50%">
+                    <div style="float: right; width: 50%">
+                        <ul>
+                            <li>Not in original redesign</li>
+                            <li>Added to handle exceptions and reloading outside of <code>#load_module</code></li>
+                        </ul>
+                        <br/>
+                        <ol>
+                            <li>Preserve pre-existing namespace module</li>
+                            <li>Create new namespace module</li>
+                            <li>Run block</li>
+                            <li>If exception or didn't load, restore preserved namespace module</li>
+                        </ol>
+                    </div>
+                </section>
+                <section>
+                    <img class="stretch" src="images/msf-modules-loader-base-current-module.png">
+                    <aside class="notes">
+                        <code>Enumerable#inject</code> works by taking the <code>yieldreturn</code> from the block
+                        and passing it as <code>parent</code> to the next iteration of the block along with the next
+                        <code>module_name</code> from <code>module_names</code>. If any module along the path is not
+                        defined, then <code>break</code> is called, which causes <code>inject</code> to terminate
+                        early and return <code>nil</code> instead of the current value of the block or the last
+                        <code>parent</code>.
+                    </aside>
+                </section>
+                <section>
+                    <p>Congratulation! The test case works, but... does the test case cover all ways that all 1851 Metasploit Modules are actually written?</p><p class="fragment">NOPE!</p>
                 </section>
             </section>
         </div>
