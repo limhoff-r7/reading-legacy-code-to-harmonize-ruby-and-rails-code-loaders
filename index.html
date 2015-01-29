@@ -263,7 +263,6 @@ end
                         <th>Loader</th>
                         <th>Extension Required</th>
                         <th>Loads Only Once</th>
-                        <th>Thread-safe</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -271,31 +270,26 @@ end
                         <td><code>Kernel.load</code></td>
                         <td>Yes</td>
                         <td>No</td>
-                        <td>No</td>
                     </tr>
                     <tr>
                         <td><code>Kernel.require</code></td>
                         <td>No</td>
-                        <td>Yes</td>
                         <td>Yes</td>
                     </tr>
                     <tr>
                         <td><code>Kernel.autoload</code></td>
                         <td>No</td>
                         <td>Yes</td>
-                        <td>No (1.9) / Yes (2.0+)</td>
                     </tr>
                     <tr>
                         <td><code>ActiveSupport::Autoload#autoload</code></td>
                         <td>No</td>
                         <td>Yes</td>
-                        <td>No (1.9) / Yes (2.0+)</td>
                     </tr>
                     <tr>
                         <td><code>ActiveSupport::Dependencies#autoload_paths</code></td>
                         <td>No</td>
                         <td>Either</td>
-                        <td>No</td>
                     </tr>
                     </tbody>
                 </table>
