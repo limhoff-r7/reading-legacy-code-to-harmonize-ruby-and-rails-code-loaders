@@ -684,13 +684,11 @@ ack set_autoload_paths
                 <section>
                     <h2>Back to the Guide</h2>
                     <img class="stretch" src="images/configuring-rails-railtie-initializer.png">
-                    <br/>
-                    <ul>
-                        <li>Check earlier in file for other initializer</li>
-                        <li>Check for other initializers with
-                            <code>:before =&gt; :set_autoload_paths</code>
-                        </li>
-                    </ul>
+                    <aside class="notes">
+                        From the guide, we know to find the initializer that happen before set_autoload_paths, and
+                        therefore, may be required to emulate set_autoload_paths, we need to look for initializers
+                        before set_autoload_paths or that have <code>:before =&gt; :set_autoload_paths</code>
+                    </aside>
                 </section>
                 <section>
                     <h2>
