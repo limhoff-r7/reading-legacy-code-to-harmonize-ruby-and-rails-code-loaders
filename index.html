@@ -706,20 +706,11 @@ ack set_autoload_paths
                         <code>_all_load_paths</code>
                     </h2>
                     <img class="stretch" src="images/all_load_paths.png">
-                    <br/>
-                    <ul>
-                        <li>
-                            <code>_all_load_paths</code> →
-                            <code>_all_autoload_paths</code>
-                        </li>
-                        <li>
-                            <code>set_autoload_paths</code> →
-                            <code>set_load_paths</code>
-                        </li>
-                    </ul>
                     <aside class="notes">
-                        _all_load_paths → _all_autoload_paths, which means that any autoload path must be added as a
-                        normal load path and I should port set_load_paths in addition to set_autoload_paths.
+                        <code>_all_load_paths</code> depends on <code>_all_autoload_paths</code>, which means that
+                        <code>set_autoload_paths</code> depends on <code>set_load_paths</code> because any autoload path
+                        must be added as a normal load path and I should port <code>set_load_paths</code> in addition to
+                        <code>set_autoload_paths</code>.
                     </aside>
                 </section>
                 <section>
