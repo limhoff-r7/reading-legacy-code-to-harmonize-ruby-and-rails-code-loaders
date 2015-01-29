@@ -345,7 +345,7 @@ end
                 </section>
                 <section>
                     <h2>Too long</h2>
-                    <img src="images/prosvc.png">
+                    <img class="stretch" src="images/prosvc.png">
                     <p>610 lines</p>
                     <aside class="notes">
                         Not only was it 610 lines, but procedural, with no classes or methods that could be tested in
@@ -356,7 +356,7 @@ end
                     <h2>
                         Emulating <code>config.autoload_paths</code>
                     </h2>
-                    <img src="images/prosvc-emulating-config-autoload-paths.png">
+                    <img class="stretch" src="images/prosvc-emulating-config-autoload-paths.png">
                     <aside class="notes">
                         This was the big problem: having to manually declare requires when using files from ui in
                         engine that UI handled for free with config.autoload_paths
@@ -384,7 +384,7 @@ end
                 <h2>Goals</h2>
                 <ul>
                     <li>Eliminate
-                        <code>relative_requires</code> in <code>prosvc</code>
+                        <code>require_relative</code> in <code>prosvc</code>
                     </li>
                     <li>Eliminate explicit
                         <code>require</code>s in
