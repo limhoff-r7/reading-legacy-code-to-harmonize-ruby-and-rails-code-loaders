@@ -409,6 +409,94 @@ end
             </section>
             <section class="stack">
                 <section>
+                    <h1>Tools</h1>
+                    <ul>
+                        <li>Rails Guides</li>
+                        <li>Rubygems.org</li>
+                        <li>Github</li>
+                        <li><code>ack</code></li>
+                        <li>Rubymine</li>
+                    </ul>
+                </section>
+                <section>
+                    <h1>Rails Guides</h1>
+                    <h2>http://guides.rubyonrails.org/</h2>
+                    <ul>
+                        <li>High-level intros</li>
+                        <li>Low-level configuration details</li>
+                    </ul>
+                    <aside class="notes">
+                        The Rails guides are not just a great way to learn Rails, but also a great resource for
+                        understanding all the settings and the internals of Rails without the need to search through
+                        the source.  Due to the metaprogramming in Rails, a lot of time the guides will be far
+                        more understandable than the source itself.
+                    </aside>
+                </section>
+                <section>
+                    <h1>Rubygems.org</h1>
+                    <ul>
+                        <li>Find documentation</li>
+                        <li>Find source</li>
+                        <li>Follow dependencies</li>
+                    </ul>
+                    <aside class="notes">
+                        Rubygems.org is a search provider in chrome, so you can quickly look up a gem by name and then
+                        jump to its documentation or find its source, which isn't always on github).  The dependencies
+                        for each version are listed, which is useful when you're not sure if a gem implements something
+                        or one of its dependencies does.
+                    </aside>
+                </section>
+                <section>
+                    <h1>Github</h1>
+                    <ul>
+                        <li>Search for code</li>
+                        <li>Search for issues</li>
+                        <li>
+                            Software Archaeology
+                            <ul>
+                                <li>Branch and Tag viewer</li>
+                                <li>Following blame and parent commit links</li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <aside class="notes">
+                        Searching for code allows you to find a method or class when you have no idea where it's
+                        declared, used, or documented.  The search also covers issues, so you can see if someone is
+                        having the same issue as you.  You can rewind back to view the code you've locked in your
+                        Gemfile.
+                    </aside>
+                </section>
+                <section>
+                    <h1>ack</h1>
+                    <ul>
+                        <li>Like grep, but smarter</li>
+                        <li>Automatically searches current directory tree</li>
+                        <li>Ignores .git</li>
+                        <li>Automatically prints matching lines with line numbers and highlights</li>
+                    </ul>
+                </section>
+                <section>
+                    <h1>Rubymine</h1>
+                    <h2>Static language tools for dynamic Ruby</h2>
+                    <ul>
+                        <li>See Ruby Modules/Classes and method in Structure View</li>
+                        <li>CMD+Click on method to see its definition</li>
+                        <li>Find usages of method</li>
+                        <li>Assisted refactoring</li>
+                        <li>Graphical debugging</li>
+                    </ul>
+                    <aside class="notes">
+                        Structure View is great when a file isn't well organized so you can quickly get an overview
+                        of the methods and not have to worry about method order.  CMD+Click means you can follow a
+                        call graph statically to understand how methods are related.  Find Usages can find methods by
+                        name and even works with dynamic dispatch like <code>send</code>.  My favorite feature though
+                        is graphical debugging.  I can place break points as I'm debugging without editting the
+                        code.  The debugger can jump between threads and processes.
+                    </aside>
+                </section>
+            </section>
+            <section class="stack">
+                <section>
                     <h1>
                         <code>config.autoload_paths</code> outside Rails
                     </h1>
@@ -523,15 +611,6 @@ cd rails
 git checkout v3.2.2
 ack set_autoload_paths
                     </code></pre>
-                </section>
-                <section>
-                    <h2>ack</h2>
-                    <ul>
-                        <li>Like grep, but smarter</li>
-                        <li>Automatically searches current directory tree</li>
-                        <li>Ignores .git</li>
-                        <li>Automatically prints matching lines with line numbers and highlights</li>
-                    </ul>
                 </section>
                 <section>
                     <h2>
