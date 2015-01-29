@@ -346,14 +346,11 @@ end
                 <section>
                     <h2>Too long</h2>
                     <img src="images/prosvc.png">
-                </section>
-                <section>
-                    <h2>Duplicating Bundler</h2>
-                    <img src="images/prosvc-duplicating-bundler.png">
-                </section>
-                <section>
-                    <h2>Platform-specifics</h2>
-                    <img src="images/prosvc-platform-specifics.png">
+                    <p>610 lines</p>
+                    <aside class="notes">
+                        Not only was it 610 lines, but procedural, with no classes or methods that could be tested in
+                        isolation.
+                    </aside>
                 </section>
                 <section>
                     <h2>
@@ -363,6 +360,23 @@ end
                     <aside class="notes">
                         This was the big problem: having to manually declare requires when using files from ui in
                         engine that UI handled for free with config.autoload_paths
+                    </aside>
+                </section>
+                <section>
+                    <h1>Adding a new class to UI and prosvc</h1>
+                    <ol>
+                        <li>Add normally to UI</li>
+                        <li>Determine which classes have to be loaded before</li>
+                        <li>Find earliest spot in prosvc to do require</li>
+                        <li>Add require</li>
+                        <li>Start prosvc</li>
+                        <li>Debug load errors</li>
+                        <li>Goto 2</li>
+                    </ol>
+                    <aside class="notes">
+                        Having to go through the manually process of restarting prosvc over was slow and prosvc was slowly
+                        becoming unmaintainable, which slowed down the normal rapid interation process for Rails because
+                        the ease of adding classes for Metasploit Pro UI wasn't available to prosvc.
                     </aside>
                 </section>
             </section>
