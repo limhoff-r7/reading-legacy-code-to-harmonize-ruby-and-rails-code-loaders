@@ -1448,6 +1448,11 @@ end
                     <ul>
                         <li>constantize is pure, so follow arguments up stack</li>
                     </ul>
+                    <aside class="notes">
+                        <code>constantize</code> is a pure function, meaning it does not modify self.  A pure function's
+                        behavior is completely controlled by the arguments to the function, so following the argument
+                        will lead to the root cause of the problem.
+                    </aside>
                 </section>
                 <section>
                     <img class="stretch" src="images/module-const-missing-const-missing.png">
