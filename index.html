@@ -122,180 +122,71 @@
                     I am a Senior Software Engineer for Metasploit Applications at Rapid7
                 </aside>
             </section>
-            <section>
-                <h1>Background</h1>
-                <h2>Code-Loading</h2>
-                <aside class="notes">
-                    I'll first cover the pre-existing code-loading in Ruby and Rails in case you're unfamiliar with the term.
-                </aside>
-            </section>
             <section class="stack">
                 <section>
-                    <h2>Code-Loading in Ruby</h2>
-                    <ul>
-                        <li>
-                            <code>load</code>
-                        </li>
-                        <li>
-                            <code>require</code>
-                        </li>
-                        <li>
-                            <code>autoload</code>
-                        </li>
-                    </ul>
-                </section>
-                <section>
-                    <h2>
-                        <code>load</code>,
-                        <code>require</code>,
-                        <code>autoload</code>
-                    </h2>
-                    <ul>
-                        <li>Search
-                            <code>$LOAD_PATH</code>
-                        </li>
-                    </ul>
-                </section>
-                <section>
-                    <h2>
-                        <code>load</code>
-                    </h2>
-                    <ul>
-                        <li>File extension must be given</li>
-                        <li>Will reload already loaded files</li>
-                        <li>Reads file immediately</li>
-                    </ul>
+                    <h1>Background</h1>
+                    <table width="100%">
+                        <caption>
+                            Code-Loading in Ruby and Rails
+                        </caption>
+                        <thead>
+                        <tr>
+                            <th>Loader</th>
+                            <th>Extension Required</th>
+                            <th>Loads Only Once</th>
+                            <th>Synchrony</th>
+                            <th>Loads</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td><code>Kernel.load</code></td>
+                            <td>Yes</td>
+                            <td>No</td>
+                            <td>Synchronous</td>
+                            <td>File</td>
+                        </tr>
+                        <tr>
+                            <td><code>Kernel.require</code></td>
+                            <td>No</td>
+                            <td>Yes</td>
+                            <td>Synchronous</td>
+                            <td>File</td>
+                        </tr>
+                        <tr>
+                            <td><code>Kernel.autoload</code></td>
+                            <td>No</td>
+                            <td>Yes</td>
+                            <td>Asynchronous</td>
+                            <td>File</td>
+                        </tr>
+                        <tr>
+                            <td><code>ActiveSupport::Autoload#autoload</code></td>
+                            <td>No</td>
+                            <td>Yes</td>
+                            <td>Asynchronous</td>
+                            <td>File</td>
+                        </tr>
+                        <tr>
+                            <td><code>ActiveSupport::Dependencies#autoload_paths</code></td>
+                            <td>No</td>
+                            <td>Either</td>
+                            <td>Asynchronous</td>
+                            <td>Directory Tree</td>
+                        </tr>
+                        </tbody>
+                    </table>
                     <aside class="notes">
-                        Explicit .rb extension needed (or .dll, .so, or .dylib extension for C extensions). Reload is a
-                        good thing if you want to reload code in development, but a bad thing if you’re trying to be
-                        efficient when starting up a slow application with multiple way to load a file.
+                        All these methods search <code>$LOAD_PATH</code>. <code>ActiveSupport::Autoload</code> will
+                        automatically infer the file path based on the parent Ruby Module's name and the constant being
+                        loaded.  The infered file path follows the Rails convention of namespace Ruby Modules mapping to
+                        directories and the final Ruby Class or Module being a file.
+                        <code>ActiveSupport::Dependencies.autoload_paths</code> goes a step farther with the Rails
+                        conventions and you just have to give the root of directory trees that follow the Rails naming
+                        convention.  Most developers will be use <code>ActiveSupport::Dependencies.autoload_paths</code>
+                        only indirectly from Rails's <code>config.autoload_paths</code>.
                     </aside>
                 </section>
-                <section>
-                    <h2>require</h2>
-                    <ul>
-                        <li>File extensions are automatic</li>
-                        <li>Will not reload already loaded files</li>
-                        <li>Read file immediately</li>
-                    </ul>
-                </section>
-                <section>
-
-                    <h2>autoload</h2>
-
-                    <ul>
-                        <li>File extensions are automatic</li>
-                        <li>Will not reload already loaded files</li>
-                        <li>Read file when constant accessed</li>
-                    </ul>
-                    <pre><code data-trim>
-# lib/parent.rb
-module Parent
-  autoload :Child, 'parent/child'
-end
-
-# lib/parent/child.rb
-  module Parent::Child
-end
-                    </code></pre>
-                </section>
-            </section>
-            <section class="stack">
-                <section>
-                    <h2>Code-Loading in Rails</h2>
-                    <ul>
-                        <li>
-                            <code>ActiveSupport::Autoload</code>
-                        </li>
-                        <li>
-                            <code>ActiveSupport::Dependencies.autoload_paths</code>
-                        </li>
-                    </ul>
-                </section>
-                <section>
-                    <h2>ActiveSupport::Autoload</h2>
-
-                    <ul>
-                        <li>File
-
-                            <strong>paths</strong>are automatic
-
-                        </li>
-                        <li>Will not reload already loaded files</li>
-                        <li>Read file when constant accessed</li>
-                    </ul>
-                    <pre><code>
-# lib/parent.rb
-module Parent
-  extend ActiveSupport::Autoload
-
-  autoload :Child
-end
-
-# lib/parent/child.rb
-module Parent::Child
-end
-                    </code></pre>
-                    <aside class="notes">
-                        Follow Rails naming convention where namespace = directory and class/module = file.
-                    </aside>
-                </section>
-                <section>
-                    <h2>
-                        <span style="font-size:32px">ActiveSupport::Dependencies.autoload_paths</span>
-                    </h2>
-                    <ul>
-                        <li>Specify root directories</li>
-                        <li>File paths and <strong>constants</strong> are automatic </li>
-                        <li>Powers
-                            <code>config.autoload_paths</code>
-                        </li>
-                    </ul>
-                </section>
-            </section>
-            <section>
-                <h2>
-                    <span style="font-size:32px">Code-Loading in Ruby and Rails</span>
-                </h2>
-                <table width="100%">
-                    <thead>
-                    <tr>
-                        <th>Loader</th>
-                        <th>Extension Required</th>
-                        <th>Loads Only Once</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                        <td><code>Kernel.load</code></td>
-                        <td>Yes</td>
-                        <td>No</td>
-                    </tr>
-                    <tr>
-                        <td><code>Kernel.require</code></td>
-                        <td>No</td>
-                        <td>Yes</td>
-                    </tr>
-                    <tr>
-                        <td><code>Kernel.autoload</code></td>
-                        <td>No</td>
-                        <td>Yes</td>
-                    </tr>
-                    <tr>
-                        <td><code>ActiveSupport::Autoload#autoload</code></td>
-                        <td>No</td>
-                        <td>Yes</td>
-                    </tr>
-                    <tr>
-                        <td><code>ActiveSupport::Dependencies#autoload_paths</code></td>
-                        <td>No</td>
-                        <td>Either</td>
-                    </tr>
-                    </tbody>
-                </table>
-                <aside class="notes">
-                    autoload_paths isn't thread-safe even when using require because it goes through const_missing
-                </aside>
             </section>
             <section>
                 <h2>Setting</h2>
