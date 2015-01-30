@@ -1092,8 +1092,7 @@ end
                     <h2>prosvc requires</h2>
                     <pre class="stretch"><code>
 #
-# Load our own library path and the
-standard Metasploit Framework path
+# Load our own library path and the standard Metasploit Framework path
 #
 $:.unshift(File.expand_path(File.join(File.dirname(__FILE__), 'lib')))
 $:.unshift(File.expand_path(File.join(File.dirname(__FILE__), '..', 'msf3', 'lib')))
@@ -1139,14 +1138,11 @@ require 'liquid'
 require 'acts_as_list'
 require 'action_mailer'
 require 'carrierwave'
-require
-'carrierwave/orm/activerecord'
-require_relative
-'../ui/config/initializers/carrierwave'
+require 'carrierwave/orm/activerecord'
+require_relative '../ui/config/initializers/carrierwave'
 
 #
-# Load specific patches for system
-libraries
+# Load specific patches for system libraries
 #
 if arch == "win32"
   require "win32/registry"
@@ -1155,42 +1151,10 @@ end
 
 if arch == "linux32" or arch ==
   "linux64"
-  # require 'openssl_nonblock'
-
-  # Expand our maximum file limit as high as it will go
-  while true
-    begin; Process.setrlimit(Process::RLIMIT_NOFILE, 32768, 32768); break; rescue ::Exception; end
-    begin; Process.setrlimit(Process::RLIMIT_NOFILE, 16384, 16384); break; rescue ::Exception; end
-    begin; Process.setrlimit(Process::RLIMIT_NOFILE, 8192, 8192); break; rescue ::Exception; end
-    begin; Process.setrlimit(Process::RLIMIT_NOFILE, 4096, 4096); break; rescue ::Exception; end
-    begin; Process.setrlimit(Process::RLIMIT_NOFILE, 1024, 1024); break; rescue ::Exception; end
-    break
-  end
+  # ...
 end
 
-#
-# Configure the process environment to work with java and other tools
-#
-pdel = (arch == "win32") ? ";" : ":"
-bins = %W{ common/bin ruby/bin
-nmap/bin postgresql/bin apache2/bin
-java/bin jruby/bin }
-pathparts = ENV['PATH'].split(pdel)
-bins.each do |bpath|
-  pathparts.unshift
-  File.expand_path(File.join(File.dirname(__FILE__), "..", "..", "..", bpath))
-end
-ENV['PATH'] = pathparts.uniq.join(pdel)
-ENV['JAVA_HOME'] = File.expand_path(File.join(File.dirname(__FILE__), "..", "..", "..", 'java'))
-ENV['TERMINFO'] = File.expand_path(File.join(File.dirname(__FILE__), "..", "..", "..", 'common', 'share', 'terminfo'))
-ENV['DISPLAY'] = nil
-
-# Convert path delimiters for
-Windows
-if arch == "win32"
-  ENV['PATH'] = ENV['PATH'].gsub("/", "\\")
-  ENV['JAVA_HOME'] = ENV['JAVA_HOME'].gsub("/", "\\")
-end
+# ...
 
 #
 # Require our basic libraries and start loading
@@ -1261,19 +1225,14 @@ require 'pro/bgdaemon'
 require "pro/nginx"
 
 #
-# This is required to dynamically
-load all MDM modules
-# since we have namespace classes
-which AR tries to log
+# This is required to dynamically load all MDM modules
+# since we have namespace classes which AR tries to log
 #
 
 require 'logger'
-::FileUtils.mkdir_p(File.expand_path(File.join(File.dirname(__FILE__), "config", "logs")))
-ActiveRecord::Base.logger = Logger.new( File.expand_path(File.join(File.dirname(__FILE__), "config", "logs", "db.log" )))
+# ...
 
-
-# Load individual namespaces and
-models
+# Load individual namespaces and models
 require_relative "#{rails_app_path}/models/user_session.rb"
 require_relative "#{rails_app_path}/models/task_chain.rb"
 require_relative "#{rails_app_path}/models/scheduled_task.rb"
