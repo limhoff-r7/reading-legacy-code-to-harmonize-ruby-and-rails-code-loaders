@@ -401,7 +401,7 @@ end
                 <ul>
                     <li>Add <code>config.autoload_paths</code> outside Rails</li>
                     <li>Learn about a new type of code-loading</li>
-                    <li>Learn about anonymous modules</li>
+                    <li>Learn about anonymous Ruby Modules</li>
                     <li>Read <code>ActiveSupport::Dependencies</code> internals</li>
                     <li>Learn about lexical scope</li>
                     <li>Learn about constant resolution</li>
@@ -1389,7 +1389,7 @@ end
                 <section>
                     <h2>msfpro start-up</h2>
                     <ol>
-                        <li>Loads all modules
+                        <li>Loads all Metasploit Modules
                             <ol>
                                 <li>Loads all autoload_paths</li>
                             </ol>
@@ -1400,7 +1400,7 @@ end
                 <section>
                     <h2>msfpro test</h2>
                     <ol>
-                        <li>Loads all modules
+                        <li>Loads all Metasploit Modules
 
                             <ol>
                                 <li>Loads all autoload_paths</li>
@@ -1434,24 +1434,21 @@ end
                         <li>Use Call stack (backtrace)</li>
                         <li>Look at first line</li>
                     </ul>
-                    <br/>
-                    <img class="stretch" src="images/activesupport-3-2-2-lib-active-support-inflector-methods-line-229.png">
-                    <aside class="notes">
-                        const_defined? itself raised the exception and name is malformed. Name is a String (and not a
-                        symbol or object that responds to #to_s) since it comes from names and names comes from
-                        camel_cased_word, which calls split, which looks like String#split. #&lt;KLASS:HEX&gt; is the
-                        MRI format for no inspect
-                    </aside>
                 </section>
                 <section>
-                    <h2>Where next?</h2>
-                    <ul>
-                        <li>constantize is pure, so follow arguments up stack</li>
-                    </ul>
+                    <img class="stretch" src="images/activesupport-3-2-2-lib-active-support-inflector-methods-line-229.png">
                     <aside class="notes">
-                        <code>constantize</code> is a pure function, meaning it does not modify self.  A pure function's
-                        behavior is completely controlled by the arguments to the function, so following the argument
-                        will lead to the root cause of the problem.
+                        <p>
+                            const_defined? itself raised the exception and name is malformed. Name is a String (and not a
+                            symbol or object that responds to #to_s) since it comes from names and names comes from
+                            camel_cased_word, which calls split, which looks like String#split. #&lt;KLASS:HEX&gt; is the
+                            MRI format for no inspect.
+                        </p>
+                        <p>
+                            <code>constantize</code> is a pure function, meaning it does not modify self.  A pure function's
+                            behavior is completely controlled by the arguments to the function, so following the argument
+                            will lead to the root cause of the problem.
+                        </p>
                     </aside>
                 </section>
                 <section>
@@ -1465,11 +1462,6 @@ end
                 </section>
                 <section>
                     <h2>What called const_missing?</h2>
-                    <ul>
-                        <li>Follow the backtrace</li>
-                    </ul>
-                </section>
-                <section>
                     <img class="stretch" src="images/auxiliary-pro-social-engineering-web-phish-run.png">
                     <aside class="notes">
                         <code>const_missing</code> is implicitly called by Ruby VM when accessing <code>SocialEngineering</code>
@@ -1532,8 +1524,8 @@ end
                                 <li><code><em>N</em></code> is <emphasis>minimum</emphasis> major version of Metasploit Framework</li>
                             </ul>
                         </li>
-                        <li>1821 <code>Metasploit3</code> classes or modules</li>
-                        <li>32 <code>Metasploit4</code> classes or modules</li>
+                        <li>1821 <code>Metasploit3</code> Ruby Classes/Modules</li>
+                        <li>32 <code>Metasploit4</code> Ruby Classes/Modules</li>
                     </ul>
                     <aside class="notes">
                         This convention isn't well used.  Most developers just copy the N from the example they are using.
@@ -1542,13 +1534,13 @@ end
             </section>
             <section class="stack">
                 <section>
-                    <h1>Tracking anonymous Module creation</h1>
+                    <h1>Tracking anonymous Ruby Module creation</h1>
                 </section>
                 <section>
                     <h2><code>Module.new</code> Usages</h2>
                     <img class="stretch" src="images/module-new-in-metasploit-framework-lib.png">
                     <aside class="notes">
-                        If I was declaring an anonymous Module to wrap something, wrap would be a good name, so let’s
+                        If I was declaring an anonymous Ruby Module to wrap something, wrap would be a good name, so let’s
                         look at each of those.
                     </aside>
                 </section>
@@ -1558,7 +1550,7 @@ end
                     </h2>
                     <img class="stretch" src="images/module-new-in-msf-module-manager-reload-module.png">
                     <aside class="notes">
-                        It is unlikely that the only way to load modules is to use a function call reload, so moving on…
+                        It is unlikely that the only way to load Metasploit Modules is to use a function call reload, so moving on…
                     </aside>
                 </section>
                 <section>
@@ -1584,7 +1576,7 @@ end
                 </section>
             </section>
             <section>
-                <h1>De-anonymizing namespace Modules</h1>
+                <h1>De-anonymizing namespace Ruby Modules</h1>
             </section>
             <section class="stack">
                 <section>
@@ -1629,8 +1621,8 @@ end
                 <section>
                     <img class="stretch" src="images/msf-module-manager-wrapper-module-until.png">
                     <aside class="notes">
-                        Because this now gives us a hierarchy of namespace modules, we need to ensure that each paren
-                        module is created before any child modules
+                        Because this now gives us a hierarchy of namespace Ruby Modules, we need to ensure that each
+                        parent Ruby Module is created before any child Ruby Modules
                     </aside>
                 </section>
                 <section>
@@ -1725,7 +1717,7 @@ end
             </section>
             <section class="stack">
                 <section>
-                    <h2>Group related method into included Modules</h2>
+                    <h2>Group related method into included Ruby Modules</h2>
                     <ul>
                         <li>Intermediate step before extracting Classes</li>
                         <li>Moves ensure no method calling changes required</li>
@@ -1823,7 +1815,7 @@ end
                     <img src="images/find-register-type-extension.png">
                 </section>
                 <section>
-                    <h2>Extract Modules</h2>
+                    <h2>Extract Ruby Modules</h2>
                 </section>
                 <section>
                     <img class="stretch" src="images/msf-module-manager-module-paths.png">
@@ -2243,12 +2235,12 @@ end
                     </figure>
                     <aside class="notes">
                         <p>In the original <code>Msf::ModuleManager</code> that called <code>module_eval</code>, the
-                            lexical scope was <code>[Msf::ModuleManager, Msf]</code> because of the nested module
+                            lexical scope was <code>[Msf::ModuleManager, Msf]</code> because of the nested Ruby Module
                             declaration.</p>
 
-                        <p>But, because I didn’t want deeply indented code (or for the namespace modules to be defined
-                            in more than one file), I went with compact, unnested module declarations during the
-                            refactor:</p>
+                        <p>But, because I didn’t want deeply indented code (or for the namespace Ruby Modules to be
+                            defined in more than one file), I went with compact, unnested Ruby Module declarations
+                            during the refactor</p>
                     </aside>
                 </section>
             </section>
@@ -2301,11 +2293,11 @@ end
                     <h1>Nesting string Modules</h1>
                     <img class="stretch" src="images/msf-modules-loader-base-create-namespace-module-namespace-module-content.png">
                     <aside class="notes">
-                        To build up a lexical scope, the code needs to wrap child modules in <code>module Parent ...
-                        end</code> blocks. Instead of have to prepend <code>module Parent</code> to the front of a
-                        string and append <code>end</code> to the end of the a string, I reverse the <code>namespace_module_names</code>
-                        so I can build the inner <code>module</code>s first and then wrap them with the parent module
-                        like Russian nesting dolls.
+                        To build up a lexical scope, the code needs to wrap child Ruby Modules in <code>module Parent
+                        ... end</code> blocks. Instead of have to prepend <code>module Parent</code> to the front of a
+                        string and append <code>end</code> to the end of the a string, I reverse the
+                        <code>namespace_module_names</code>, so I can build the inner <code>module</code>s first and
+                        then wrap them with the parent module like Russian nesting dolls.
                     </aside>
                 </section>
                 <section>
@@ -2357,7 +2349,7 @@ end
                             <li><code>ActiveSupport::Dependencies.autoload_paths</code></li>
                         </ol>
                     </li>
-                    <li><code>Module.new</code> creates anonymous modules
+                    <li><code>Module.new</code> creates anonymous Ruby Modules
                         <ul>
                             <li>They get a <code>Module#name</code> when a constant is set to the <code>Module</code></li>
                             <li>They break <code>ActiveSupport::Dependencies</code>’s <code>const_missing</code></li>
@@ -2399,7 +2391,7 @@ end
                     these changes against Metasploit Pro</a>. I’d like to thank <a href="https://github.com/hmoore-r7">HD
                     Moore</a> for <a
                         href="https://github.com/rapid7/metasploit-framework/commit/2dce6e63472a7594bf53a6793163cd7cb088d484">spotting</a>
-                    when I missed automatic namespace names colliding with real Modules. I’d like to thank <a
+                    when I missed automatic namespace names colliding with real Ruby Modules. I’d like to thank <a
                             href="https:/github.com/trosen-r7">Trevor Rosen</a> for allowing me to spend weeks to fix
                     this the right way. I’d like to thank <a href="https://github.com/StabbyMcDuck">Regina Imhoff</a>
                     for reviewing this presentation and accompanying article.</p>
