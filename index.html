@@ -1090,68 +1090,32 @@ end
                 </section>
                 <section>
                     <h2>prosvc requires</h2>
+                    <ol>
+                        <li>For each line</li>
+                          <ul>
+                              <li>Determine load path</li>
+                          </ul>
+                        <li>For each load path</li>
+                          <ul>
+                              <li>Determine shared root</li>
+                          </ul>
+                    </ol>
+                </section>
+                <section>
                     <pre class="stretch"><code>
-#
-# Load our own library path and the standard Metasploit Framework path
-#
-$:.unshift(File.expand_path(File.join(File.dirname(__FILE__), 'lib')))
-$:.unshift(File.expand_path(File.join(File.dirname(__FILE__), '..', 'msf3', 'lib')))
+$:.unshift(File.expand_path(File.join(File.dirname(__FILE__), 'lib')))               # engine/lib
+$:.unshift(File.expand_path(File.join(File.dirname(__FILE__), '..', 'msf3', 'lib'))) # msf3/lib
 
-if ENV['RAILS_ENV'] == "development"
-  $stdout.puts "[!] Starting Pro service in a development environment"
+# ...
 
-  #
-  # Development mode explicitly enables bundler
-  #
-
-  ENV['BUNDLE_GEMFILE'] = File.expand_path(File.join(File.dirname(__FILE__), '..', 'ui', 'Gemfile'))
-  ENV['BUNDLE_PATH'] = ENV['GEM_HOME']
-
-  require "bundler/setup"
-else
-
-  #
-  # Production mode configures the search path via framework's lib/msf/env/gemcache.rb
-  #
-
-  # Accept binary gems from the cache
-  ENV['MSF_BUNDLE_BINARY_GEMS'] = "1"
-
-  require 'msf/env/gemcache'
-
-  #
-  # Explicitly require the libraries we need
-  #
-
-  require 'eventmachine'
-  require 'nokogiri'
-  require 'msgpack'
-  require 'pg'
-end
-
-# AuthLogic needed by Mdm::User
-require 'authlogic'
-
-# Load gem deps they share
-require 'state_machine'
-require 'liquid'
-require 'acts_as_list'
-require 'action_mailer'
-require 'carrierwave'
-require 'carrierwave/orm/activerecord'
-require_relative '../ui/config/initializers/carrierwave'
+require_relative '../ui/config/initializers/carrierwave'                             # ui/config/initializers
 
 #
 # Load specific patches for system libraries
 #
 if arch == "win32"
-  require "win32/registry"
-  require "patches/win32_registry"
-end
-
-if arch == "linux32" or arch ==
-  "linux64"
-  # ...
+  require "win32/registry"                                                           # engine/lib
+  require "patches/win32_registry"                                                   # engine/lib
 end
 
 # ...
@@ -1159,34 +1123,40 @@ end
 #
 # Require our basic libraries and start loading
 #
-require 'metasploit_data_models'
+require 'metasploit_data_models'                                                    # (gem)
 include MetasploitDataModels
 # Figure out the rails path
 rails_app_path = File.expand_path(File.dirname(__FILE__)) + "/../ui/app"
 # Bring all Mdm::* models into view
-Dir.glob("#{rails_app_path}/models/mdm/*.rb").each do |mdm_model_path|
+Dir.glob("#{rails_app_path}/models/mdm/*.rb").each do |mdm_model_path|              # ui/app/models
   require mdm_model_path
 end
 
 # ---- BEGIN - Load all things SocialEngineering from Rails ----
 module LiquidTemplating; end
-liquid_files = Dir.glob("#{rails_app_path}/../lib/liquid_templating/*.rb")
+liquid_files = Dir.glob("#{rails_app_path}/../lib/liquid_templating/*.rb")          # ui/lib
 liquid_files.sort.each do |liquid_path|
   require liquid_path
 end
 
 # TODO: any better way to have both Rails and prosvc happy w/ talking to License?
-require "#{rails_app_path}/models/license.rb"
-
+require "#{rails_app_path}/models/license.rb"                                       # ui/app/models
+                    </code></pre>
+                    <aside class="notes">
+                        I've annotated the load path in comments to the right of the requires
+                    </aside>
+                </section>
+                <section>
+                    <pre class="stretch"><code>
 # Declare the module manually - Rails does this from directory structure
 module SocialEngineering; end
-require "#{rails_app_path}/uploaders/social_engineering/campaign_file_uploader.rb"
+require "#{rails_app_path}/uploaders/social_engineering/campaign_file_uploader.rb"        # ui/app/uploaders
 
 manually_loaded_models = ["human_target", "email", "web_page_attack_config_interface"]
 skippable_files = ["campaign_task"]
-require "#{rails_app_path}/models/social_engineering/human_target.rb"
+require "#{rails_app_path}/models/social_engineering/human_target.rb"                     # ui/app/models
 # avoid chicken-egg
-require "#{rails_app_path}/models/social_engineering/web_page_attack_config_interface.rb"
+require "#{rails_app_path}/models/social_engineering/web_page_attack_config_interface.rb" # ui/app/models
 # avoid chicken-egg
 
 se_files = Dir.glob("#{rails_app_path}/models/social_engineering/*.rb")
@@ -1194,65 +1164,75 @@ se_files.sort.each do |se_model_path|
   file_name = File.basename(se_model_path).split('.').first
   next if skippable_files.include? file_name
   next if manually_loaded_models.include? file_name
-  require se_model_path
+  require se_model_path                                                                   # ui/app/models
 end
 # ---- END - Load all things SocialEngineering from Rails ----
 
-require 'msf/ui'
-require 'rex'
+require 'msf/ui'                                                                          # msf3/lib
+require 'rex'                                                                             # msf3/lib
 
 # Metasploit Core API
-require 'msf/core/rpc/v10/service'
+require 'msf/core/rpc/v10/service'                                                        # msf3/lib
 
 # Pro API
-require 'pro/filters'
-require 'pro/config'
-require 'pro/rpc/v10/rpc_pro'
+require 'pro/filters'                                                                     # engine/lib
+require 'pro/config'                                                                      # engine/lib
+require 'pro/rpc/v10/rpc_pro'                                                             # engine/lib
 
 # Pro Mixins
-require 'pro/mixins'
+require 'pro/mixins'                                                                      # engine/lib
 
 # Pro Hooks
-require 'pro/hooks'
+require 'pro/hooks'                                                                       # engine/lib
 
 # Pro Client
-require 'pro/client'
+require 'pro/client'                                                                      # engine/lib
 
 # Background Daemon
-require 'pro/bgdaemon'
+require 'pro/bgdaemon'                                                                    # engine/lib
 
 # NginX
-require "pro/nginx"
-
-#
-# This is required to dynamically load all MDM modules
-# since we have namespace classes which AR tries to log
-#
-
-require 'logger'
+require "pro/nginx"                                                                       # engine/lib
+                    </code></pre>
+                </section>
+                <section>
+                    <pre class="stretch"><code>
+require 'logger'                                                      # (standard library)
 # ...
 
 # Load individual namespaces and models
-require_relative "#{rails_app_path}/models/user_session.rb"
-require_relative "#{rails_app_path}/models/task_chain.rb"
-require_relative "#{rails_app_path}/models/scheduled_task.rb"
-require_relative "#{rails_app_path}/models/campaign.rb"
-require_relative "#{rails_app_path}/models/attachment.rb"
-require_relative "#{rails_app_path}/models/email_template.rb"
-require_relative "#{rails_app_path}/models/email_address.rb"
-require_relative "#{rails_app_path}/models/web_template.rb"
+require_relative "#{rails_app_path}/models/user_session.rb"           # ui/app/models
+require_relative "#{rails_app_path}/models/task_chain.rb"             # ui/app/models
+require_relative "#{rails_app_path}/models/scheduled_task.rb"         # ui/app/models
+require_relative "#{rails_app_path}/models/campaign.rb"               # ui/app/models
+require_relative "#{rails_app_path}/models/attachment.rb"             # ui/app/models
+require_relative "#{rails_app_path}/models/email_template.rb"         # ui/app/models
+require_relative "#{rails_app_path}/models/email_address.rb"          # ui/app/models
+require_relative "#{rails_app_path}/models/web_template.rb"           # ui/app/models
 
 
 # Load classes in lib root
 ui_lib_path = File.expand_path(File.dirname(__FILE__)) + "/../ui/lib"
-require "#{ui_lib_path}/sender.rb"
+require "#{ui_lib_path}/sender.rb"                                    # ui/lib
 lib_files = Dir.glob("#{ui_lib_path}/*.rb")
 lib_files.sort.each do |lib_class|
-  require lib_class
+  require lib_class                                                   # ui/lib
 end
                     </code></pre>
+                </section>
+                <section>
+                    <h1>Load Paths</h1>
+                    <ol>
+                        <li><code>engine/lib</code></li>
+                        <li><code>msf3/lib</code></li>
+                        <li><code>ui/config/initializers</code></li>
+                        <li><code>ui/app/models</code></li>
+                        <li><code>ui/lib</code></li>
+                        <li><code>ui/app/uploaders</code></li>
+                    </ol>
                     <aside class="notes">
-                        Let's look at the prosvc requires.  Ah, right, it's really long.
+                        Summarizing, we have these load paths, which can be reduced to the following roots...
+                        (go to next slide)
                     </aside>
                 </section>
             </section>
