@@ -1331,6 +1331,48 @@ end
                     </ul>
                 </section>
                 <section>
+                    <h1>Metasploit Framework</h1>
+                    <ul>
+                        <li>Tool for running or developing exploits to test the security of remote computers</li>
+                        <li>Used to test if your network is vulnerable to malware</li>
+                        <li>Used to test if your internal security practices can defend from attackers</li>
+                    </ul>
+                </section>
+                <section>
+                    <h1>Metasploit Modules</h1>
+                    <h2>Content for Metasploit Framework</h2>
+                    <ul>
+                        <li>Stored in <code>modules</code> directory</li>
+                        <li>Assigned a type (auxiliary, encoders, exploits, nops, payloads, post)</li>
+                        <li>Implemented as either a Ruby Class or a Ruby Module</li>
+                    </ul>
+                    <aside class="notes">
+                        The Metasploit Framework terminology for its content, Modules, is overloaded with the Ruby usage
+                        of Module.  To make it even more confusing, most Metasploit Modules are actually Classes with
+                        only 2-part payloads that need to be mixed together being Ruby Modules.  I will try to always
+                        say Ruby Module for the Modules from the standard library and Metasploit Module for the
+                        content in Metasploit Framework.
+                    </aside>
+                </section>
+                <section>
+                    <h1><code>msfconsole</code></h1>
+                    <ul>
+                    <li>Shell for interacting with Metasploit Framework</li>
+                    <li><code>use</code> command can instantiate a Metasploit Modlie</li>
+                    <li><code>set</code> command configures the instance of the Metasploit Modlie</li>
+                    <li><code>run</code> launch the instance of the Metasploit Modlie</li>
+                        </ul>
+                    <aside class="notes">
+                        Most use, to actually use Metasploit Framework's content will use the <code>msfconsole</code>
+                        Think of <code>msfconsole</code> as the <code>irb</code> or <code>rails console</code> for
+                        Metasploit Framework
+                    </aside>
+                </section>
+                <section>
+                    <h1><code>msfpro</code></h1>
+                    <h2><code>msfconsole</code> with access to Metasploit Pro features</h2>
+                </section>
+                <section>
                     <h2>msfpro start-up</h2>
                     <ol>
                         <li>Loads all modules
