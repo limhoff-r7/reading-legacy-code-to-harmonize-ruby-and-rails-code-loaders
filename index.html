@@ -1355,6 +1355,19 @@ end
                     </aside>
                 </section>
                 <section>
+                    <h1>Metasploit Module Types</h1>
+                    <ol>
+                        <li>The <em>exploit</em> contains code to trip a bug on the target machine</li>
+                        <li>The <em>exploit</em> code is combined with the <em>payload</em> to run after the bug is tripped</li>
+                        <li>The exploit+payload is padded with <em>nop</em>s to make it the right size</li>
+                        <li>The padded exploit+payload+nops is encoded by the <em>encoder</em> so it's a valid format</li>
+                        <li>The <em>auxiliary</em> Metasploit Module presents as a fake website to trick a target user to run a program</li>
+                        <li>The target user runs the program containing the encoded exploit+payload+nops</li>
+                        <li>The payload connects back to Metasploit Framework</li>
+                        <li>The Metasploit Framework user runs <em>post</em> modules to gather information from the target user's machine</li>
+                    </ol>
+                </section>
+                <section>
                     <h1><code>msfconsole</code></h1>
                     <ul>
                     <li>Shell for interacting with Metasploit Framework</li>
