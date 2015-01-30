@@ -18,6 +18,18 @@
     <link rel="stylesheet" href="css/reveal.css">
     <link rel="stylesheet" href="css/theme/black.css" id="theme">
     <style>
+        ul.task, ul ul.task {
+            list-style-type: none;
+        }
+
+        ul.task li.complete:before {
+            content: "✓ "
+        }
+
+        ul.task li.incomplete:before {
+            content: "◻ "
+        }
+
         ul.procon, ul ul.procon {
             list-style: none;
         }
@@ -273,29 +285,16 @@
             </section>
             <section>
                 <h2>Goals</h2>
-                <ul>
-                    <li>Eliminate
-                        <code>require_relative</code> in <code>prosvc</code>
-                    </li>
-                    <li>Eliminate explicit
+                <ul class="task">
+                    <li class="incomplete">Eliminate <code>require_relative</code> in <code>prosvc</code></li>
+                    <li class="incomplete">Eliminate explicit
                         <code>require</code>s in
                         <code>prosvc</code>
                     </li>
-                    <li>Share
+                    <li class="incomplete">Share
                         <code>autoload_paths</code> between UI and
                         <code>prosvc</code>
                     </li>
-                </ul>
-            </section>
-            <section>
-                <h2>Outline</h2>
-                <ul>
-                    <li>Add <code>config.autoload_paths</code> outside Rails</li>
-                    <li>Learn about a new type of code-loading</li>
-                    <li>Learn about anonymous Ruby Modules</li>
-                    <li>Read <code>ActiveSupport::Dependencies</code> internals</li>
-                    <li>Learn about lexical scope</li>
-                    <li>Learn about constant resolution</li>
                 </ul>
             </section>
             <section class="stack">
@@ -1209,6 +1208,23 @@ end
                     </code></pre>
                 </section>
             </section>
+            <section>
+                <h2>Goals</h2>
+                <ul class="task">
+                    <li class="complete">Eliminate <code>require_relative</code> in <code>prosvc</code></li>
+                    <li class="complete">Eliminate explicit
+                        <code>require</code>s in
+                        <code>prosvc</code>
+                    </li>
+                    <li class="complete">Share
+                        <code>autoload_paths</code> between UI and
+                        <code>prosvc</code>
+                    </li>
+                </ul>
+                <aside class="notes">
+                    All the goals are met, now to just run through the integration tests
+                </aside>
+            </section>
             <section class="stack">
                 <section>
                     <h1>Testing with Metasploit Module Loader</h1>
@@ -1312,12 +1328,26 @@ end
                     <img class="stretch" src="images/wrong-constant-name.png">
                 </section>
                 <section>
-                    <h2>How did I break the code?</h2>
-                    <ul>
-                        <li>NameError</li>
-                        <li>Wrong constant name</li>
-                        <li>Gibberish constant name (#&lt;Module:0x10x916448&gt;)</li>
+                    <h2>Goals</h2>
+                    <ul class="task">
+                        <li class="complete">Eliminate <code>require_relative</code> in <code>prosvc</code></li>
+                        <li class="complete">Eliminate explicit
+                            <code>require</code>s in
+                            <code>prosvc</code>
+                        </li>
+                        <li class="incomplete">
+                            Share <code>autoload_paths</code> between UI and <code>prosvc</code>
+                            <ul class="task">
+                                <li class="incomplete">
+                                    Fix NameError
+                                </li>
+                            </ul>
+                        </li>
                     </ul>
+                    <aside class="notes">
+                        It looks like saying the goals were complete was a little premature.  Let's add a new goal:
+                        fix NameError.
+                    </aside>
                 </section>
                 <section>
                     <h2>How do I fix the code?</h2>
@@ -1425,7 +1455,35 @@ end
             </section>
             <section class="stack">
                 <section>
-                    <h1>Tracking anonymous Ruby Module creation</h1>
+                    <h2>Goals</h2>
+                    <ul class="task">
+                        <li class="complete">Eliminate <code>require_relative</code> in <code>prosvc</code></li>
+                        <li class="complete">Eliminate explicit
+                            <code>require</code>s in
+                            <code>prosvc</code>
+                        </li>
+                        <li class="incomplete">
+                            Share <code>autoload_paths</code> between UI and <code>prosvc</code>
+                            <ul class="fragment fade-out task">
+                                <li class="incomplete">
+                                    Fix NameError
+                                </li>
+                            </ul>
+                            <ul class="fragment task">
+                                <li class="incomplete">
+                                    Find <code>Module.new</code> usages
+                                </li>
+                                <li class="incomplete">
+                                    De-anonymize <code>Module.new</code> usages
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <aside class="notes">
+                        We can replace fixing the <code>NameError</code> with the actual work of find
+                        <code>Module.new</code> and not making it anonymous anymore, which was the root cause of the
+                        <code>NameError</code>
+                    </aside>
                 </section>
                 <section>
                     <h2><code>Module.new</code> Usages</h2>
@@ -1455,7 +1513,35 @@ end
                 </section>
             </section>
             <section>
-                <h1>De-anonymizing namespace Ruby Modules</h1>
+                <h2>Goals</h2>
+                <ul class="task">
+                    <li class="complete">Eliminate <code>require_relative</code> in <code>prosvc</code></li>
+                    <li class="complete">Eliminate explicit
+                        <code>require</code>s in
+                        <code>prosvc</code>
+                    </li>
+                    <li class="incomplete">
+                        Share <code>autoload_paths</code> between UI and <code>prosvc</code>
+                        <ul class="task">
+                            <li class="complete">
+                                Find <code>Module.new</code> usages
+                            </li>
+                            <li class="fragment fade-out incomplete">
+                                De-anonymize <code>Module.new</code> usages
+                            </li>
+                            <li class="fragment incomplete">
+                                Replace <code>Module.new</code> in <code>Msf::ModuleManager#load_module_from_file</code>
+                            </li>
+                            <li class="fragment incomplete">
+                                Replace <code>Module.new</code> in <code>Msf::ModuleManager#reload_module</code>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+                <aside class="notes">
+                    We found the usages of Module.new, so we can replace "De-anonymize Module.new usages" we the specific
+                    locations of the Module.new usages.
+                </aside>
             </section>
             <section class="stack">
                 <section>
@@ -1556,23 +1642,35 @@ end
                 </section>
             </section>
             <section>
-                <table>
-                    <caption><code>Module.new</code> anonymity</caption>
-                    <tbody>
-                    <tr>
-                        <td>Msf::ModuleManager#load_module_from_file</td>
-                        <td>Named</td>
-                    </tr>
-                    <tr>
-                        <td>Msf::ModuleManager#load_module_from_archive</td>
-                        <td>Anonymous</td>
-                    </tr>
-                    <tr>
-                        <td>Msf::ModuleManager#reload_module</td>
-                        <td>Anonymous</td>
-                    </tr>
-                    </tbody>
-                </table>
+                <h2>Goals</h2>
+                <ul class="task">
+                    <li class="complete">Eliminate <code>require_relative</code> in <code>prosvc</code></li>
+                    <li class="complete">Eliminate explicit
+                        <code>require</code>s in
+                        <code>prosvc</code>
+                    </li>
+                    <li class="incomplete">
+                        Share <code>autoload_paths</code> between UI and <code>prosvc</code>
+                        <ul class="task">
+                            <li class="complete">
+                                Find <code>Module.new</code> usages
+                            </li>
+                            <li class="complete">
+                                Replace <code>Module.new</code> in <code>Msf::ModuleManager#load_module_from_file</code>
+                            </li>
+                            <li class="incomplete">
+                                Replace <code>Module.new</code> in <code>Msf::ModuleManager#reload_module</code>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+                <aside class="notes">
+                    All that's left to do is Replace Module.new in <code>Msf::ModuleManager#reload_module</code>, but
+                    while working on <code>Msf::ModuleManager#load_module_from_file</code> and I started to understand
+                    the code better, it annoyed me how the code was organized because it was making my work hard to
+                    do, which means it probably will be hard for other developers to work on this code. Therefore,
+                    I should start refactoring to make this easier.
+                </aside>
             </section>
             <section>
                 <h1>Refactoring to ease understanding</h1>
