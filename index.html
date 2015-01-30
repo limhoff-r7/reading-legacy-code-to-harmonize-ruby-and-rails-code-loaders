@@ -1672,9 +1672,56 @@ end
                     I should start refactoring to make this easier.
                 </aside>
             </section>
-            <section>
-                <h1>Refactoring to ease understanding</h1>
-                <h2>Don't just read the code</h2>
+            <section class="stack">
+                <section>
+                    <h1>Refactoring to ease understanding</h1>
+                    <ol>
+                        <li>Read code</li>
+                        <li>Understand code</li>
+                        <li>Refactor code</li>
+                    </ol>
+                    <aside class="notes">
+                        As you read code and understand how different parts interact you may start to notice places where the
+                        code could be more understandable when reading or easier to maintain.  You may have been the first
+                        developer to read a piece of code in a given manner or with a given breadth or depth, so you
+                        may be able to spot patterns and redundancies in the code others have not seen before as the code
+                        was assembled piecemeal and grew over time.
+                    </aside>
+                </section>
+                <section>
+                    <div style="display: inline-block; max-width: 45%">
+                        <h2>Refactoring</h2>
+                        <ul>
+                            <li>Small changes</li>
+                            <li>Improve clarity of code</li>
+                            <li>Ease changing code later</li>
+                            <li>Does not affect external API</li>
+                        </ul>
+                    </div>
+                    <div style="display: inline-block; max-width: 45%">
+                        <h2>Features and Bug fixes</h2>
+                        <ul>
+                            <li>Variable size changes</li>
+                            <li>Improve functioning of code</li>
+                            <li>Complicate changing code later</li>
+                            <li>Externally visible</li>
+                        </ul>
+                    </div>
+                    <h1>Separate refactoring from features or bug fixes</h1>
+                    <ul>
+                        <li>Easier to confirm refactoring does not change external behavior</li>
+                        <li>Easier to see change was minimum to fix bug</li>
+                        <li>Easier to see minimum viable change was done to implement feature</li>
+                        <li>Allow refactoring to be reviewed in a separate PR and benefit other developers sooner</li>
+                    </ul>
+                    <aside class="notes">
+                        If you find yourself wanting to refactor or soon code in the same PR as you implement a bug fix
+                        or a new feature: stop.  Figure out how to do the refactoring against the parent branch first in
+                        a separate PR.  Refactoring's goal are at odds with those for implementing bug fixes or feature.
+                        If you mix them together you're more likely to end up with large PRs where the reviewer can't
+                        confidently follow your changes and will have to skim and is more likely to miss new bugs.
+                    </aside>
+                </section>
             </section>
             <section class="stack">
                 <section>
