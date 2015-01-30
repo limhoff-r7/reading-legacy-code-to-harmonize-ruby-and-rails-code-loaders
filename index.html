@@ -1559,19 +1559,7 @@ end
                     </h2>
                     <img class="stretch" src="images/module-new-in-msf-module-manager-load-module-from-file.png">
                     <aside class="notes">
-                        Msf::ModuleManager#load_module_from_file is probably the correct method, but let’s check the
-                        last line.
-                    </aside>
-                </section>
-                <section>
-                    <h2>
-                        <code>Msf::ModuleManager#load_module_from_archive</code>
-                    </h2>
-                    <img class="stretch" src="images/module-new-in-msf-module-manager-load-module-from-archive.png">
-                    <aside class="notes">
-                        Looks really similar, except one is using Msf::ModuleManager#load_module_source and the other is
-                        using Fastlib.load. We’ll skip over what Fastlib is for now and stick with the Module.new in
-                        Msf::ModuleManager#load_module_from_path.
+                        Msf::ModuleManager#load_module_from_file is probably the correct method.
                     </aside>
                 </section>
             </section>
