@@ -1801,11 +1801,12 @@ end
                     </div>
                 </section>
                 <section>
-                    <h2>Unknowns</h2>
+                    <h2>Categorizing unknown methods</h2>
                     <ul>
-                        <li><code>#add_module</code></li>
-                        <li><code>#auto_subscribe_module</code></li>
-                        <li><code>#register_type_extension</code></li>
+                        <li>Does it call methods in a known category?</li>
+                        <li>Does a method in a known category call the unknown method?</li>
+                        <li>Is the method name mentioned as a symbol to send?</li>
+                        <li>Is the method name mentioned in comments for metaprogramming?</li>
                     </ul>
                 </section>
                 <section>
@@ -1837,21 +1838,20 @@ end
                 </section>
                 <section>
                     <h2>Extract Ruby Modules</h2>
-                </section>
-                <section>
-                    <img class="stretch" src="images/msf-module-manager-module-paths.png">
-                </section>
-                <section>
-                    <img class="stretch" src="images/msf-module-manager-cache.png">
-                </section>
-                <section>
-                    <img class="stretch" src="images/msf-module-manager-module-sets.png">
-                </section>
-                <section>
-                    <img class="stretch" src="images/msf-module-manager-reloading.png">
-                </section>
-                <section>
-                    <img class="stretch" src="images/msf-module-manager-loading.png">
+                    <ol>
+                        <li>Move each method to the extracted Ruby Module</li>
+                        <li>Load extracted Ruby Module after base Ruby Class/Module is defined</li>
+                        <li><code>include</code> Ruby Module in base Ruby Class/Module</li>
+                    </ol>
+                    <pre class="stretch"><code>
+module Msf
+  class ModuleManager
+    require 'msf/core/module_manager/cache'
+
+    include Msf::ModuleManager::Cachet
+  end
+end
+                    </code></pre>
                 </section>
             </section>
             <section class="stack">
