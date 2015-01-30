@@ -1859,108 +1859,91 @@ end
                     <h2>Breaking up into Classes</h2>
                     <ul>
                         <li>Common methods for base class</li>
-                        <li>2 or more set of methods that follow pattern for subclasses</li>
+                        <li>Specialized of methods for subclasses</li>
                     </ul>
                 </section>
                 <section>
                     <img class="stretch" src="images/msf-module-manager-loading-structure.png">
                     <ul>
-                        <li>Too long (466 lines)</li>
-                        <li>Too many methods (13)</li>
+                        <li>Too long (296 lines)</li>
+                        <li>Too many methods (10)</li>
                     </ul>
-                </section>
-                <section>
-                    <img class="stretch" src="images/msf-module-manager-loading-structure.png" style="float: left; max-width: 50%">
-                    <div style="float: right; max-width: 50%">
-                        <h1>Horizontal integration</h1>
-                        <ul>
-                            <li>file_changed? (
-                                <code>#has_archive_file_changed?</code>,
-                                <code>#has_module_file_changed?</code>)
-                            </li>
-                            <li>load_module (
-                                <code>#add_module</code>,
-                                <code>#auto_subscribe_module</code>,
-                                <code>#demand_load_module</code>,
-                                <code>#failed</code>,
-                                <code>#load_module_from_archive</code>,
-                                <code>#load_module_from_file</code>,
-                                <code>#load_module_source</code>,
-                                <code>#on_module_load</code>)
-                            </li>
-                            <li>load_modules (
-                                <code>#load_modules</code>,
-                                <code>#load_modules_from_archive</code>,
-                                <code>#load_modules_from_directory</code>)
-                            </li>
-                        </ul>
-                    </div>
                     <aside class="notes">
-                        By aligning the methods in each category, and using the naming patterns from the horizontal
-                        integration we can see there is a shared interface that can be used in a class hierarchy.
+                        You don't want files that are too long because if a method is off the screen the developer is
+                        likely to forget its there and not take it into account when modifying the code.  Having more
+                        methods increases the the amount of testing required because the interaction between each
+                        subset of methods has to be checked potentially.  In general, you want your files to fit on
+                        screen and to limit to less than 7 methods due to studies where most peoples working memory
+                        can only hold 7 chunks at a time.
                     </aside>
                 </section>
                 <section>
-                    <img class="stretch" src="images/msf-module-manager-loading-structure.png" style="float: left; max-width: 50%">
-                    <div style="float: right; max-width: 50%">
-                        <h1>Vertical integration</h1>
-                        <ul>
-                            <li>archive (
-                                <code>#has_archive_file_changed?</code>,
-                                <code>#load_module_from_archive</code>,
-                                <code>#load_modules_from_archive</code>)
-                            </li>
-                            <li>common (
-                                <code>#add_module</code>,
-                                <code>#auto_subscribe_module</code>,
-                                <code>#demand_load_module</code>,
-                                <code>#failed</code>,
-                                <code>#load_modules</code>,
-                                <code>#on_module_load</code>)
-                            </li>
-                            <li>directory (
-                                <code>#has_module_file_changed?</code>,
-                                <code>#load_module_from_file</code>,
-                                <code>#load_module_source</code>,
-                                <code>#load_modules_from_directory</code>)
-                            </li>
-                        </ul>
-                    </div>
-                </section>
-                <section>
+                    <img class="stretch" src="images/msf-module-manager-loading-structure.png">
                     <table>
+                        <thead>
+                        <tr>
+                            <th></th>
+                            <th>Internal</th>
+                            <th>External</th>
+                        </tr>
+                        </thead>
                         <tbody>
                         <tr>
-                            <th colspan="2" rowspan="2"></th>
-                            <th colspan="2">Category</th>
+                            <td rowspan="8">Single</td>
+                            <td>add_module</td>
+                            <td></td>
                         </tr>
                         <tr>
-                            <th>archive</th>
-                            <th>directory</th>
+                            <td>autosubscribe_module</td>
+                            <td></td>
                         </tr>
                         <tr>
-                            <th rowspan="4">Method</th>
-                            <th><code>#file_changed?</code></th>
-                            <td><code>#has_archive_file_changed?</code></td>
-                            <td><code>#has_module_file_changed?</code></td>
+                            <td>demand_load_module</td>
+                            <td></td>
                         </tr>
                         <tr>
-                            <th><code>#load_module</code></th>
-                            <td><code>#load_module_from_archive</code></td>
-                            <td><code>#load_module_from_file</code></td>
+                            <td>failed</td>
+                            <td></td>
                         </tr>
                         <tr>
-                            <th><code>#load_source</code></th>
-                            <td><code>Fastlib.load</code></td>
-                            <td><code>#load_module_source</code></td>
+                            <td></td>
+                            <td>has_module_file_changed?</td>
                         </tr>
                         <tr>
-                            <th><code>#load_modules</code></th>
-                            <td><code>#load_modules_from_archive</code></td>
-                            <td><code>#load_modules_from_directory</code></td>
+                            <td></td>
+                            <td>load_module_from_file</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>load_module_source</td>
+                        </tr>
+                        <tr>
+                            <td>on_module_load</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>Multiple</td>
+                            <td>load_modules</td>
+                            <td>load_modules_from_directory</td>
                         </tr>
                         </tbody>
                     </table>
+                    <aside class="notes">
+                        <p>
+                            Grouping of scope lets us separating collection and enumerable behaviors from single element
+                            behaviors.  The collection behavior is important when loading all Metasploit Modules on startup
+                            while the single element behavior will be used by for each module in the collection and when
+                            reloading
+                            individual Metasploit Modules.
+                        </p>
+                        <p>
+                            If instead of group by size of what's being loaded, we can group by whether the method is
+                            dealing with the internal representation of a Metasploit Module or the external presentation
+                            of Metasploit Module.  Separating the external representation can free the code the internal
+                            methods from knowing how modules are laid out on disk, which is good in case it has to
+                            differ on embedded devices.
+                        </p>
+                    </aside>
                 </section>
             </section>
             <section class="stack">
@@ -1992,9 +1975,6 @@ end
                     <ul>
                         <li>
                             Calls <code>#load_module_from_file</code> in directory category, so extract to <code>Msf::Modules::Loader::Directory</code>
-                            <ul>
-                                <li><strong>BUG: This method is just missing handling for <code>#load_module_from_archive</code></strong></li>
-                            </ul>
                         </li>
                     </ul>
                     <p>Check Usages to confirm category</p>
@@ -2025,10 +2005,9 @@ end
                     <img class="stretch" src="images/msf-module-manager-loading-load-modules.png">
                     <ul>
                         <li>
-                            Code forks to archive (<code>#load_modules_from_archive</code>) and directory (<code>#load_modules_from_directory</code>)
+                            Code translates internal representation API to external presentation handler.
                             <ul>
                                 <li>Rewrite to call loaders</li>
-                                <li>Rewrite to eliminate <code>Msf::Modules::Loader::Archive</code> internal <code>.fastlib</code> extension</li>
                             </ul>
                         </li>
                     </ul>
@@ -2056,44 +2035,76 @@ end
             </section>
             <section class="stack">
                 <section>
-                    <h1>Extracting superclass from subclasses</h1>
-                    <ol>
-                        <li>Write first subclass</li>
-                        <li>Copy first subclass to second subclass</li>
-                        <li>Change code for second subclass differences</li>
-                        <li>Extract anything that's still duplicated between subclasses to superclass</li>
-                    </ol>
-                </section>
-                <section>
-                    <h1>Extracting superclass from already written classes</h1>
+                    <h1>Extracting external dependencies from internal representation</h1>
                     <ol>
                         <li>Examine each method</li>
-                        <li>Look for duplicate lines</li>
-                        <li>Refactor lines if necessary to produce duplication</li>
-                        <li>Extract prefix/suffix duplication to superclass method</li>
+                        <li>Look for lines that leak the external representation</li>
+                        <li>Extract prefix/suffix leaks to abstract methods that must be overridden</li>
                         <li>Extract duplication around subclass behavior to superclass helper method that takes a block</li>
                     </ol>
-                    <aside class="notes">
-                        Those steps are great for new code that we think will have a superclass, but what if presented with pre-existing code where a superclass should be extracted?
-                    </aside>
-                </section>
-                <section>
-                    <img class="stretch" src="images/msf-module-manager-loading-load-modules-from-archive-vs-load-modules-from-directory.png">
                 </section>
                 <section>
                     <img class="stretch" src="images/msf-modules-loader-base-load-modules.png">
                     <aside class="notes">
-                        <p>I moved everything before the call to <code>#load_module_from_archive</code> or <code>#load_module_from_file</code> out into <code>#each_module_reference_name</code>, which can deal with the path filters.  This allows the common features to be shared.</p>
+                        I moved everything before the call to <code>#load_module_from_file</code> out into
+                        <code>#each_module_reference_name</code>, which can deal with the path filters, which are an
+                        external concern to be handled by.  This allows <code>load_module</code> to only handle the
+                        internal representation.  With the yield signature for <code>each_module_reference_name</code>
+                        the module could be coming from a filesystem, a zip, or a database.
                     </aside>
                 </section>
                 <section>
-                    <img class="stretch" src="images/msf-modules-loader-archive-vs-directory-each-module-reference-name.png">
+                    <pre class="stretch"><code>
+class Msf::Modules::Loader::Directory < Msf::Modules::Loader::Base
+  protected
+
+  # Yields the module_reference_name for each module file found under the directory path.
+  #
+  # @param [String] path The path to the directory.
+  # @yield (see Msf::Modules::Loader::Base#each_module_reference_name)
+  # @yieldparam [String] path The path to the directory.
+  # @yieldparam [String] type The type correlated with the directory under path.
+  # @yieldparam module_reference_name (see Msf::Modules::Loader::Base#each_module_reference_name)
+  # @return (see Msf::Modules::Loader::Base#each_module_reference_name)
+  def each_module_reference_name(path)
+    ::Dir.foreach(path) do |entry|
+      if entry.downcase == '.svn'
+        next
+      end
+
+      full_entry_path = ::File.join(path, entry)
+      type = entry.singularize
+
+      unless ::File.directory?(full_entry_path) and
+        module_manager.type_enabled? type
+        next
+      end
+
+      full_entry_pathname = Pathname.new(full_entry_path)
+
+      # Try to load modules from all the files in the supplied path
+      Rex::Find.find(full_entry_path) do |entry_descendant_path|
+        if module_path?(entry_descendant_path)
+          entry_descendant_pathname = Pathname.new(entry_descendant_path)
+          relative_entry_descendant_pathname = entry_descendant_pathname.relative_path_from(full_entry_pathname)
+          relative_entry_descendant_path = relative_entry_descendant_pathname.to_path
+
+          # The module_reference_name doesn't have a file extension
+          module_reference_name = module_reference_name_from_path(relative_entry_descendant_path)
+
+          yield path, type, module_reference_name
+        end
+      end
+    end
+  end
+end
+                    </code></pre>
                     <aside class="notes">
-                        Unfortunately, due to the slight difference between Fastlib’s paths and real filesystem paths,
-                        <code>Msf::Modules::Loader::Archive#each_module_reference_name</code> and
-                        <code>Msf::Modules::Loader::Directory#each_module_reference_name</code> are still very similar,
-                        but to pull out the commonalities would just make the code more confusing to read.  There is
-                        such a thing as too DRY code.
+                        You can see that method has to deal with the messy details of the external representation of
+                        the <code>modules</code> directory, such as ignored <code>.svn</code> directories and handling
+                        conversion from internal Metasploit Module types to the directory names for those Metasploit
+                        Module types.  Even here, though, we try to keep the method short and focused.  So this method
+                        calls out to <code>#module_path?</code> and <code>#module_reference_name_from_path</code>.
                     </aside>
                 </section>
                 <section>
@@ -2118,24 +2129,18 @@ end
                         <li>Worth making a method because...
                             <ul>
                                 <li>intention revealing name</li>
-                                <li>Eliminate duplicating cryptic gsub</li>
+                                <li>Hide cryptic gsub</li>
                             </ul>
                         </li>
                     </ul>
                 </section>
                 <section>
-                    <img class="stretch" src="images/msf-modules-loader-base-load-module.png">
-                    <aside class="notes">
-                        Jumping out of #each_module_reference_name into #load_modules, each yielded
-                        <code>[parent_path, type, module_reference_name]</code> is passed to <code>#load_module</code>
-                    </aside>
-                </section>
-                <section>
                     <h1><code>Msf::Modules::Loader::Base&#8203;#load_module</code></h1>
+                    <img class="stretch" src="images/msf-modules-loader-base-load-module.png">
                     <ul class="procon">
                         <li class="con">Still huge (~130 lines)</li>
                         <li class="pro">
-                            Commonality between archive and directory extracted to methods:
+                            Interface to external representation extract to methods:
                             <ul>
                                 <li><code>#module_path</code></li>
                                 <li><code>#read_module_content</code></li>
@@ -2143,17 +2148,46 @@ end
                             </ul>
                         </li>
                     </ul>
-                </section>
-                <section>
-                    <img class="stretch" src="images/msf-modules-loader-archive-vs-directory-module-path.png">
-                    <ul>
-                        <li>Path to <code>.fastlib</code> is normal, but separated from internal path by <code>::</code></li>
-                    </ul>
-                </section>
-                <section>
-                    <img class="stretch" src="images/msf-modules-loader-archive-vs-directory-read-module-content.png">
                     <aside class="notes">
-                        This method abstracts over the difference between reading from a .fastlib and a normal file.
+                        Jumping out of #each_module_reference_name into #load_modules, each yielded
+                        <code>[parent_path, type, module_reference_name]</code> is passed to <code>#load_module</code>
+                    </aside>
+                </section>
+                <section>
+                    <pre class="stretch"><code>
+# Returns the full path to the module file on disk.
+#
+# @param (See Msf::Modules::Loader::Base#module_path
+# @return [String] Path toe the module file on disk.
+def module_path(parent_path, type, module_reference_name)
+  file_name = module_reference_name + MODULE_EXTENSION
+  type_directory = DIRECTORY_BY_TYPE[type]
+  full_path = File.join(parent_path, type_directory, file_name)
+
+  full_path
+end
+                    </code></pre>
+                    <aside class="notes">
+                        This method is isolating from the internal presentation that externally Metasploit Modules have
+                        <code>.rb</code> extensions and that they are stored in directories with slightly different
+                        names from the <code>module_type</code>.
+                    </aside>
+                </section>
+                <section>
+                    <pre class="scretch"><code>
+# Load the module content from the on disk file.
+#
+# @param (see Msf::Modules::Loader::Base#read_module_content)
+# @return (see Msf::Modules::Loader::Base#read_module_content)
+def read_module_content(parent_path, type, module_reference_name)
+  full_path = module_path(parent_path, type, module_refrence_name)
+
+  File.read(full_path)
+end
+                    </code></pre>
+                    <aside class="notes">
+                        Although this method is just doing a <code>File.read</code>, it needs to be hidden behind a
+                        method so that the external presentation doesn't leak into <code>#load_module</code>
                     </aside>
                 </section>
                 <section>
