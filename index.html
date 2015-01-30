@@ -1722,6 +1722,24 @@ end
                         confidently follow your changes and will have to skim and is more likely to miss new bugs.
                     </aside>
                 </section>
+                <section>
+                    <h2>Refactoring Goals</h2>
+                    <ul class="task">
+                        <li class="incomplete">One Class/Module Per File</li>
+                        <li class="incomplete">Group Related Methods into Included Ruby Modules</li>
+                        <li class="incomplete">
+                            Break up into classes
+                            <ul class="task">
+                                <li class="incomplete">Separate extracted class from source class</li>
+                                <li class="incomplete">Extract external dependencies from internal represenation</li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <aside class="notes">
+                       Because refactoring should be done separately from fixing bugs, let's make a separate checklist
+                        of goals for the refactoring.
+                    </aside>
+                </section>
             </section>
             <section class="stack">
                 <section>
@@ -1737,6 +1755,19 @@ end
                         The first step is that lib/msf/core/module_manager.rb actually contained 2 classes,
                         Msf::ModuleSet and Msf::ModuleManager.  Msf::ModuleSet is moved to lib/msf/core/module_set.rb.
                     </aside>
+                </section>
+                <section>
+                    <ul class="task">
+                        <li class="complete">One Class/Module Per File</li>
+                        <li class="incomplete">Group Related Methods into Included Ruby Modules</li>
+                        <li class="incomplete">
+                            Break up into classes
+                            <ul class="task">
+                                <li class="incomplete">Separate extracted class from source class</li>
+                                <li class="incomplete">Extract external dependencies from internal represenation</li>
+                            </ul>
+                        </li>
+                    </ul>
                 </section>
             </section>
             <section class="stack">
@@ -1852,6 +1883,19 @@ module Msf
   end
 end
                     </code></pre>
+                </section>
+                <section>
+                    <ul class="task">
+                        <li class="complete">One Class/Module Per File</li>
+                        <li class="complete">Group Related Methods into Included Ruby Modules</li>
+                        <li class="incomplete">
+                            Break up into classes
+                            <ul class="task">
+                                <li class="incomplete">Separate extracted class from source class</li>
+                                <li class="incomplete">Extract external dependencies from internal represenation</li>
+                            </ul>
+                        </li>
+                    </ul>
                 </section>
             </section>
             <section class="stack">
@@ -2025,12 +2069,21 @@ end
                     <p>Keep in <code>Msf::ModuleManager::Loading</code></p>
                 </section>
                 <section>
-                    <h1>Separating extracted class from source class</h1>
-                    <h2>Outcome</h2>
-                    <ul>
-                        <li>All common methods stayed in source class (<code>Msf::ModuleManager</code>)</li>
-                        <li>Determined integration point (<code>#load_modules</code>) with extracted class</li>
+                    <ul class="task">
+                        <li class="complete">One Class/Module Per File</li>
+                        <li class="complete">Group Related Methods into Included Ruby Modules</li>
+                        <li class="incomplete">
+                            Break up into classes
+                            <ul class="task">
+                                <li class="complete">Separate extracted class from source class</li>
+                                <li class="incomplete">Extract external dependencies from internal represenation</li>
+                            </ul>
+                        </li>
                     </ul>
+                    <aside class="notes">
+                        All common methods stayed in the source class, but we were able to determine that the
+                        integration point between the source class and the extract class is <code>#load_modules</code>
+                    </aside>
                 </section>
             </section>
             <section class="stack">
@@ -2218,6 +2271,50 @@ end
                     </aside>
                 </section>
                 <section>
+                    <div>
+                        <h2>Refactoring Goals</h2>
+                        <ul class="task">
+                            <li class="complete">One Class/Module Per File</li>
+                            <li class="complete">Group Related Methods into Included Ruby Modules</li>
+                            <li class="complete">
+                                Break up into classes
+                                <ul class="task">
+                                    <li class="complete">Separate extracted class from source class</li>
+                                    <li class="complete">Extract external dependencies from internal represenation</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="fragment">
+                        <h2>Goals</h2>
+                        <ul class="task">
+                            <li class="complete">Eliminate <code>require_relative</code> in <code>prosvc</code></li>
+                            <li class="complete">Eliminate explicit
+                                <code>require</code>s in
+                                <code>prosvc</code>
+                            </li>
+                            <li class="complete">
+                                Share <code>autoload_paths</code> between UI and <code>prosvc</code>
+                                <ul class="task">
+                                    <li class="complete">
+                                        Find <code>Module.new</code> usages
+                                    </li>
+                                    <li class="complete">
+                                        Replace <code>Module.new</code> in <code>Msf::ModuleManager#load_module_from_file</code>
+                                    </li>
+                                    <li class="complete">
+                                        Replace <code>Module.new</code> in <code>Msf::ModuleManager#reload_module</code>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                    <aside class="notes">
+                        The refactoring is complete and it has had the benefit of completing the last of the original
+                        goals.
+                    </aside>
+                </section>
+                <section>
                     <p>Congratulation! The test case works, but... does the test case cover all ways that all 1851 Metasploit Modules are actually written?</p><p class="fragment">NOPE!</p>
                 </section>
             </section>
@@ -2301,8 +2398,34 @@ end
             </section>
             <section class="stack">
                 <section>
-                    <h1>Fixing constant look-up in <code>Msf::Modules::Loader::Base</code></h1>
-                    <h2><code>#module_eval_with_lexical_scope</code></h2>
+                    <h2>Goals</h2>
+                    <ul class="task">
+                        <li class="complete">Eliminate <code>require_relative</code> in <code>prosvc</code></li>
+                        <li class="complete">Eliminate explicit
+                            <code>require</code>s in
+                            <code>prosvc</code>
+                        </li>
+                        <li class="complete">
+                            Share <code>autoload_paths</code> between UI and <code>prosvc</code>
+                            <ul class="task">
+                                <li class="complete">
+                                    Find <code>Module.new</code> usages
+                                </li>
+                                <li class="complete">
+                                    Replace <code>Module.new</code> in <code>Msf::ModuleManager#load_module_from_file</code>
+                                </li>
+                                <li class="complete">
+                                    Replace <code>Module.new</code> in <code>Msf::ModuleManager#reload_module</code>
+                                </li>
+                                <li class="fragment incomplete">
+                                    Fix resolving constants under <code>Msf</code>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <aside class="notes">
+                        Let's add a new goal to this list to fix the bug that was introduced by the earlier changes
+                    </aside>
                 </section>
                 <section>
                     <h1>Ways to fix constant look-up</h1>
@@ -2327,6 +2450,39 @@ end
                     </ul>
                 </section>
                 <section>
+                    <h2>Goals</h2>
+                    <ul class="task">
+                        <li class="complete">Eliminate <code>require_relative</code> in <code>prosvc</code></li>
+                        <li class="complete">Eliminate explicit
+                            <code>require</code>s in
+                            <code>prosvc</code>
+                        </li>
+                        <li class="complete">
+                            Share <code>autoload_paths</code> between UI and <code>prosvc</code>
+                            <ul class="task">
+                                <li class="complete">
+                                    Find <code>Module.new</code> usages
+                                </li>
+                                <li class="complete">
+                                    Replace <code>Module.new</code> in <code>Msf::ModuleManager#load_module_from_file</code>
+                                </li>
+                                <li class="complete">
+                                    Replace <code>Module.new</code> in <code>Msf::ModuleManager#reload_module</code>
+                                </li>
+                                <li class="fragment fade-out incomplete">
+                                    Fix resolving constants under <code>Msf</code>
+                                </li>
+                                <li class="fragment incomplete">
+                                    Fake <code>Msf</code> in lexical scope using <code>Module#module_eval(String)</code>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <aside class="notes">
+                        Let's add a new goal to this list to fix the bug that was introduced by the earlier changes
+                    </aside>
+                </section>
+                <section>
                     <figure>
                         <img src="images/msf-module-manager-wrapper-module-hex-encoding.png">
                         <figcaption><code>wrapper_module (bugged)</code></figcaption>
@@ -2348,11 +2504,18 @@ end
                     <h1>Nesting string Modules</h1>
                     <img class="stretch" src="images/msf-modules-loader-base-create-namespace-module-namespace-module-content.png">
                     <aside class="notes">
+                        <p>
                         To build up a lexical scope, the code needs to wrap child Ruby Modules in <code>module Parent
                         ... end</code> blocks. Instead of have to prepend <code>module Parent</code> to the front of a
                         string and append <code>end</code> to the end of the a string, I reverse the
                         <code>namespace_module_names</code>, so I can build the inner <code>module</code>s first and
                         then wrap them with the parent module like Russian nesting dolls.
+                        </p>
+                        <p>
+                            You can tell how long it took me to figure this out based on the size of the comments.  I
+                            actually ended up look at the Ruby MRI C code to figure out that <code>module_eval</code>
+                            with blocks won't capture lexical scope.
+                        </p>
                     </aside>
                 </section>
                 <section>
@@ -2381,11 +2544,30 @@ end
                 </section>
             </section>
             <section>
-                <h1>Accomplished</h1>
-                <ul>
-                    <li><code>prosvc</code> uses <code>ActiveSupport::Dependencies.autoload_paths</code> to laod the same code as Metasploit Pro UI</li>
-                    <li>Loaded Metasploit Modules are assigned namespace names</li>
-                    <li>Loading process is debuggable</li>
+                <h2>Goals</h2>
+                <ul class="task">
+                    <li class="complete">Eliminate <code>require_relative</code> in <code>prosvc</code></li>
+                    <li class="complete">Eliminate explicit
+                        <code>require</code>s in
+                        <code>prosvc</code>
+                    </li>
+                    <li class="complete">
+                        Share <code>autoload_paths</code> between UI and <code>prosvc</code>
+                        <ul class="task">
+                            <li class="complete">
+                                Find <code>Module.new</code> usages
+                            </li>
+                            <li class="complete">
+                                Replace <code>Module.new</code> in <code>Msf::ModuleManager#load_module_from_file</code>
+                            </li>
+                            <li class="complete">
+                                Replace <code>Module.new</code> in <code>Msf::ModuleManager#reload_module</code>
+                            </li>
+                            <li class="complete">
+                                Fake <code>Msf</code> in lexical scope using <code>Module#module_eval(String)</code>
+                            </li>
+                        </ul>
+                    </li>
                 </ul>
             </section>
             <section>
