@@ -1262,17 +1262,17 @@ end
                     </aside>
                 </section>
                 <section>
-                    <h1>Metasploit Module Types</h1>
-                    <ol>
-                        <li>The <em>exploit</em> contains code to trip a bug on the target machine</li>
-                        <li>The <em>exploit</em> code is combined with the <em>payload</em> to run after the bug is tripped</li>
-                        <li>The exploit+payload is padded with <em>nop</em>s to make it the right size</li>
-                        <li>The padded exploit+payload+nops is encoded by the <em>encoder</em> so it's a valid format</li>
-                        <li>The <em>auxiliary</em> Metasploit Module presents as a fake website to trick a target user to run a program</li>
-                        <li>The target user runs the program containing the encoded exploit+payload+nops</li>
-                        <li>The payload connects back to Metasploit Framework</li>
-                        <li>The Metasploit Framework user runs <em>post</em> modules to gather information from the target user's machine</li>
-                    </ol>
+                    <h1>Main Metasploit Module Types</h1>
+                    <dl>
+                        <dt>Exploit</dt>
+                        <dd>Deliver a <em>payload</em> by taking advantage of a bug</dd>
+                        <dt>Payload</dt>
+                        <dd>The thing that allows an attacker to control a compromised machine</dd>
+                        <dt>Post</dt>
+                        <dd>Pillage and burn</dd>
+                        <dt>Auxiliary</dt>
+                        <dd>Do something networky</dd>
+                    </dl>
                 </section>
                 <section>
                     <h1><code>msfconsole</code></h1>
@@ -2319,9 +2319,6 @@ end
                 </section>
             </section>
             <section class="stack">
-                <section>
-                    <h1>When refactoring introduces you to lexical scope</h1>
-                </section>
                 <section>
                     <img class="stretch" src="images/msf-modules-loader-base-load-module-module-eval-with-lexical-scope.png">
                     <table>
