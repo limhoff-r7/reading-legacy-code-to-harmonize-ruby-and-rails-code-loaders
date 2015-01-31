@@ -1885,8 +1885,23 @@ end
                     </code></pre>
                 </section>
                 <section>
-                    <h2>Ruby Modules Extracted from <code>Msf::ModuleManager</code></h2>
-
+                    <div style="float: left; width: 20%">
+                        <h2>Before</h2>
+                        <img class="stretch" src="images/msf-module-manager-structure.png">
+                    </div>
+                    <div style="float: right; width: 70%">
+                        <h2>After</h2>
+                        <img src="images/msf-module-manager-cache-structure.png" style="display: inline-block">
+                        <img src="images/msf-module-manager-loading-structure.png" style="display: inline-block">
+                        <img src="images/msf-module-manager-module-paths-structure.png" style="display: inline-block">
+                        <img src="images/msf-module-manager-module-set-structure.png" style="display: inline-block">
+                        <img src="images/msf-module-manager-reloading-structure.png" style="display: inline-block">
+                        <img src="images/msf-module-manager-structure-after.png" style="display: inline-block">
+                    </div>
+                    <aside class="notes">
+                        Here you can see the final broken up structure of the Ruby Modules extracted from
+                        <code>Msf::ModuleManager</code> and the structure of <code>Msf::ModuleManager</code> itself.
+                    </aside>
                 </section>
                 <section>
                     <ul class="task">
