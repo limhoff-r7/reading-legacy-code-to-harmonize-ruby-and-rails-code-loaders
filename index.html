@@ -1,408 +1,2704 @@
 <!doctype html>
 <html lang="en">
 
-	<head>
-		<meta charset="utf-8">
+<head>
+    <meta charset="utf-8">
 
-		<title>reveal.js - The HTML Presentation Framework</title>
+    <title>Reading Legacy Code to Harmonize Ruby and Rails Code Loaders</title>
 
-		<meta name="description" content="A framework for easily creating beautiful presentations using HTML">
-		<meta name="author" content="Hakim El Hattab">
+    <meta name="description" content="A framework for easily creating beautiful presentations using HTML">
+    <meta name="author" content="Hakim El Hattab">
 
-		<meta name="apple-mobile-web-app-capable" content="yes" />
-		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
 
-		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
 
-		<link rel="stylesheet" href="css/reveal.css">
-		<link rel="stylesheet" href="css/theme/black.css" id="theme">
+    <link rel="stylesheet" href="css/reveal.css">
+    <link rel="stylesheet" href="css/theme/black.css" id="theme">
+    <style>
+        ul.task, ul ul.task {
+            list-style-type: none;
+        }
 
-		<!-- Code syntax highlighting -->
-		<link rel="stylesheet" href="lib/css/zenburn.css">
+        ul.task li.complete:before {
+            content: "✓ "
+        }
 
-		<!-- Printing and PDF exports -->
-		<script>
-			var link = document.createElement( 'link' );
-			link.rel = 'stylesheet';
-			link.type = 'text/css';
-			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
-			document.getElementsByTagName( 'head' )[0].appendChild( link );
-		</script>
+        ul.task li.incomplete:before {
+            content: "◻ "
+        }
 
-		<!--[if lt IE 9]>
-		<script src="lib/js/html5shiv.js"></script>
-		<![endif]-->
-	</head>
+        ul.procon, ul ul.procon {
+            list-style: none;
+        }
 
-	<body>
+        ul.procon li.con:before {
+            content: "- "
+        }
 
-		<div class="reveal">
+        ul.procon li.pro:before {
+            content: "+ "
+        }
+    </style>
 
-			<!-- Any section element inside of this container is displayed as a slide -->
-			<div class="slides">
-				<section>
-					<h1>Reveal.js</h1>
-					<h3>The HTML Presentation Framework</h3>
-					<p>
-						<small>Created by <a href="http://hakim.se">Hakim El Hattab</a> / <a href="http://twitter.com/hakimel">@hakimel</a></small>
-					</p>
-				</section>
+    <!-- Code syntax highlighting -->
+    <link rel="stylesheet" href="lib/css/zenburn.css">
 
-				<section>
-					<h2>Hello There</h2>
-					<p>
-						reveal.js enables you to create beautiful interactive slide decks using HTML. This presentation will show you examples of what it can do.
-					</p>
-				</section>
+    <!-- Printing and PDF exports -->
+    <script>
+        var link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        link.href = window.location.search.match(/print-pdf/gi) ? 'css/print/pdf.css' : 'css/print/paper.css';
+        document.getElementsByTagName('head')[0].appendChild(link);
+    </script>
 
-				<!-- Example of nested vertical slides -->
-				<section>
-					<section>
-						<h2>Vertical Slides</h2>
-						<p>Slides can be nested inside of each other.</p>
-						<p>Use the <em>Space</em> key to navigate through all slides.</p>
-						<br>
-						<a href="#" class="navigate-down">
-							<img width="178" height="238" data-src="https://s3.amazonaws.com/hakim-static/reveal-js/arrow.png" alt="Down arrow">
-						</a>
-					</section>
-					<section>
-						<h2>Basement Level 1</h2>
-						<p>Nested slides are useful for adding additional detail underneath a high level horizontal slide.</p>
-					</section>
-					<section>
-						<h2>Basement Level 2</h2>
-						<p>That's it, time to go back up.</p>
-						<br>
-						<a href="#/2">
-							<img width="178" height="238" data-src="https://s3.amazonaws.com/hakim-static/reveal-js/arrow.png" alt="Up arrow" style="-webkit-transform: rotate(180deg);">
-						</a>
-					</section>
-				</section>
+    <!--[if lt IE 9]>
+    <script src="lib/js/html5shiv.js"></script>
+    <![endif]-->
+</head>
 
-				<section>
-					<h2>Slides</h2>
-					<p>
-						Not a coder? Not a problem. There's a fully-featured visual editor for authoring these, try it out at <a href="http://slides.com" target="_blank">http://slides.com</a>.
-					</p>
-				</section>
+<body>
 
-				<section>
-					<h2>Point of View</h2>
-					<p>
-						Press <strong>ESC</strong> to enter the slide overview.
-					</p>
-					<p>
-						Hold down alt and click on any element to zoom in on it using <a href="http://lab.hakim.se/zoom-js">zoom.js</a>. Alt + click anywhere to zoom back out.
-					</p>
-				</section>
+<div class="theme-font-montserrat theme-color-white-blue" style="width: 100%; height: 100%;">
+    <div class="reveal">
+        <div class="slides">
+            <section>
+                <h1>Reading Legacy Code to Harmonize Ruby and Rails Code Loaders</h1>
+                <p>Luke Imhoff</p>
+                <table>
+                    <tbody>
+                    <tr>
+                        <th>
+                            <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Capa_1" x="0px" y="0px" width="14px" height="10px" viewBox="0 0 14 10" enable-background="new 0 0 14 10" xml:space="preserve">
+                                            <g>
+                                                <path d="M7,7L5.268,5.484L0.316,9.729C0.496,9.896,0.739,10,1.007,10h11.986c0.267,0,0.509-0.104,0.688-0.271L8.732,5.484L7,7z"></path>
+                                                <path d="M13.684,0.271C13.504,0.103,13.262,0,12.993,0H1.007C0.74,0,0.498,0.104,0.318,0.273L7,6L13.684,0.271z"></path>
+                                                <polygon points="0,0.878 0,9.186 4.833,5.079  "></polygon>
+                                                <polygon points="9.167,5.079 14,9.186 14,0.875  "></polygon>
+                                            </g>
+                                        </svg>
+                        </th>
+                        <td>luke_imhoff@rapid7.com</td>
+                        <td>Kronic.Deth@gmail.com</td>
+                    </tr>
+                    <tr>
+                        <th>
+                            <svg version="1.1" class="github-icon-svg"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 16 16" enable-background="new 0 0 16 16" xml:space="preserve">
+                                            <path fill-rule="evenodd" clip-rule="evenodd" fill="#C2C2C2" d="M7.999,0.431c-4.285,0-7.76,3.474-7.76,7.761
+                c0,3.428,2.223,6.337,5.307,7.363c0.388,0.071,0.53-0.168,0.53-0.374c0-0.184-0.007-0.672-0.01-1.32
+                c-2.159,0.469-2.614-1.04-2.614-1.04c-0.353-0.896-0.862-1.135-0.862-1.135c-0.705-0.481,0.053-0.472,0.053-0.472
+                c0.779,0.055,1.189,0.8,1.189,0.8c0.692,1.186,1.816,0.843,2.258,0.645c0.071-0.502,0.271-0.843,0.493-1.037
+                C4.86,11.425,3.049,10.76,3.049,7.786c0-0.847,0.302-1.54,0.799-2.082C3.768,5.507,3.501,4.718,3.924,3.65
+                c0,0,0.652-0.209,2.134,0.796C6.677,4.273,7.34,4.187,8,4.184c0.659,0.003,1.323,0.089,1.943,0.261
+                c1.482-1.004,2.132-0.796,2.132-0.796c0.423,1.068,0.157,1.857,0.077,2.054c0.497,0.542,0.798,1.235,0.798,2.082
+                c0,2.981-1.814,3.637-3.543,3.829c0.279,0.24,0.527,0.713,0.527,1.437c0,1.037-0.01,1.874-0.01,2.129
+                c0,0.208,0.14,0.449,0.534,0.373c3.081-1.028,5.302-3.935,5.302-7.362C15.76,3.906,12.285,0.431,7.999,0.431z"></path>
+                                        </svg>
+                        </th>
+                        <td>
+                            <a href="https://github.com/limhoff-r7" target="_blank">@limhoff-r7</a>
+                        </td>
+                        <td>
+                            <a href="https://github.com/KronicDeth" target="_blank">@KronicDeth</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            <svg version="1.1" class="twitter-icon-svg"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 16 16" enable-background="new 0 0 16 16" xml:space="preserve">
+                                            <path fill="#C2C2C2" d="M15.969,3.058c-0.586,0.26-1.217,0.436-1.878,0.515c0.675-0.405,1.194-1.045,1.438-1.809
+                c-0.632,0.375-1.332,0.647-2.076,0.793c-0.596-0.636-1.446-1.033-2.387-1.033c-1.806,0-3.27,1.464-3.27,3.27
+                c0,0.256,0.029,0.506,0.085,0.745C5.163,5.404,2.753,4.102,1.14,2.124C0.859,2.607,0.698,3.168,0.698,3.767
+                c0,1.134,0.577,2.135,1.455,2.722C1.616,6.472,1.112,6.325,0.671,6.08c0,0.014,0,0.027,0,0.041c0,1.584,1.127,2.906,2.623,3.206
+                C3.02,9.402,2.731,9.442,2.433,9.442c-0.211,0-0.416-0.021-0.615-0.059c0.416,1.299,1.624,2.245,3.055,2.271
+                c-1.119,0.877-2.529,1.4-4.061,1.4c-0.264,0-0.524-0.015-0.78-0.046c1.447,0.928,3.166,1.469,5.013,1.469
+                c6.015,0,9.304-4.983,9.304-9.304c0-0.142-0.003-0.283-0.009-0.423C14.976,4.29,15.531,3.714,15.969,3.058z"></path>
+                                        </svg>
+                        </th>
+                        <td></td>
+                        <td>
+                            <a href="https://twitter.com/KronicDeth" target="_blank">@KronicDeth</a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <aside class="notes">
+                    I am a Senior Software Engineer for Metasploit Applications at Rapid7
+                </aside>
+            </section>
+            <section class="stack">
+                <section>
+                    <h1>Background</h1>
+                    <table width="100%">
+                        <caption>
+                            Code-Loading in Ruby and Rails
+                        </caption>
+                        <thead>
+                        <tr>
+                            <th>Loader</th>
+                            <th>Extension Required</th>
+                            <th>Loads Only Once</th>
+                            <th>Synchrony</th>
+                            <th>Loads</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td><code>Kernel.load</code></td>
+                            <td>Yes</td>
+                            <td>No</td>
+                            <td>Synchronous</td>
+                            <td>File</td>
+                        </tr>
+                        <tr>
+                            <td><code>Kernel.require</code></td>
+                            <td>No</td>
+                            <td>Yes</td>
+                            <td>Synchronous</td>
+                            <td>File</td>
+                        </tr>
+                        <tr>
+                            <td><code>Kernel.autoload</code></td>
+                            <td>No</td>
+                            <td>Yes</td>
+                            <td>Asynchronous</td>
+                            <td>File</td>
+                        </tr>
+                        <tr>
+                            <td><code>ActiveSupport::Autoload#autoload</code></td>
+                            <td>No</td>
+                            <td>Yes</td>
+                            <td>Asynchronous</td>
+                            <td>File</td>
+                        </tr>
+                        <tr>
+                            <td><code>ActiveSupport::Dependencies#autoload_paths</code></td>
+                            <td>No</td>
+                            <td>Either</td>
+                            <td>Asynchronous</td>
+                            <td>Directory Tree</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <aside class="notes">
+                        All these methods search <code>$LOAD_PATH</code>. <code>ActiveSupport::Autoload</code> will
+                        automatically infer the file path based on the parent Ruby Module's name and the constant being
+                        loaded.  The infered file path follows the Rails convention of namespace Ruby Modules mapping to
+                        directories and the final Ruby Class or Module being a file.
+                        <code>ActiveSupport::Dependencies.autoload_paths</code> goes a step farther with the Rails
+                        conventions and you just have to give the root of directory trees that follow the Rails naming
+                        convention.  Most developers will be use <code>ActiveSupport::Dependencies.autoload_paths</code>
+                        only indirectly from Rails's <code>config.autoload_paths</code>.
+                    </aside>
+                </section>
+            </section>
+            <section>
+                <h2>Setting</h2>
+                <ul>
+                    <li>metasploit-framework: 9 years old (5&nbsp;ruby / 4 perl)</li>
+                    <li>Metasploit Pro: 2 years old</li>
+                    <li>Rails 3.2.2: 5 months old</li>
+                </ul>
+            </section>
+            <section>
+                <div>
+                    <div style="float: left">
+                        <h2>UI</h2>
+                        <p>A standard Rails application</p>
+                    </div>
+                    <div style="float: right">
+                        <h2>prosvc</h2>
+                        <p>daemon UI uses to run metasploit-framework</p>
+                    </div>
+                </div>
+                <ul>
+                    <li>
+                        pro
+                        <ul>
+                            <li>
+                                engine
+                                <ul>
+                                    <li>prosvc.rb</li>
+                                </ul>
+                            </li>
+                            <li>modules (Metasploit Pro Modules)</li>
+                            <li>
+                                msf3
+                                <ul>
+                                    <li>modules (Metasploit Framework Modules)</li>
+                                </ul>
+                            </li>
+                            <li>ui</li>
+                        </ul>
+                    </li>
+                </ul>
+            </section>
+            <section class="stack">
+                <section>
+                    <h1>prosvc</h1>
+                    <h2>it had a few problems</h2>
+                </section>
+                <section>
+                    <h2>Too long</h2>
+                    <img class="stretch" src="images/prosvc.png">
+                    <p>610 lines</p>
+                    <aside class="notes">
+                        Not only was it 610 lines, but procedural, with no classes or methods that could be tested in
+                        isolation.
+                    </aside>
+                </section>
+                <section>
+                    <h2>
+                        Emulating <code>config.autoload_paths</code>
+                    </h2>
+                    <img class="stretch" src="images/prosvc-emulating-config-autoload-paths.png">
+                    <aside class="notes">
+                        This was the big problem: having to manually declare requires when using files from ui in
+                        engine that UI handled for free with config.autoload_paths
+                    </aside>
+                </section>
+                <section>
+                    <h1>Adding a new class to UI and prosvc</h1>
+                    <ol>
+                        <li>Add normally to UI</li>
+                        <li>Determine which classes have to be loaded before</li>
+                        <li>Find earliest spot in prosvc to do require</li>
+                        <li>Add require</li>
+                        <li>Start prosvc</li>
+                        <li>Debug load errors</li>
+                        <li>Goto 2</li>
+                    </ol>
+                    <aside class="notes">
+                        Having to go through the manually process of restarting prosvc over was slow and prosvc was slowly
+                        becoming unmaintainable, which slowed down the normal rapid interation process for Rails because
+                        the ease of adding classes for Metasploit Pro UI wasn't available to prosvc.
+                    </aside>
+                </section>
+            </section>
+            <section>
+                <h2>Goals</h2>
+                <ul class="task">
+                    <li class="incomplete">Eliminate <code>require_relative</code> in <code>prosvc</code></li>
+                    <li class="incomplete">Eliminate explicit
+                        <code>require</code>s in
+                        <code>prosvc</code>
+                    </li>
+                    <li class="incomplete">Share
+                        <code>autoload_paths</code> between UI and
+                        <code>prosvc</code>
+                    </li>
+                </ul>
+            </section>
+            <section class="stack">
+                <section>
+                    <h1>Tools</h1>
+                    <ul>
+                        <li>Rails Guides</li>
+                        <li>Rubygems.org</li>
+                        <li>Github</li>
+                        <li><code>ack</code></li>
+                        <li>Rubymine</li>
+                    </ul>
+                </section>
+                <section>
+                    <h1>Rails Guides</h1>
+                    <h2>http://guides.rubyonrails.org/</h2>
+                    <ul>
+                        <li>High-level intros</li>
+                        <li>Low-level configuration details</li>
+                    </ul>
+                    <aside class="notes">
+                        The Rails guides are not just a great way to learn Rails, but also a great resource for
+                        understanding all the settings and the internals of Rails without the need to search through
+                        the source.  Due to the metaprogramming in Rails, a lot of time the guides will be far
+                        more understandable than the source itself.
+                    </aside>
+                </section>
+                <section>
+                    <h1>Rubygems.org</h1>
+                    <ul>
+                        <li>Find documentation</li>
+                        <li>Find source</li>
+                        <li>Follow dependencies</li>
+                    </ul>
+                    <aside class="notes">
+                        Rubygems.org is a search provider in chrome, so you can quickly look up a gem by name and then
+                        jump to its documentation or find its source, which isn't always on github).  The dependencies
+                        for each version are listed, which is useful when you're not sure if a gem implements something
+                        or one of its dependencies does.
+                    </aside>
+                </section>
+                <section>
+                    <h1>Github</h1>
+                    <ul>
+                        <li>Search for code</li>
+                        <li>Search for issues</li>
+                        <li>
+                            Software Archaeology
+                            <ul>
+                                <li>Branch and Tag viewer</li>
+                                <li>Following blame and parent commit links</li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <aside class="notes">
+                        Searching for code allows you to find a method or class when you have no idea where it's
+                        declared, used, or documented.  The search also covers issues, so you can see if someone is
+                        having the same issue as you.  You can rewind back to view the code you've locked in your
+                        Gemfile.
+                    </aside>
+                </section>
+                <section>
+                    <h1>ack</h1>
+                    <ul>
+                        <li>Like grep, but smarter</li>
+                        <li>Automatically searches current directory tree</li>
+                        <li>Ignores .git</li>
+                        <li>Automatically prints matching lines with line numbers and highlights</li>
+                    </ul>
+                </section>
+                <section>
+                    <h1>Rubymine</h1>
+                    <h2>Static language tools for dynamic Ruby</h2>
+                    <ul>
+                        <li>See Ruby Modules/Classes and method in Structure View</li>
+                        <li>CMD+Click on method to see its definition</li>
+                        <li>Find usages of method</li>
+                        <li>Assisted refactoring</li>
+                        <li>Graphical debugging</li>
+                    </ul>
+                    <aside class="notes">
+                        Structure View is great when a file isn't well organized so you can quickly get an overview
+                        of the methods and not have to worry about method order.  CMD+Click means you can follow a
+                        call graph statically to understand how methods are related.  Find Usages can find methods by
+                        name and even works with dynamic dispatch like <code>send</code>.  My favorite feature though
+                        is graphical debugging.  I can place break points as I'm debugging without editting the
+                        code.  The debugger can jump between threads and processes.
+                    </aside>
+                </section>
+            </section>
+            <section class="stack">
+                <section>
+                    <h1>
+                        <code>config.autoload_paths</code> outside Rails
+                    </h1>
+                    <aside class="notes">
+                        Now, let's applies those tools to the problem of using or emulating config.autoload_paths
+                        outside of Rails.
+                    </aside>
+                </section>
+                <section>
+                    <h2>
+                        Barriers to
+                        <code>config.autoload_paths</code> in
+                        <code>prosvc</code>
+                    </h2>
+                    <ul>
+                        <li>Don't know how to use outside of Rails</li>
+                        <li>Don't know how
+                            <code>config.autoload_paths</code> works
+                        </li>
+                        <li>Don't know which gem handles
+                            <code>config.autoload_paths</code>
+                        </li>
+                    </ul>
+                </section>
+                <section>
+                    <h2>RTF
+                        <s>M</s>G
+                    </h2>
+                    <p>
+                        <code>config.autoload_paths</code> is mentioned in the Configuring guide
 
-				<section>
-					<h2>Touch Optimized</h2>
-					<p>
-						Presentations look great on touch devices, like mobile phones and tablets. Simply swipe through your slides.
-					</p>
-				</section>
+                    </p>
+                    <img class="stretch" src="images/configuring-set_autoload_paths.png">
+                </section>
+                <section>
+                    <h2>
+                        Where is
+                        <code>set_autoload_paths</code>?
 
-				<section data-markdown>
-					<script type="text/template">
-						## Markdown support
+                    </h2>
 
-						Write content using inline or external Markdown.
-						Instructions and more info available in the [readme](https://github.com/hakimel/reveal.js#markdown).
+                    <ol>
+                        <li>Search rubygem.org for rails</li>
+                        <li>Show all versions</li>
+                        <li>Find 3.2.2</li>
+                    </ol>
 
-						```
-						<section data-markdown>
-						  ## Markdown support
+                    <table>
+                        <thead>
+                        <tr>
+                            <th>Gem</th>
+                            <th>Purpose</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>actionmailer</td>
+                            <td>sending mail</td>
+                        </tr>
+                        <tr>
+                            <td>activerecord</td>
+                            <td>database records</td>
+                        </tr>
+                        <tr>
+                            <td>activeresource</td>
+                            <td>non-database records</td>
+                        </tr>
+                        <tr>
+                            <td>bundler</td>
+                            <td>dependency management</td>
+                        </tr>
+                        <tr>
+                            <td>actionpack</td>
+                            <td>?</td>
+                        </tr>
+                        <tr>
+                            <td>activesupport</td>
+                            <td>?</td>
+                        </tr>
+                        <tr>
+                            <td>railties</td>
+                            <td>?</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <aside class="notes">
+                        I know rails is just a metagem for grouping the dependencies, so I need to figure out which gem
+                        contains set_autoload_paths.  I'll use rubygems to get the dependencies for 3.2.2
+                    </aside>
+                </section>
+                <section>
+                    <h2>
+                        Check actionpack, activesupport, and railties
+                    </h2>
+                    <ol>
+                        <li>No Source Links</li>
+                        <li>Assume rails Source Links</li>
+                    </ol>
+                    <img class="stretch" src="images/rails-3.2.2-tree.png">
+                </section>
+                <section>
+                    <h2>Searching Legacy Code</h2>
+                    <ol>
+                        <li>Try Github search</li>
+                        <li>Realize Github search only works on master&nbsp;</li>
+                        <li>Clone rails</li>
+                        <li>Checkout 3.2.2</li>
+                        <li>Search locally</li>
+                    </ol>
+                    <pre class="stretch"><code>
+cd ~/git
+mkdir rails
+cd rails
+git clone git@github.com:rails/rails.git
+cd rails
+git checkout v3.2.2
+ack set_autoload_paths
+                    </code></pre>
+                </section>
+                <section>
+                    <h2>
+                        <code>ack set_autoload_path</code>
+                    </h2>
+                    <ol>
+                        <li>Configuring guide source</li>
+                        <li>DSL call to define initializer</li>
+                    </ol>
+                    <br/>
+                    <img class="stretch" src="images/ack-set_autoload_paths.png">
+                </section>
+                <section>
+                    <h2>
+                        <code>railties/lib/rails/engine.rb:536</code>
+                    </h2>
+                    <img class="stretch" src="images/railties-lib-rails-engine-line-536.png">
+                    <aside class="notes">
+                        In Rubymine.   I don’t see config.autoload_paths being read except for the
+                        config.autoload_paths.freeze on line 541, so I Cmd+Click _all_autoload_paths to see it’s
+                        definition.
+                    </aside>
+                </section>
+                <section>
+                    <h2>
+                        <code>_all_autoload_paths</code>
+                    </h2>
+                    <img class="stretch" src="images/all_autoload_paths.png">
+                    <aside class="notes">
+                        <code>_all_autoload_paths</code> uses <code>autoload_paths</code>, <code>eager_load_paths</code>,
+                        and <code>autoload_once_paths</code> from <code>config</code>.
+                    </aside>
+                </section>
+            </section>
+            <section>
+                <h2>Emulate
+                    <code>set_autoload_paths</code>
+                </h2>
+                <ul>
+                    <li>
+                        <code>config.autoload_paths</code>
+                    </li>
+                    <li>
+                        <s>
+                            <code>config.eager_load_paths</code>
+                        </s>
+                    </li>
+                    <li>
+                        <s>
+                            <code>config.autoload_once_paths</code>
+                        </s>
+                    </li>
+                </ul>
+                <pre><code>ActiveSupport::Dependencies.autoload_paths.unshift(config.autoload_paths)</code></pre>
+            </section>
+            <section class="stack">
+                <section>
+                    <h1>
+                        Calling initializers without
+                        <code>Rails::Engine</code>
+                    </h1>
+                    <ul>
+                        <li>Initializers are just methods</li>
+                        <li>Need to emulate calling convention too</li>
+                    </ul>
+                </section>
+                <section>
+                    <h2>Back to the Guide</h2>
+                    <img class="stretch" src="images/configuring-rails-railtie-initializer.png">
+                    <aside class="notes">
+                        From the guide, we know to find the initializer that happen before set_autoload_paths, and
+                        therefore, may be required to emulate set_autoload_paths, we need to look for initializers
+                        before set_autoload_paths or that have <code>:before =&gt; :set_autoload_paths</code>
+                    </aside>
+                </section>
+                <section>
+                    <h2>
+                        <code>set_load_path</code>
+                    </h2>
+                    <img src="images/set_load_paths.png">
+                    <aside class="notes">
+                        From the naming scheme, I’d assume that _all_load_paths is a superset of _all_autoload_paths
+                        because there’s no auto in its name, but to confirm, I CMD+Click _all_load_paths to see its
+                        definition
+                    </aside>
+                </section>
+                <section>
+                    <h2>
+                        <code>_all_load_paths</code>
+                    </h2>
+                    <img class="stretch" src="images/all_load_paths.png">
+                    <aside class="notes">
+                        <code>_all_load_paths</code> depends on <code>_all_autoload_paths</code>, which means that
+                        <code>set_autoload_paths</code> depends on <code>set_load_paths</code> because any autoload path
+                        must be added as a normal load path and I should port <code>set_load_paths</code> in addition to
+                        <code>set_autoload_paths</code>.
+                    </aside>
+                </section>
+            </section>
+            <section>
+                <h1>Separating initializers and configuration</h1>
+            </section>
+            <section class="stack">
+                <section>
+                    <table>
+                        <tbody>
+                        <tr>
+                            <th>System</th>
+                            <th>Initializers</th>
+                            <th>Configuration</th>
+                        </tr>
+                        <tr>
+                            <td>Rails</td>
+                            <td>
+                                <code>Rails::Engine</code>
+                            </td>
+                            <td>
+                                <code>Rails::Engine::Configuration</code>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>prosvc</td>
+                            <td>
+                                <code>Metasploit::Configured</code>
+                            </td>
+                            <td>
+                                <code>Metasploit::Configuration</code>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <aside class="notes">
+                        Looking at the structure for the Rails code, I can see that the initializers are kept in
+                        Rails::Engine, which can be used across all engines, while the customization of the paths is in
+                        Rails::Engine::Configuration, so I adopt a similar pattern
+                    </aside>
+                </section>
+                <section>
+                    <pre class="stretch"><code>
+require 'active_support/concern'
 
-						  Write content using inline or external Markdown.
-						  Instructions and more info available in the [readme](https://github.com/hakimel/reveal.js#markdown).
-						</section>
-						```
-					</script>
-				</section>
+# TODO this should be a Rails::Engine if engine is ever moved under ui
+module Metasploit::Configured
+  extend ActiveSupport::Concern
 
-				<section>
-					<section id="fragments">
-						<h2>Fragments</h2>
-						<p>Hit the next arrow...</p>
-						<p class="fragment">... to step through ...</p>
-						<p><span class="fragment">... a</span> <span class="fragment">fragmented</span> <span class="fragment">slide.</span></p>
+  module ClassMethods
+    def configuration
+      @configuration ||= self::Configuration.new
+    end
 
-						<aside class="notes">
-							This slide has fragments which are also stepped through in the notes window.
-						</aside>
-					</section>
-					<section>
-						<h2>Fragment Styles</h2>
-						<p>There's different types of fragments, like:</p>
-						<p class="fragment grow">grow</p>
-						<p class="fragment shrink">shrink</p>
-						<p class="fragment roll-in">roll-in</p>
-						<p class="fragment fade-out">fade-out</p>
-						<p class="fragment current-visible">current-visible</p>
-						<p class="fragment highlight-red">highlight-red</p>
-						<p class="fragment highlight-blue">highlight-blue</p>
-					</section>
-				</section>
+    def initialize!
+      configuration.initializers.each do |initializer|
+        send(initializer)
+      end
+    end
 
-				<section id="transitions">
-					<h2>Transition Styles</h2>
-					<p>
-						You can select from different transitions, like: <br>
-						<a href="?transition=none#/transitions">None</a> -
-						<a href="?transition=fade#/transitions">Fade</a> -
-						<a href="?transition=slide#/transitions">Slide</a> -
-						<a href="?transition=convex#/transitions">Convex</a> -
-						<a href="?transition=concave#/transitions">Concave</a> -
-						<a href="?transition=zoom#/transitions">Zoom</a>
-					</p>
-				</section>
+    def eager_load!
+      configuration.dependencies.each(&amp;:eager_load!)
 
-				<section id="themes">
-					<h2>Themes</h2>
-					<p>
-						reveal.js comes with a few themes built in: <br>
-						<!-- Hacks to swap themes after the page has loaded. Not flexible and only intended for the reveal.js demo deck. -->
-						<a href="#" onclick="document.getElementById('theme').setAttribute('href','css/theme/black.css'); return false;">Black (default)</a> -
-						<a href="#" onclick="document.getElementById('theme').setAttribute('href','css/theme/white.css'); return false;">White</a> -
-						<a href="#" onclick="document.getElementById('theme').setAttribute('href','css/theme/league.css'); return false;">League</a> -
-						<a href="#" onclick="document.getElementById('theme').setAttribute('href','css/theme/sky.css'); return false;">Sky</a> -
-						<a href="#" onclick="document.getElementById('theme').setAttribute('href','css/theme/beige.css'); return false;">Beige</a> -
-						<a href="#" onclick="document.getElementById('theme').setAttribute('href','css/theme/simple.css'); return false;">Simple</a> <br>
-						<a href="#" onclick="document.getElementById('theme').setAttribute('href','css/theme/serif.css'); return false;">Serif</a> -
-						<a href="#" onclick="document.getElementById('theme').setAttribute('href','css/theme/night.css'); return false;">Night</a> -
-						<a href="#" onclick="document.getElementById('theme').setAttribute('href','css/theme/moon.css'); return false;">Moon</a> -
-						<a href="#" onclick="document.getElementById('theme').setAttribute('href','css/theme/solarized.css'); return false;">Solarized</a>
-					</p>
-				</section>
+      # Adapted from Rails::Engine#eager_load!
+      configuration.eager_load_paths.each do |load_path|
+        # strip the load_path itself from the name because the load_path is already add to $LOAD_PATH by
+        # {#set_load_path}.
+        # strip extension as it's not normally passed to require.
+        require_path_regex = /\A#{Regexp.escape(load_path)}\/(.*)\.rb\Z/
+        glob = "#{load_path}/**/*.rb"
 
-				<section>
-					<section data-background="#dddddd">
-						<h2>Slide Backgrounds</h2>
-						<p>
-							Set <code>data-background="#dddddd"</code> on a slide to change the background color. All CSS color formats are supported.
-						</p>
-						<a href="#" class="navigate-down">
-							<img width="178" height="238" data-src="https://s3.amazonaws.com/hakim-static/reveal-js/arrow.png" alt="Down arrow">
-						</a>
-					</section>
-					<section data-background="https://s3.amazonaws.com/hakim-static/reveal-js/image-placeholder.png">
-						<h2>Image Backgrounds</h2>
-						<pre><code>&lt;section data-background="image.png"&gt;</code></pre>
-					</section>
-					<section data-background="https://s3.amazonaws.com/hakim-static/reveal-js/image-placeholder.png" data-background-repeat="repeat" data-background-size="100px">
-						<h2>Tiled Backgrounds</h2>
-						<pre><code style="word-wrap: break-word;">&lt;section data-background="image.png" data-background-repeat="repeat" data-background-size="100px"&gt;</code></pre>
-					</section>
-					<section data-background-video="https://s3.amazonaws.com/static.slid.es/site/homepage/v1/homepage-video-editor.mp4,https://s3.amazonaws.com/static.slid.es/site/homepage/v1/homepage-video-editor.webm" data-background-color="#000000">
-						<div style="background-color: rgba(0, 0, 0, 0.9); color: #fff; padding: 20px;">
-							<h2>Video Backgrounds</h2>
-							<pre><code style="word-wrap: break-word;">&lt;section data-background-video="video.mp4,video.webm"&gt;</code></pre>
-						</div>
-					</section>
-				</section>
+        Dir.glob(glob) do |path|
+          require_path = path.sub(require_path_regex, '\1')
 
-				<section data-transition="slide" data-background="#4d7e65" data-background-transition="zoom">
-					<h2>Background Transitions</h2>
-					<p>
-						Different background transitions are available via the backgroundTransition option. This one's called "zoom".
-					</p>
-					<pre><code>Reveal.configure({ backgroundTransition: 'zoom' })</code></pre>
-				</section>
+          require_dependency require_path
+        end
+      end
+    end
 
-				<section data-transition="slide" data-background="#b5533c" data-background-transition="zoom">
-					<h2>Background Transitions</h2>
-					<p>
-						You can override background transitions per-slide.
-					</p>
-					<pre><code style="word-wrap: break-word;">&lt;section data-background-transition="zoom"&gt;</code></pre>
-				</section>
+    def root
+      configuration.root
+    end
 
-				<section>
-					<h2>Pretty Code</h2>
-					<pre><code data-trim contenteditable>
-function linkify( selector ) {
-  if( supports3DTransforms ) {
+    def set_load_path
+      configuration.dependencies.each(&amp;:set_load_path)
 
-    var nodes = document.querySelectorAll( selector );
+      # reverse because unshift is pushing onto the front
+      configuration.all_autoload_paths.reverse_each do |path|
+        if File.directory?(path)
+          $LOAD_PATH.unshift(path)
+        end
 
-    for( var i = 0, len = nodes.length; i &lt; len; i++ ) {
-      var node = nodes[i];
+        # uniq at end in case all_autoload_paths include paths already in $LOAD_PATH
+        $LOAD_PATH.uniq!
+      end
+    end
 
-      if( !node.className ) {
-        node.className += ' roll';
-      }
-    }
-  }
-}
-					</code></pre>
-					<p>Code syntax highlighting courtesy of <a href="http://softwaremaniacs.org/soft/highlight/en/description/">highlight.js</a>.</p>
-				</section>
+    def set_autoload_paths
+      configuration.dependencies.each(&amp;:set_autoload_paths)
 
-				<section>
-					<h2>Marvelous List</h2>
-					<ul>
-						<li>No order here</li>
-						<li>Or here</li>
-						<li>Or here</li>
-						<li>Or here</li>
-					</ul>
-				</section>
+      ActiveSupport::Dependencies.autoload_paths.unshift(*configuration.all_autoload_paths)
 
-				<section>
-					<h2>Fantastic Ordered List</h2>
-					<ol>
-						<li>One is smaller than...</li>
-						<li>Two is smaller than...</li>
-						<li>Three!</li>
-					</ol>
-				</section>
+      # Freeze so future modifications error out instead of being silently ignored
+      configuration.autoload_paths.freeze
+      configuration.eager_load_paths.freeze
+    end
+  end
+end
+                    </code></pre>
+                    <aside class="notes">
+                        Metasploit::Configured mirrors Rails::Engine
+                    </aside>
+                </section>
+                <section>
+                    <pre><code>
+require 'active_support/concern'
 
-				<section>
-					<h2>Tabular Tables</h2>
-					<table>
-						<thead>
-							<tr>
-								<th>Item</th>
-								<th>Value</th>
-								<th>Quantity</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr>
-								<td>Apples</td>
-								<td>$1</td>
-								<td>7</td>
-							<tr>
-							<tr>
-								<td>Lemonade</td>
-								<td>$2</td>
-								<td>18</td>
-							<tr>
-							<tr>
-								<td>Bread</td>
-								<td>$3</td>
-								<td>2</td>
-							<tr>
-						</tbody>
-					</table>
-				</section>
+module Metasploit::Configured
+  module ClassMethods
+    def configuration
+      @configuration ||= self::Configuration.new
+    end
+  end
+end
+                    </code></pre>
+                    <table>
+                        <tbody>
+                        <tr>
+                            <th>
+                                <code>self::Configuration</code>
+                            </th>
+                            <th>
+                                <code>Configuration</code>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td>Scoped to base class</td>
+                            <td>Scoped to <code>Metasploit::Configured::ClassMethods<code></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <aside class="notes">
+                        Metasploit::Configured can automatically look up by name the module for a
+                        Class&lt;Metasploit::Configured&gt;'s configuration.
+                    </aside>
+                </section>
+                <section>
+                    <pre><code>
+module Metasploit::Configured
+  module ClassMethods
+    def initialize!
+      configuration.initializers.each do |initializer|
+        send(initializer)
+      end
+    end
+  end
+end
+                    </code></pre>
+                    <ul>
+                        <li>initializers are assumed to be in order</li>
+                        <li>initializers are assumed to be methods</li>
+                        <li>
+                            <code>initialize!</code> to match Rails convention
+                        </li>
+                    </ul>
+                    <pre><code>
+# Load the rails application
+require File.expand_path('../application', __FILE__)
 
-				<section>
-					<h2>Clever Quotes</h2>
-					<p>
-						These guys come in two forms, inline: <q cite="http://searchservervirtualization.techtarget.com/definition/Our-Favorite-Technology-Quotations">
-						&ldquo;The nice thing about standards is that there are so many to choose from&rdquo;</q> and block:
-					</p>
-					<blockquote cite="http://searchservervirtualization.techtarget.com/definition/Our-Favorite-Technology-Quotations">
-						&ldquo;For years there has been a theory that millions of monkeys typing at random on millions of typewriters would
-						reproduce the entire works of Shakespeare. The Internet has proven this theory to be untrue.&rdquo;
-					</blockquote>
-				</section>
+# Initialize the rails application
+Pro::Application.initialize!
+                    </code></pre>
+                </section>
+                <section>
+                    <pre class="stretch"><code>
+module Metasploit::Configured
+  module ClassMethods
+    def eager_load!
+      configuration.dependencies.each(&amp;:eager_load!)
 
-				<section>
-					<h2>Intergalactic Interconnections</h2>
-					<p>
-						You can link between slides internally,
-						<a href="#/2/3">like this</a>.
-					</p>
-				</section>
+      # Adapted from Rails::Engine#eager_load!
+      configuration.eager_load_paths.each do |load_path|
+        # strip the load_path itself from the name because the load_path is
+        # already add to $LOAD_PATH by {#set_load_path}.
+        # strip extension as it's not normally passed to require.
+        require_path_regex = /\A#{Regexp.escape(load_path)}\/(.*)\.rb\Z/
+        glob = "#{load_path}/**/*.rb"
 
-				<section>
-					<h2>Speaker View</h2>
-					<p>There's a <a href="https://github.com/hakimel/reveal.js#speaker-notes">speaker view</a>. It includes a timer, preview of the upcoming slide as well as your speaker notes.</p>
-					<p>Press the <em>S</em> key to try it out.</p>
+        Dir.glob(glob) do |path|
+          require_path = path.sub(require_path_regex, '\1')
 
-					<aside class="notes">
-						Oh hey, these are some notes. They'll be hidden in your presentation, but you can see them if you open the speaker notes window (hit 's' on your keyboard).
-					</aside>
-				</section>
+          require_dependency require_path
+        end
+      end
+    end
+  end
+end
+                    </code></pre>
+                    <aside class="notes">
+                        I ended up implementing eager_load! initializer because Rails uses eager_load! to load `lib`.
+                    </aside>
+                </section>
+                <section>
+                    <pre><code>
+module Metasploit::Configured
+  module ClassMethods
+    def root
+      configuration.root
+    end
+  end
+end
+                    </code></pre>
+                    <ul>
+                        <li>Allow Metasploit::Pro.root</li>
+                        <li>Emulate Rails.application.root</li>
+                    </ul>
+                </section>
+                <section>
+                    <pre style="float: left; width: 50%"><code>
+module Metasploit::Configured
+  module ClassMethods
+    def set_load_path
+      configuration.dependencies.each(&amp;:set_load_path)
 
-				<section>
-					<h2>Export to PDF</h2>
-					<p>Presentations can be <a href="https://github.com/hakimel/reveal.js#pdf-export">exported to PDF</a>, here's an example:</p>
-					<iframe src="//www.slideshare.net/slideshow/embed_code/42840540" width="445" height="355" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:3px solid #666; margin-bottom:5px; max-width: 100%;" allowfullscreen> </iframe>
-				</section>
+      # reverse because unshift is pushing onto the front
+      configuration.all_autoload_paths.reverse_each do |path|
+        if File.directory?(path)
+          $LOAD_PATH.unshift(path)
+        end
 
-				<section>
-					<h2>Global State</h2>
-					<p>
-						Set <code>data-state="something"</code> on a slide and <code>"something"</code>
-						will be added as a class to the document element when the slide is open. This lets you
-						apply broader style changes, like switching the page background.
-					</p>
-				</section>
+        # uniq at end in case all_autoload_paths include paths
+        # already in $LOAD_PATH
+        $LOAD_PATH.uniq!
+      end
+    end
+  end
+end
+                    </code></pre>
+                    <pre style="float: right; width: 50%"><code>
+module Rails
+  class Engine &lt; Railtie
+    def ordered_railties
+      railties.all + [self]
+    end
 
-				<section data-state="customevent">
-					<h2>State Events</h2>
-					<p>
-						Additionally custom events can be triggered on a per slide basis by binding to the <code>data-state</code> name.
-					</p>
-					<pre><code class="javascript" data-trim contenteditable style="font-size: 18px;">
-Reveal.addEventListener( 'customevent', function() {
-	console.log( '"customevent" has fired' );
-} );
-					</code></pre>
-				</section>
+    def initializers
+      initializers = []
+      ordered_railties.each do |r|
+        if r == self
+          initializers += super
+        else
+          initializers += r.initializers
+        end
+      end
+      initializers
+    end
+  end
+end
+                    </code></pre>
+                    <ul>
+                        <li>There are multiple initializers with same name&nbsp;(one per engine/application)
+                        </li>
+                        <li>Engine initializers are called before application initializers</li>
+                    </ul>
+                </section>
+                <section>
+                    <pre style="float: left; width: 50%"><code>
+module Metasploit::Configured
+  module ClassMethods
+    def set_load_path
+      configuration.dependencies.each(&amp;:set_load_path)
 
-				<section>
-					<h2>Take a Moment</h2>
-					<p>
-						Press B or . on your keyboard to pause the presentation. This is helpful when you're on stage and want to take distracting slides off the screen.
-					</p>
-				</section>
+      # reverse because unshift is pushing onto the front
+      configuration.all_autoload_paths.reverse_each do |path|
+        if File.directory?(path)
+          $LOAD_PATH.unshift(path)
+        end
 
-				<section>
-					<h2>Much more</h2>
-					<ul>
-						<li>Right-to-left support</li>
-						<li><a href="https://github.com/hakimel/reveal.js#api">Extensive JavaScript API</a></li>
-						<li><a href="https://github.com/hakimel/reveal.js#auto-sliding">Auto-progression</a></li>
-						<li><a href="https://github.com/hakimel/reveal.js#parallax-background">Parallax backgrounds</a></li>
-						<li><a href="https://github.com/hakimel/reveal.js#keyboard-bindings">Custom keyboard bindings</a></li>
-					</ul>
-				</section>
+        # uniq at end in case all_autoload_paths include paths
+        # already in $LOAD_PATH
+        $LOAD_PATH.uniq!
+      end
+    end
+  end
+end
+                    </code></pre>
+                    <pre style="float: right; width: 50%"><code>
+module Rails
+  class Engine &lt; Railtie
+    initializer :set_load_path, :before =&gt; :bootstrap_hook do
+      _all_load_paths.reverse_each do |path|
+        $LOAD_PATH.unshift(path) if
+        File.directory?(path)
+      end
+      $LOAD_PATH.uniq!
+    end
+  end
+end
+                    </code></pre>
+                    <ul>
+                        <li>Engine (dependency) initializer calling is explicit</li>
+                        <li>Rest is code style differences</li>
+                    </ul>
+                </section>
+                <section>
+                    <pre class="stretch"><code>
+module Metasploit
+  class Configuration
+    def all_autoload_paths
+      all_autoload_paths = autoload_paths + eager_load_paths
+      unique_autoload_paths = all_autoload_paths.uniq
 
-				<section style="text-align: left;">
-					<h1>THE END</h1>
-					<p>
-						- <a href="http://slides.com">Try the online editor</a> <br>
-						- <a href="https://github.com/hakimel/reveal.js">Source code &amp; documentation</a>
-					</p>
-				</section>
+      unique_autoload_paths
+    end
 
-			</div>
+    def autoload_paths
+      @autoload_paths ||= []
+    end
 
-		</div>
+    def dependencies
+      @dependencies ||= []
+    end
 
-		<script src="lib/js/head.min.js"></script>
-		<script src="js/reveal.js"></script>
+    def eager_load_paths
+      @eager_load_paths ||= []
+    end
 
-		<script>
+    def initializers
+      # XXX not sure I like that initializer methods that only exist in
+      # Metasploit::Configured are used here.
+      @initializers ||= [
+        :set_load_path,
+        :set_autoload_paths,
+        :eager_load!
+      ]
+    end
 
-			// Full list of configuration options available at:
-			// https://github.com/hakimel/reveal.js#configuration
-			Reveal.initialize({
-				controls: true,
-				progress: true,
-				history: true,
-				center: true,
+    attr_reader :root
+  end
+end
+                    </code></pre>
+                    <aside class="notes">
+                        Metasploit::Configuration mirrors Rails::Engine::Configuration
+                    </aside>
+                </section>
+                <section>
+                    <pre><code>
+module Metasploit
+  class Configuration
+    def initializers
+      # XXX not sure I like that initializer methods that only exist in
+      # Metasploit::Configured are used here.
+      @initializers ||= [
+        :set_load_path,
+        :set_autoload_paths,
+        :eager_load!
+      ]
+    end
+  end
+end
+                    </code></pre>
+                    <ul>
+                        <li>No :before</li>
+                        <li>No :after</li>
+                        <li>Order is explicit</li>
+                        <li>Simplified ordering code</li>
+                    </ul>
+                    <aside class="notes">
+                        True initializers in Rails require a class and a second class for a collection of initializers
+                        to handle the before, after, and default ordering based on declaration order of DSL calls.
+                    </aside>
+                </section>
+            </section>
+            <section class="stack">
+                <section>
+                    <h1>Porting prosvc</h1>
+                </section>
+                <section>
+                    <h2>prosvc requires</h2>
+                    <ol>
+                        <li>For each line</li>
+                          <ul>
+                              <li>Determine load path</li>
+                          </ul>
+                        <li>For each load path</li>
+                          <ul>
+                              <li>Determine shared root</li>
+                          </ul>
+                    </ol>
+                </section>
+                <section>
+                    <pre class="stretch"><code>
+$:.unshift(File.expand_path(File.join(File.dirname(__FILE__), 'lib')))               # engine/lib
+$:.unshift(File.expand_path(File.join(File.dirname(__FILE__), '..', 'msf3', 'lib'))) # msf3/lib
 
-				transition: 'slide', // none/fade/slide/convex/concave/zoom
+# ...
 
-				// Optional reveal.js plugins
-				dependencies: [
-					{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
-					{ src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
-					{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
-					{ src: 'plugin/highlight/highlight.js', async: true, condition: function() { return !!document.querySelector( 'pre code' ); }, callback: function() { hljs.initHighlightingOnLoad(); } },
-					{ src: 'plugin/zoom-js/zoom.js', async: true },
-					{ src: 'plugin/notes/notes.js', async: true }
-				]
-			});
+require_relative '../ui/config/initializers/carrierwave'                             # ui/config/initializers
 
-		</script>
+#
+# Load specific patches for system libraries
+#
+if arch == "win32"
+  require "win32/registry"                                                           # engine/lib
+  require "patches/win32_registry"                                                   # engine/lib
+end
 
-	</body>
+# ...
+
+#
+# Require our basic libraries and start loading
+#
+require 'metasploit_data_models'                                                    # (gem)
+include MetasploitDataModels
+# Figure out the rails path
+rails_app_path = File.expand_path(File.dirname(__FILE__)) + "/../ui/app"
+# Bring all Mdm::* models into view
+Dir.glob("#{rails_app_path}/models/mdm/*.rb").each do |mdm_model_path|              # ui/app/models
+  require mdm_model_path
+end
+
+# ---- BEGIN - Load all things SocialEngineering from Rails ----
+module LiquidTemplating; end
+liquid_files = Dir.glob("#{rails_app_path}/../lib/liquid_templating/*.rb")          # ui/lib
+liquid_files.sort.each do |liquid_path|
+  require liquid_path
+end
+
+# TODO: any better way to have both Rails and prosvc happy w/ talking to License?
+require "#{rails_app_path}/models/license.rb"                                       # ui/app/models
+                    </code></pre>
+                    <aside class="notes">
+                        I've annotated the load path in comments to the right of the requires
+                    </aside>
+                </section>
+                <section>
+                    <pre class="stretch"><code>
+# Declare the module manually - Rails does this from directory structure
+module SocialEngineering; end
+require "#{rails_app_path}/uploaders/social_engineering/campaign_file_uploader.rb"        # ui/app/uploaders
+
+manually_loaded_models = ["human_target", "email", "web_page_attack_config_interface"]
+skippable_files = ["campaign_task"]
+require "#{rails_app_path}/models/social_engineering/human_target.rb"                     # ui/app/models
+# avoid chicken-egg
+require "#{rails_app_path}/models/social_engineering/web_page_attack_config_interface.rb" # ui/app/models
+# avoid chicken-egg
+
+se_files = Dir.glob("#{rails_app_path}/models/social_engineering/*.rb")
+se_files.sort.each do |se_model_path|
+  file_name = File.basename(se_model_path).split('.').first
+  next if skippable_files.include? file_name
+  next if manually_loaded_models.include? file_name
+  require se_model_path                                                                   # ui/app/models
+end
+# ---- END - Load all things SocialEngineering from Rails ----
+
+require 'msf/ui'                                                                          # msf3/lib
+require 'rex'                                                                             # msf3/lib
+
+# Metasploit Core API
+require 'msf/core/rpc/v10/service'                                                        # msf3/lib
+
+# Pro API
+require 'pro/filters'                                                                     # engine/lib
+require 'pro/config'                                                                      # engine/lib
+require 'pro/rpc/v10/rpc_pro'                                                             # engine/lib
+
+# Pro Mixins
+require 'pro/mixins'                                                                      # engine/lib
+
+# Pro Hooks
+require 'pro/hooks'                                                                       # engine/lib
+
+# Pro Client
+require 'pro/client'                                                                      # engine/lib
+
+# Background Daemon
+require 'pro/bgdaemon'                                                                    # engine/lib
+
+# NginX
+require "pro/nginx"                                                                       # engine/lib
+                    </code></pre>
+                </section>
+                <section>
+                    <pre class="stretch"><code>
+require 'logger'                                                      # (standard library)
+# ...
+
+# Load individual namespaces and models
+require_relative "#{rails_app_path}/models/user_session.rb"           # ui/app/models
+require_relative "#{rails_app_path}/models/task_chain.rb"             # ui/app/models
+require_relative "#{rails_app_path}/models/scheduled_task.rb"         # ui/app/models
+require_relative "#{rails_app_path}/models/campaign.rb"               # ui/app/models
+require_relative "#{rails_app_path}/models/attachment.rb"             # ui/app/models
+require_relative "#{rails_app_path}/models/email_template.rb"         # ui/app/models
+require_relative "#{rails_app_path}/models/email_address.rb"          # ui/app/models
+require_relative "#{rails_app_path}/models/web_template.rb"           # ui/app/models
+
+
+# Load classes in lib root
+ui_lib_path = File.expand_path(File.dirname(__FILE__)) + "/../ui/lib"
+require "#{ui_lib_path}/sender.rb"                                    # ui/lib
+lib_files = Dir.glob("#{ui_lib_path}/*.rb")
+lib_files.sort.each do |lib_class|
+  require lib_class                                                   # ui/lib
+end
+                    </code></pre>
+                </section>
+                <section>
+                    <h1>Load Paths</h1>
+                    <ol>
+                        <li><code>engine/lib</code></li>
+                        <li><code>msf3/lib</code></li>
+                        <li><code>ui/config/initializers</code></li>
+                        <li><code>ui/app/models</code></li>
+                        <li><code>ui/lib</code></li>
+                        <li><code>ui/app/uploaders</code></li>
+                    </ol>
+                    <aside class="notes">
+                        Summarizing, we have these load paths, which can be reduced to the following roots...
+                        (go to next slide)
+                    </aside>
+                </section>
+            </section>
+            <section class="stack">
+                <section>
+                    <h2>Roots</h2>
+                    <ol>
+                        <li>msf3 (metasploit&#8209;framework)</li>
+                        <li>ui</li>
+                        <li>engine</li>
+                    </ol>
+                    <aside class="notes">
+                        I can see there are 3 roots from which files are being loaded.  Each root can act as a fake
+                        Rail::Engine and should get its own Metasploit::Configuration.
+                    </aside>
+                </section>
+                <section>
+                    <pre class="stretch"><code>
+module Metasploit::Framework
+  class Configuration &lt; Metasploit::Configuration
+    def initialize
+      @root = Metasploit::Pro.root.join('msf3')
+
+      lib_pathname = root.join('lib')
+      lib_path = lib_pathname.to_s
+      autoload_paths &lt;&lt; lib_path
+
+      base_pathname = root.join('lib', 'base')
+      base_path = base_pathname.to_s
+      autoload_paths &lt;&lt; base_path
+    end
+  end
+end
+                    </code></pre>
+                </section>
+                <section>
+                    <pre class="stretch"><code>
+module Metasploit::Pro::Engine
+  class Configuration &lt; Metasploit::Configuration
+    def initialize
+      @dependencies = [
+        Metasploit::Framework,
+        Metasploit::Pro::UI
+      ]
+
+      @root = Metasploit::Pro.root.join('engine')
+
+      lib_pathname = root.join('lib')
+      lib_path = lib_pathname.to_s
+      autoload_paths &lt;&lt; lib_path
+    end
+  end
+end
+                    </code></pre>
+                </section>
+                <section>
+                    <pre class="stretch"><code>
+module Metasploit::Pro::UI
+  class Configuration &lt; Metasploit::Configuration
+    def initialize
+      @root = Metasploit::Pro.root.join('ui')
+
+      lib_pathname = root.join('lib')
+      lib_path = lib_pathname.to_s
+      autoload_paths &lt;&lt; lib_path
+
+      # Some models reference the controllers,
+      # so app/controllers needs to be added to autoload paths
+      controllers_pathname = root.join('app', 'controllers')
+      controllers_path = controllers_pathname.to_s
+      autoload_paths &lt;&lt; controllers_path
+
+      uploaders_pathname = root.join('app', 'uploaders')
+      uploaders_path = uploaders_pathname.to_s
+      autoload_paths &lt;&lt; uploaders_path
+
+      models_pathname = root.join('app', 'models')
+      models_path = models_pathname.to_s
+      autoload_paths &lt;&lt; models_path
+    end
+  end
+end
+                    </code></pre>
+                </section>
+            </section>
+            <section>
+                <h2>Goals</h2>
+                <ul class="task">
+                    <li class="complete">Eliminate <code>require_relative</code> in <code>prosvc</code></li>
+                    <li class="complete">Eliminate explicit
+                        <code>require</code>s in
+                        <code>prosvc</code>
+                    </li>
+                    <li class="complete">Share
+                        <code>autoload_paths</code> between UI and
+                        <code>prosvc</code>
+                    </li>
+                </ul>
+                <aside class="notes">
+                    All the goals are met, now to just run through the integration tests
+                </aside>
+            </section>
+            <section class="stack">
+                <section>
+                    <h1>Testing with Metasploit Module Loader</h1>
+                </section>
+                <section>
+                    <h2>A Side Note on Narrative</h2>
+                    <ul>
+                        <li>I didn't know this use case when I wrote this originally</li>
+                        <li>I was just restart prosvc over and over for a couple weeks</li>
+                        <li>egypt pointed out this use case in the PR</li>
+                    </ul>
+                </section>
+                <section>
+                    <h1>Metasploit Framework</h1>
+                    <ul>
+                        <li>Tool for running or developing exploits to test the security of remote computers</li>
+                        <li>Used to test if your network is vulnerable to malware</li>
+                        <li>Used to test if your internal security practices can defend from attackers</li>
+                    </ul>
+                </section>
+                <section>
+                    <h1>Metasploit Modules</h1>
+                    <h2>Content for Metasploit Framework</h2>
+                    <ul>
+                        <li>Stored in <code>modules</code> directory</li>
+                        <li>Assigned a type (auxiliary, encoders, exploits, nops, payloads, post)</li>
+                        <li>Implemented as either a Ruby Class or a Ruby Module</li>
+                    </ul>
+                    <aside class="notes">
+                        The Metasploit Framework terminology for its content, Modules, is overloaded with the Ruby usage
+                        of Module.  To make it even more confusing, most Metasploit Modules are actually Classes with
+                        only 2-part payloads that need to be mixed together being Ruby Modules.  I will try to always
+                        say Ruby Module for the Modules from the standard library and Metasploit Module for the
+                        content in Metasploit Framework.
+                    </aside>
+                </section>
+                <section>
+                    <h1>Main Metasploit Module Types</h1>
+                    <dl>
+                        <dt>Exploit</dt>
+                        <dd>Deliver a <em>payload</em> by taking advantage of a bug</dd>
+                        <dt>Payload</dt>
+                        <dd>The thing that allows an attacker to control a compromised machine</dd>
+                        <dt>Post</dt>
+                        <dd>Pillage and burn</dd>
+                        <dt>Auxiliary</dt>
+                        <dd>Do something networky</dd>
+                    </dl>
+                </section>
+                <section>
+                    <h1><code>msfconsole</code></h1>
+                    <ul>
+                    <li>Shell for interacting with Metasploit Framework</li>
+                    <li><code>use</code> command can instantiate a Metasploit Module</li>
+                    <li><code>set</code> command configures the instance of the Metasploit Module</li>
+                    <li><code>run</code> launch the instance of the Metasploit Module</li>
+                        </ul>
+                    <aside class="notes">
+                        Most use, to actually use Metasploit Framework's content will use the <code>msfconsole</code>
+                        Think of <code>msfconsole</code> as the <code>irb</code> or <code>rails console</code> for
+                        Metasploit Framework.  It's called <code>msfconsole</code> because MSF is the community's
+                        abbreviation for "Metasploit Framework" even though we don't capitalize the 's' in "Metasploit".
+                    </aside>
+                </section>
+                <section>
+                    <h1><code>msfpro</code></h1>
+                    <h2><code>msfconsole</code> with access to Metasploit Pro features</h2>
+                </section>
+                <section>
+                    <h2>msfpro start-up</h2>
+                    <ol>
+                        <li>Loads all Metasploit Modules
+                            <ol>
+                                <li>Loads all autoload_paths</li>
+                            </ol>
+                        </li>
+                        <li>Presents prompt</li>
+                    </ol>
+                </section>
+                <section>
+                    <h2>msfpro test</h2>
+                    <ol>
+                        <li>Loads all Metasploit Modules
+
+                            <ol>
+                                <li>Loads all autoload_paths</li>
+                            </ol>
+                        </li>
+                        <li>Presents prompt</li>
+                        <li>
+                            <strong>Remove autoload_path class constant</strong>
+                        </li>
+                        <li>
+                            <strong>Force reload of autoload_path class</strong>
+                        </li>
+                    </ol>
+                </section>
+            </section>
+            <section class="stack">
+                <section>
+                    <img class="stretch" src="images/wrong-constant-name.png">
+                </section>
+                <section>
+                    <h2>Goals</h2>
+                    <ul class="task">
+                        <li class="complete">Eliminate <code>require_relative</code> in <code>prosvc</code></li>
+                        <li class="complete">Eliminate explicit
+                            <code>require</code>s in
+                            <code>prosvc</code>
+                        </li>
+                        <li class="incomplete">
+                            Share <code>autoload_paths</code> between UI and <code>prosvc</code>
+                            <ul class="task">
+                                <li class="incomplete">
+                                    Fix NameError
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <aside class="notes">
+                        It looks like saying the goals were complete was a little premature.  Let's add a new goal:
+                        fix NameError.
+                    </aside>
+                </section>
+                <section>
+                    <h2>How do I fix the code?</h2>
+                    <ul>
+                        <li>Use Call stack (backtrace)</li>
+                        <li>Look at first line</li>
+                    </ul>
+                </section>
+                <section>
+                    <img class="stretch" src="images/activesupport-3-2-2-lib-active-support-inflector-methods-line-229.png">
+                    <aside class="notes">
+                        <p>
+                            const_defined? itself raised the exception and name is malformed. Name is a String (and not a
+                            symbol or object that responds to #to_s) since it comes from names and names comes from
+                            camel_cased_word, which calls split, which looks like String#split. #&lt;KLASS:HEX&gt; is the
+                            MRI format for no inspect.
+                        </p>
+                        <p>
+                            <code>constantize</code> is a pure function, meaning it does not modify self.  A pure function's
+                            behavior is completely controlled by the arguments to the function, so following the argument
+                            will lead to the root cause of the problem.
+                        </p>
+                    </aside>
+                </section>
+                <section>
+                    <img class="stretch" src="images/module-const-missing-const-missing.png">
+                    <aside class="notes">
+                        From line 192, we now know that the camel_case_word argument in
+                        ActiveSupport::Inspect#constantize is the namespace local here in
+                        ModuleConstMissing#const_missing. namespace is an element of nesting. nesting could either be
+                        passed in or derived from klass_name.
+                    </aside>
+                </section>
+                <section>
+                    <h2>What called const_missing?</h2>
+                    <img class="stretch" src="images/auxiliary-pro-social-engineering-web-phish-run.png">
+                    <aside class="notes">
+                        <code>const_missing</code> is implicitly called by Ruby VM when accessing <code>SocialEngineering</code>
+                    </aside>
+                </section>
+                <section>
+                    <img src="images/module-const-missing-const-missing.png" style="float: left; width: 50%">
+                    <h1>Dataflow</h1>
+                    <ol>
+                        <li><code>name</code></li>
+                        <li><code>name.presence</code></li>
+                        <li><code>klass_name</code></li>
+                        <li><code>klass_name.to_s</code></li>
+                        <li><code>klass_name.to_s.scan</code></li>
+                        <li><code>nesting</code></li>
+                    </ol>
+                    <aside class="notes">
+                        The original messed up namespace, which was #&lt;Module:0x0000010c916448&gt; must either be
+                        either the direct Module#name if Module#name contains no :: or be part of Module#name.
+                    </aside>
+                </section>
+                <section>
+                    <h2>Origin of wrong name</h2>
+                    <ol>
+                        <li>Entire
+                            <code>Module#name</code>
+                        </li>
+                        <li>Part of
+                            <code>Module#name</code> containing
+                            <code>::</code>
+                        </li>
+                    </ol>
+                </section>
+                <section>
+                    <h2>To the debugger!</h2>
+                    <ul>
+                        <li>symlinks prevent ruby-debug-ide breakpoints from triggering</li>
+                        <li>pry not built for production</li>
+                        <li>debugger not built for production</li>
+                    </ul>
+                </section>
+                <section>
+                    <h1>print debugging</h1>
+                    <img class="stretch" src="images/module-const-missing-const-missing-debugging.png">
+                </section>
+                <section>
+                    <h2>Namespace Module is wrong</h2>
+                    <img class="stretch" src="images/debugging-output.png">
+                </section>
+                <section>
+                    <h2>Where is <code>Metasploit3?</code></h2>
+                    <img class="stretch" src="images/auxiliary-pro-social-engineering-web-phish-class.png">
+                </section>
+                <section>
+                    <h2>Metasploit Module Naming Convention</h2>
+                    <ul>
+                        <li><code>Metasploit<em>N</em></code>
+
+                            <ul>
+                                <li><code><em>N</em></code> is <emphasis>minimum</emphasis> major version of Metasploit Framework</li>
+                            </ul>
+                        </li>
+                        <li>1821 <code>Metasploit3</code> Ruby Classes/Modules</li>
+                        <li>32 <code>Metasploit4</code> Ruby Classes/Modules</li>
+                    </ul>
+                    <aside class="notes">
+                        This convention isn't well used.  Most developers just copy the N from the example they are using.
+                    </aside>
+                </section>
+            </section>
+            <section class="stack">
+                <section>
+                    <h2>Goals</h2>
+                    <ul class="task">
+                        <li class="complete">Eliminate <code>require_relative</code> in <code>prosvc</code></li>
+                        <li class="complete">Eliminate explicit
+                            <code>require</code>s in
+                            <code>prosvc</code>
+                        </li>
+                        <li class="incomplete">
+                            Share <code>autoload_paths</code> between UI and <code>prosvc</code>
+                            <ul class="fragment fade-out task">
+                                <li class="incomplete">
+                                    Fix NameError
+                                </li>
+                            </ul>
+                            <ul class="fragment task">
+                                <li class="incomplete">
+                                    Find <code>Module.new</code> usages
+                                </li>
+                                <li class="incomplete">
+                                    De-anonymize <code>Module.new</code> usages
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <aside class="notes">
+                        We can replace fixing the <code>NameError</code> with the actual work of find
+                        <code>Module.new</code> and not making it anonymous anymore, which was the root cause of the
+                        <code>NameError</code>
+                    </aside>
+                </section>
+                <section>
+                    <h2><code>Module.new</code> Usages</h2>
+                    <img class="stretch" src="images/module-new-in-metasploit-framework-lib.png">
+                    <aside class="notes">
+                        If I was declaring an anonymous Ruby Module to wrap something, wrap would be a good name, so let’s
+                        look at each of those.
+                    </aside>
+                </section>
+                <section>
+                    <h2>
+                        <code>Msf::ModuleManager#reload_module</code>
+                    </h2>
+                    <img class="stretch" src="images/module-new-in-msf-module-manager-reload-module.png">
+                    <aside class="notes">
+                        It is unlikely that the only way to load Metasploit Modules is to use a function call reload, so moving on…
+                    </aside>
+                </section>
+                <section>
+                    <h2>
+                        <code>Msf::ModuleManager#load_module_from_file</code>
+                    </h2>
+                    <img class="stretch" src="images/module-new-in-msf-module-manager-load-module-from-file.png">
+                    <aside class="notes">
+                        Msf::ModuleManager#load_module_from_file is probably the correct method.
+                    </aside>
+                </section>
+            </section>
+            <section>
+                <h2>Goals</h2>
+                <ul class="task">
+                    <li class="complete">Eliminate <code>require_relative</code> in <code>prosvc</code></li>
+                    <li class="complete">Eliminate explicit
+                        <code>require</code>s in
+                        <code>prosvc</code>
+                    </li>
+                    <li class="incomplete">
+                        Share <code>autoload_paths</code> between UI and <code>prosvc</code>
+                        <ul class="task">
+                            <li class="complete">
+                                Find <code>Module.new</code> usages
+                            </li>
+                            <li class="fragment fade-out incomplete">
+                                De-anonymize <code>Module.new</code> usages
+                            </li>
+                            <li class="fragment incomplete">
+                                Replace <code>Module.new</code> in <code>Msf::ModuleManager#load_module_from_file</code>
+                            </li>
+                            <li class="fragment incomplete">
+                                Replace <code>Module.new</code> in <code>Msf::ModuleManager#reload_module</code>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+                <aside class="notes">
+                    We found the usages of Module.new, so we can replace "De-anonymize Module.new usages" we the specific
+                    locations of the Module.new usages.
+                </aside>
+            </section>
+            <section class="stack">
+                <section>
+                    <h2>Replace <code>Module.new</code></h2>
+                    <ol>
+                        <li>The name must be unique to prevent naming collisions</li>
+                        <li>The name must be deterministic to allow replacement on reload</li>
+                    </ol>
+                </section>
+                <section>
+                    <img class="stretch" src="images/msf-module-manager-wrapper-module.png">
+                </section>
+                <section>
+                    <ul>
+                        <li>
+                            <code>name</code> is
+                            <code>/</code> separated (
+                            <code>auxiliary/pro/social_engineering/web_phish</code>)
+                        </li>
+                        <li>
+                            <code>String#camelize</code> will convert
+                            <code>/</code> separated to
+                            <code>Module#name</code>
+                        </li>
+                    </ul>
+                    <br/>
+                    <img src="images/msf-module-manager-wrapper-module-name.png">
+                    <pre><code>
+&gt;&gt; "auxiliary/pro/social/engineering/web_phish".camelize
+=&gt; "Auxiliary::Pro::SocialEngineering::WebPhish"
+                    </code></pre>
+                </section>
+                <section>
+                    <h1>Why start with <code>Object</code>?</h1>
+                    <ul>
+                        <li>Object is root of constant names</li>
+                        <li>Derived from ModuleConstMissing#const_missing</li>
+                    </ul>
+                    <br/>
+                    <img class="stretch" src="images/module-const-missing-const-missing-object.png">
+                </section>
+                <section>
+                    <img class="stretch" src="images/msf-module-manager-wrapper-module-until.png">
+                    <aside class="notes">
+                        Because this now gives us a hierarchy of namespace Ruby Modules, we need to ensure that each
+                        parent Ruby Module is created before any child Ruby Modules
+                    </aside>
+                </section>
+                <section>
+                    <h2>Complications</h2>
+                    <ul>
+                        <li>Some directories aren't valid constant names</li>
+                    </ul>
+                    <br/>
+                    <img class="stretch" src="images/msf-module-manager-wrapper-module-hex-encoding.png">
+                    <p>Hex-escaping</p>
+                    <ul>
+                        <li>Reversibility preserves uniqueness</li>
+                        <li>Prefix with 'X' to prevent decimal digits at start of escaped name</li>
+                    </ul>
+                </section>
+                <section>
+                    <h2>Reloading</h2>
+                    <img class="stretch" src="images/msf-module-manager-wrapper-module-leaf-removal.png">
+                    <aside class="notes">
+                        Module reloading is handled by removing the leaf constant if it already exist when the loop gets
+                        to it (module_names.empty? is true). false is passed to const_defined? to speed constant lookup
+                        and to prevent false positives from constants defined in ancestors.
+                    </aside>
+                </section>
+                <section>
+                    <h2>Walking Down the Tree</h2>
+                    <img class="stretch" src="images/msf-module-manager-wrapper-module-walk.png">
+                </section>
+                <section>
+                    <h2>Partial existence</h2>
+                    <img class="stretch" src="images/msf-module-manager-wrapper-module-child-defined.png">
+                    <aside class="notes">
+                        The if handles if we created this part of the hierarchy before, which would be the case during
+                        reload, but also for common parts of the Metasploit Module names like
+                        auxiliary/pro/social_engineering, which is used by multiple Metasploit Modules.
+                    </aside>
+                </section>
+                <section>
+                    <h2>Anonymous?! Module Creation</h2>
+                    <img src="images/msf-module-manager-wrapper-module-module-new.png">
+                    <br/>
+                    <ul>
+                        <li><code>child_name</code> not passed to <code>Module.new</code></li>
+                    </ul>
+                    <br/>
+                    <img src="images/msf-module-manager-wrapper-module-const-set.png">
+                    <br/>
+                    <ul>
+                        <li>Module#name is set on first const_set</li>
+                        <li>Module#name cannot be reset</li>
+                    </ul>
+                </section>
+            </section>
+            <section>
+                <h2>Goals</h2>
+                <ul class="task">
+                    <li class="complete">Eliminate <code>require_relative</code> in <code>prosvc</code></li>
+                    <li class="complete">Eliminate explicit
+                        <code>require</code>s in
+                        <code>prosvc</code>
+                    </li>
+                    <li class="incomplete">
+                        Share <code>autoload_paths</code> between UI and <code>prosvc</code>
+                        <ul class="task">
+                            <li class="complete">
+                                Find <code>Module.new</code> usages
+                            </li>
+                            <li class="complete">
+                                Replace <code>Module.new</code> in <code>Msf::ModuleManager#load_module_from_file</code>
+                            </li>
+                            <li class="incomplete">
+                                Replace <code>Module.new</code> in <code>Msf::ModuleManager#reload_module</code>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+                <aside class="notes">
+                    All that's left to do is Replace Module.new in <code>Msf::ModuleManager#reload_module</code>, but
+                    while working on <code>Msf::ModuleManager#load_module_from_file</code> and I started to understand
+                    the code better, it annoyed me how the code was organized because it was making my work hard to
+                    do, which means it probably will be hard for other developers to work on this code. Therefore,
+                    I should start refactoring to make this easier.
+                </aside>
+            </section>
+            <section class="stack">
+                <section>
+                    <h1>Refactoring to ease understanding</h1>
+                    <ol>
+                        <li>Read code</li>
+                        <li>Understand code</li>
+                        <li>Refactor code</li>
+                    </ol>
+                    <aside class="notes">
+                        As you read code and understand how different parts interact you may start to notice places where the
+                        code could be more understandable when reading or easier to maintain.  You may have been the first
+                        developer to read a piece of code in a given manner or with a given breadth or depth, so you
+                        may be able to spot patterns and redundancies in the code others have not seen before as the code
+                        was assembled piecemeal and grew over time.
+                    </aside>
+                </section>
+                <section>
+                    <div style="display: inline-block; max-width: 45%">
+                        <h2>Refactoring</h2>
+                        <ul>
+                            <li>Small changes</li>
+                            <li>Improve clarity of code</li>
+                            <li>Ease changing code later</li>
+                            <li>Does not affect external API</li>
+                        </ul>
+                    </div>
+                    <div style="display: inline-block; max-width: 45%">
+                        <h2>Features and Bug fixes</h2>
+                        <ul>
+                            <li>Variable size changes</li>
+                            <li>Improve functioning of code</li>
+                            <li>Complicate changing code later</li>
+                            <li>Externally visible</li>
+                        </ul>
+                    </div>
+                    <h1>Separate refactoring from features or bug fixes</h1>
+                    <ul>
+                        <li>Easier to confirm refactoring does not change external behavior</li>
+                        <li>Easier to see change was minimum to fix bug</li>
+                        <li>Easier to see minimum viable change was done to implement feature</li>
+                        <li>Allow refactoring to be reviewed in a separate PR and benefit other developers sooner</li>
+                    </ul>
+                    <aside class="notes">
+                        If you find yourself wanting to refactor or soon code in the same PR as you implement a bug fix
+                        or a new feature: stop.  Figure out how to do the refactoring against the parent branch first in
+                        a separate PR.  Refactoring's goal are at odds with those for implementing bug fixes or feature.
+                        If you mix them together you're more likely to end up with large PRs where the reviewer can't
+                        confidently follow your changes and will have to skim and is more likely to miss new bugs.
+                    </aside>
+                </section>
+                <section>
+                    <h2>Refactoring Goals</h2>
+                    <ul class="task">
+                        <li class="incomplete">One Class/Module Per File</li>
+                        <li class="incomplete">Group Related Methods into Included Ruby Modules</li>
+                        <li class="incomplete">
+                            Break up into classes
+                            <ul class="task">
+                                <li class="incomplete">Separate extracted class from source class</li>
+                                <li class="incomplete">Extract external dependencies from internal represenation</li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <aside class="notes">
+                       Because refactoring should be done separately from fixing bugs, let's make a separate checklist
+                        of goals for the refactoring.
+                    </aside>
+                </section>
+            </section>
+            <section class="stack">
+                <section>
+                    <h2>One Class/Module per file</h2>
+                    <ul>
+                        <li>Make code easier to find</li>
+                        <li>Follows Rails convention for loading</li>
+                    </ul>
+                </section>
+                <section>
+                    <img class="stretch" src="images/module-manager-structure.png">
+                    <aside class="notes">
+                        The first step is that lib/msf/core/module_manager.rb actually contained 2 classes,
+                        Msf::ModuleSet and Msf::ModuleManager.  Msf::ModuleSet is moved to lib/msf/core/module_set.rb.
+                    </aside>
+                </section>
+                <section>
+                    <ul class="task">
+                        <li class="complete">One Class/Module Per File</li>
+                        <li class="incomplete">Group Related Methods into Included Ruby Modules</li>
+                        <li class="incomplete">
+                            Break up into classes
+                            <ul class="task">
+                                <li class="incomplete">Separate extracted class from source class</li>
+                                <li class="incomplete">Extract external dependencies from internal represenation</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </section>
+            </section>
+            <section class="stack">
+                <section>
+                    <h2>Group related methods into included Ruby Modules</h2>
+                    <ul>
+                        <li>Intermediate step before extracting Classes</li>
+                        <li>Moves ensure no method calling changes required</li>
+                        <li>Less thorough testing required than extract Class</li>
+                    </ul>
+                </section>
+                <section>
+                    <img src="images/msf-module-manager-structure.png" style="float: left; max-width: 50%">
+                    <div style="float: right; max-width: 50%">
+                        <h1>Categories</h1>
+                        <ul>
+                            <li>cache (
+                                <code>#cache_entries</code>,
+                                <code>#rebuild_cache</code>,
+                                <code>#refresh_cache</code>)
+                            </li>
+                            <li>creating
+                                <code>Msf::Module</code> instances (
+                                <code>#create</code>)
+                            </li>
+                            <li>loading (
+                                <code>#demand_load_module</code>,
+                                <code>#failed</code>,
+                                <code>#has_module_file_changed?</code>,
+                                <code>#load_module_from_file</code>,
+                                <code>#load_module_source</code>,
+                                <code>#load_modules</code>,
+                                <code>#load_modules_from_directory</code>,
+                                <code>#on_module_load</code>)
+                            </li>
+                            <li>module sets (
+                                <code>#auxiliary</code>,
+                                <code>#encoders</code>,
+                                <code>#exploits</code>,
+                                <code>#init_module_set</code>,
+                                <code>#module_names</code>,
+                                <code>#module_set</code>,
+                                <code>#module_types</code>,
+                                <code>#nops</code>,
+                                <code>#payloads</code>,
+                                <code>#post</code>)
+                            </li>
+                            <li>module paths (
+                                <code>#add_module_path</code>,
+                                <code>#remove_module_path</code>)
+                            </li>
+                            <li>reloading (
+                                <code>#reload_module</code>,
+                                <code>#reload_modules</code>)
+                            </li>
+                            <li>unknown (
+                                <code>#add_module</code>,
+                                <code>#auto_subscribe_module</code>,
+                                <code>#register_type_extension</code>)
+                            </li>
+                        </ul>
+                    </div>
+                </section>
+                <section>
+                    <h2>Categorizing unknown methods</h2>
+                    <ul>
+                        <li>Does it call methods in a known category?</li>
+                        <li>Does a method in a known category call the unknown method?</li>
+                        <li>Is the method name mentioned as a symbol to send?</li>
+                        <li>Is the method name mentioned in comments for metaprogramming?</li>
+                    </ul>
+                </section>
+                <section>
+                    <h2>
+                        <code>Msf::ModuleManager#add_module</code>
+                    </h2>
+                    <img class="stretch" src="images/msf-module-manager-add-module.png">
+                    <br/>
+                    <ul>
+                        <li>Calls <code>#auto_subscribe_module</code></li>
+                        <li>Calls <code>framework.events.on_module_load</code></li>
+                    </ul>
+                    <p>Probably loading related...</p>
+                </section>
+                <section>
+                    <img class="stretch" src="images/msf-module-manager-add-module-find-usages.png">
+                    <p>Called from <code>#on_module_load</code>, so definitely loading</p>
+                </section>
+                <section>
+                    <h2>
+                        <code>Msf::ModuleManager#register_type_extension</code>
+                    </h2>
+                    <img class="stretch" src="images/msf-module-manager-register-type-extension.png">
+                    <p>Dead Code?</p>
+                </section>
+                <section>
+                    <h2>Only occurrence is <code>def</code> = dead</h2>
+                    <img src="images/find-register-type-extension.png">
+                </section>
+                <section>
+                    <h2>Extract Ruby Modules</h2>
+                    <ol>
+                        <li>Move each method to the extracted Ruby Module</li>
+                        <li>Load extracted Ruby Module after base Ruby Class/Module is defined</li>
+                        <li><code>include</code> Ruby Module in base Ruby Class/Module</li>
+                    </ol>
+                    <pre class="stretch"><code>
+module Msf
+  class ModuleManager
+    require 'msf/core/module_manager/cache'
+
+    include Msf::ModuleManager::Cachet
+  end
+end
+                    </code></pre>
+                </section>
+                <section>
+                    <div style="float: left; width: 20%">
+                        <h2>Before</h2>
+                        <img class="stretch" src="images/msf-module-manager-structure.png">
+                    </div>
+                    <div style="float: right; width: 70%">
+                        <h2>After</h2>
+                        <img src="images/msf-module-manager-cache-structure.png" style="display: inline-block">
+                        <img src="images/msf-module-manager-loading-structure.png" style="display: inline-block">
+                        <img src="images/msf-module-manager-module-paths-structure.png" style="display: inline-block">
+                        <img src="images/msf-module-manager-module-set-structure.png" style="display: inline-block">
+                        <img src="images/msf-module-manager-reloading-structure.png" style="display: inline-block">
+                        <img src="images/msf-module-manager-structure-after.png" style="display: inline-block">
+                    </div>
+                    <aside class="notes">
+                        Here you can see the final broken up structure of the Ruby Modules extracted from
+                        <code>Msf::ModuleManager</code> and the structure of <code>Msf::ModuleManager</code> itself.
+                    </aside>
+                </section>
+                <section>
+                    <ul class="task">
+                        <li class="complete">One Class/Module Per File</li>
+                        <li class="complete">Group Related Methods into Included Ruby Modules</li>
+                        <li class="incomplete">
+                            Break up into classes
+                            <ul class="task">
+                                <li class="incomplete">Separate extracted class from source class</li>
+                                <li class="incomplete">Extract external dependencies from internal represenation</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </section>
+            </section>
+            <section class="stack">
+                <section>
+                    <h2>Breaking up into Classes</h2>
+                    <ul>
+                        <li>Common methods for base class</li>
+                        <li>Specialized of methods for subclasses</li>
+                    </ul>
+                </section>
+                <section>
+                    <img class="stretch" src="images/msf-module-manager-loading-structure.png">
+                    <ul>
+                        <li>Too long (296 lines)</li>
+                        <li>Too many methods (10)</li>
+                    </ul>
+                    <aside class="notes">
+                        You don't want files that are too long because if a method is off the screen the developer is
+                        likely to forget its there and not take it into account when modifying the code.  Having more
+                        methods increases the the amount of testing required because the interaction between each
+                        subset of methods has to be checked potentially.  In general, you want your files to fit on
+                        screen and to limit to less than 7 methods due to studies where most peoples working memory
+                        can only hold 7 chunks at a time.
+                    </aside>
+                </section>
+                <section>
+                    <img class="stretch" src="images/msf-module-manager-loading-structure.png">
+                    <table>
+                        <thead>
+                        <tr>
+                            <th></th>
+                            <th>Internal</th>
+                            <th>External</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td rowspan="8">Single</td>
+                            <td>add_module</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>autosubscribe_module</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>demand_load_module</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>failed</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>has_module_file_changed?</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>load_module_from_file</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>load_module_source</td>
+                        </tr>
+                        <tr>
+                            <td>on_module_load</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>Multiple</td>
+                            <td>load_modules</td>
+                            <td>load_modules_from_directory</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <aside class="notes">
+                        <p>
+                            Grouping of scope lets us separating collection and enumerable behaviors from single element
+                            behaviors.  The collection behavior is important when loading all Metasploit Modules on startup
+                            while the single element behavior will be used by for each module in the collection and when
+                            reloading
+                            individual Metasploit Modules.
+                        </p>
+                        <p>
+                            If instead of group by size of what's being loaded, we can group by whether the method is
+                            dealing with the internal representation of a Metasploit Module or the external presentation
+                            of Metasploit Module.  Separating the external representation can free the code the internal
+                            methods from knowing how modules are laid out on disk, which is good in case it has to
+                            differ on embedded devices.
+                        </p>
+                    </aside>
+                </section>
+            </section>
+            <section class="stack">
+                <section>
+                    <h2>Separating extracted class from source class</h2>
+                    <ol>
+                        <li>Read each method</li>
+                        <li>If override of source class's superclass, keep in source class</li>
+                        <li>Use Find Usages</li>
+                        <li>If public interface of source class, keep in source class</li>
+                        <li>If overridden in extracted class subclasses, move to extracted class</li>
+                        <li>If helper for extracted class subclasses, move to extracted class</li>
+                    </ol>
+                </section>
+                <section>
+                    <img class="stretch" src="images/msf-module-manager-loading-add-module.png">
+                    <ul>
+                        <li>
+                            Override of <code>Msf::ModuleSet#add_module</code>
+                            <ul>
+                                <li>Keep in <code>Msf::ModuleManager::Loading</code></li>
+                            </ul>
+                        </li>
+                        <li>Keep <code>#auto_subscribe_module</code> too due to usage</li>
+                    </ul>
+                </section>
+                <section>
+                    <img class="stretch" src="images/msf-module-manager-loading-demand-load-module.png">
+                    <ul>
+                        <li>
+                            Calls <code>#load_module_from_file</code> in directory category, so extract to <code>Msf::Modules::Loader::Directory</code>
+                        </li>
+                    </ul>
+                    <p>Check Usages to confirm category</p>
+                </section>
+                <section>
+                    <img class="stretch" src="images/msf-module-manager-loading-demand-load-module-find-usage.png">
+                    <ul>
+                        <li>Used by <code>Msf::ModuleSet</code></li>
+                        <li>Part of public interface from <code>framework.modules.demand_load_module</code></li>
+                    </ul>
+                    <p>Keep in <code>Msf::ModuleManager::Loading</code></p>
+                </section>
+                <section>
+                    <img class="stretch" src="images/msf-module-manager-loading-failed.png">
+                    <ul>
+                        <li>Only uses <code>modules_failed</code> attribute.</li>
+                    </ul>
+                    <p>Find usages to check for public interface</p>
+                </section>
+                <section>
+                    <img class="stretch" src="images/msf-module-manager-loading-failed-find-usage.png">
+                    <ul>
+                        <li>Used thoroughout CLI as <code>framework.modules.failed</code>, so part of public interface</li>
+                    </ul>
+                    <p>Keep in <code>Msf::ModuleManager::Loading</code></p>
+                </section>
+                <section>
+                    <img class="stretch" src="images/msf-module-manager-loading-load-modules.png">
+                    <ul>
+                        <li>
+                            Code translates internal representation API to external presentation handler.
+                            <ul>
+                                <li>Rewrite to call loaders</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </section>
+                <section>
+                    <h1>The Rewrite</h1>
+                    <img class="stretch" src="images/msf-module-manger-loading-load-modules-with-loaders.png">
+                </section>
+                <section>
+                    <img class="stretch" src="images/msf-module-manager-loading-on-module-load.png">
+                    <ul>
+                        <li><code>on_*</code> implies callback</li>
+                        <li>Only deal with manipulating <code>Msf::ModuelManager</code> or <code>Msf::ModuleSet</code> state</li>
+                    </ul>
+                    <p>Keep in <code>Msf::ModuleManager::Loading</code></p>
+                </section>
+                <section>
+                    <ul class="task">
+                        <li class="complete">One Class/Module Per File</li>
+                        <li class="complete">Group Related Methods into Included Ruby Modules</li>
+                        <li class="incomplete">
+                            Break up into classes
+                            <ul class="task">
+                                <li class="complete">Separate extracted class from source class</li>
+                                <li class="incomplete">Extract external dependencies from internal represenation</li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <aside class="notes">
+                        All common methods stayed in the source class, but we were able to determine that the
+                        integration point between the source class and the extract class is <code>#load_modules</code>
+                    </aside>
+                </section>
+            </section>
+            <section class="stack">
+                <section>
+                    <h1>Extracting external dependencies from internal representation</h1>
+                    <ol>
+                        <li>Examine each method</li>
+                        <li>Look for lines that leak the external representation</li>
+                        <li>Extract prefix/suffix leaks to abstract methods that must be overridden</li>
+                        <li>Extract duplication around subclass behavior to superclass helper method that takes a block</li>
+                    </ol>
+                </section>
+                <section>
+                    <img class="stretch" src="images/msf-modules-loader-base-load-modules.png">
+                    <aside class="notes">
+                        I moved everything before the call to <code>#load_module_from_file</code> out into
+                        <code>#each_module_reference_name</code>, which can deal with the path filters, which are an
+                        external concern to be handled by.  This allows <code>load_module</code> to only handle the
+                        internal representation.  With the yield signature for <code>each_module_reference_name</code>
+                        the module could be coming from a filesystem, a zip, or a database.
+                    </aside>
+                </section>
+                <section>
+                    <pre class="stretch"><code>
+class Msf::Modules::Loader::Directory < Msf::Modules::Loader::Base
+  protected
+
+  # Yields the module_reference_name for each module file found under the directory path.
+  #
+  # @param [String] path The path to the directory.
+  # @yield (see Msf::Modules::Loader::Base#each_module_reference_name)
+  # @yieldparam [String] path The path to the directory.
+  # @yieldparam [String] type The type correlated with the directory under path.
+  # @yieldparam module_reference_name (see Msf::Modules::Loader::Base#each_module_reference_name)
+  # @return (see Msf::Modules::Loader::Base#each_module_reference_name)
+  def each_module_reference_name(path)
+    ::Dir.foreach(path) do |entry|
+      if entry.downcase == '.svn'
+        next
+      end
+
+      full_entry_path = ::File.join(path, entry)
+      type = entry.singularize
+
+      unless ::File.directory?(full_entry_path) and
+        module_manager.type_enabled? type
+        next
+      end
+
+      full_entry_pathname = Pathname.new(full_entry_path)
+
+      # Try to load modules from all the files in the supplied path
+      Rex::Find.find(full_entry_path) do |entry_descendant_path|
+        if module_path?(entry_descendant_path)
+          entry_descendant_pathname = Pathname.new(entry_descendant_path)
+          relative_entry_descendant_pathname = entry_descendant_pathname.relative_path_from(full_entry_pathname)
+          relative_entry_descendant_path = relative_entry_descendant_pathname.to_path
+
+          # The module_reference_name doesn't have a file extension
+          module_reference_name = module_reference_name_from_path(relative_entry_descendant_path)
+
+          yield path, type, module_reference_name
+        end
+      end
+    end
+  end
+end
+                    </code></pre>
+                    <aside class="notes">
+                        You can see that method has to deal with the messy details of the external representation of
+                        the <code>modules</code> directory, such as ignored <code>.svn</code> directories and handling
+                        conversion from internal Metasploit Module types to the directory names for those Metasploit
+                        Module types.  Even here, though, we try to keep the method short and focused.  So this method
+                        calls out to <code>#module_path?</code> and <code>#module_reference_name_from_path</code>.
+                    </aside>
+                </section>
+                <section>
+                    <img class="stretch" src="images/msf-modules-loader-base-is-module-path.png">
+                    <br/>
+                    <h1>Filters</h1>
+                    <ol>
+                        <li>Hidden Files</li>
+                        <li>Non-<code>.rb</code> files</li>
+                        <li>Unit test files</li>
+                    </ol>
+                    <aside class="notes">
+                        Even with the duplication in the <code>#each_module_reference_name</code>s, they still share
+                        helpers like this.  This code follows best practices of extracting any literals to constants so
+                        that they are not magic Strings or Regexps.
+                    </aside>
+                </section>
+                <section>
+                    <img class="stretch" src="images/msf-modules-loader-base-module-reference-name-from-path.png">
+                    <ul>
+                        <li>Just strips extension</li>
+                        <li>Worth making a method because...
+                            <ul>
+                                <li>intention revealing name</li>
+                                <li>Hide cryptic gsub</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </section>
+                <section>
+                    <h1><code>Msf::Modules::Loader::Base&#8203;#load_module</code></h1>
+                    <img class="stretch" src="images/msf-modules-loader-base-load-module.png">
+                    <ul class="procon">
+                        <li class="con">Still huge (~130 lines)</li>
+                        <li class="pro">
+                            Interface to external representation extract to methods:
+                            <ul>
+                                <li><code>#module_path</code></li>
+                                <li><code>#read_module_content</code></li>
+                                <li><code>#namespace_module_transaction</code></li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <aside class="notes">
+                        Jumping out of #each_module_reference_name into #load_modules, each yielded
+                        <code>[parent_path, type, module_reference_name]</code> is passed to <code>#load_module</code>
+                    </aside>
+                </section>
+                <section>
+                    <pre class="stretch"><code>
+# Returns the full path to the module file on disk.
+#
+# @param (See Msf::Modules::Loader::Base#module_path
+# @return [String] Path toe the module file on disk.
+def module_path(parent_path, type, module_reference_name)
+  file_name = module_reference_name + MODULE_EXTENSION
+  type_directory = DIRECTORY_BY_TYPE[type]
+  full_path = File.join(parent_path, type_directory, file_name)
+
+  full_path
+end
+                    </code></pre>
+                    <aside class="notes">
+                        This method is isolating from the internal presentation that externally Metasploit Modules have
+                        <code>.rb</code> extensions and that they are stored in directories with slightly different
+                        names from the <code>module_type</code>.
+                    </aside>
+                </section>
+                <section>
+                    <pre class="scretch"><code>
+# Load the module content from the on disk file.
+#
+# @param (see Msf::Modules::Loader::Base#read_module_content)
+# @return (see Msf::Modules::Loader::Base#read_module_content)
+def read_module_content(parent_path, type, module_reference_name)
+  full_path = module_path(parent_path, type, module_refrence_name)
+
+  File.read(full_path)
+end
+                    </code></pre>
+                    <aside class="notes">
+                        Although this method is just doing a <code>File.read</code>, it needs to be hidden behind a
+                        method so that the external presentation doesn't leak into <code>#load_module</code>
+                    </aside>
+                </section>
+                <section>
+                    <img class="stretch" src="images/msf-modules-loader-base-namespace-module-transaction.png" style="float: left; width: 50%">
+                    <div style="float: right; width: 50%">
+                        <ul>
+                            <li>Not in original redesign</li>
+                            <li>Added to handle exceptions and reloading outside of <code>#load_module</code></li>
+                        </ul>
+                        <br/>
+                        <ol>
+                            <li>Preserve pre-existing namespace module</li>
+                            <li>Create new namespace module</li>
+                            <li>Run block</li>
+                            <li>If exception or didn't load, restore preserved namespace module</li>
+                        </ol>
+                    </div>
+                </section>
+                <section>
+                    <img class="stretch" src="images/msf-modules-loader-base-current-module.png">
+                    <aside class="notes">
+                        <code>Enumerable#inject</code> works by taking the <code>yieldreturn</code> from the block
+                        and passing it as <code>parent</code> to the next iteration of the block along with the next
+                        <code>module_name</code> from <code>module_names</code>. If any module along the path is not
+                        defined, then <code>break</code> is called, which causes <code>inject</code> to terminate
+                        early and return <code>nil</code> instead of the current value of the block or the last
+                        <code>parent</code>.
+                    </aside>
+                </section>
+                <section>
+                    <div>
+                        <h2>Refactoring Goals</h2>
+                        <ul class="task">
+                            <li class="complete">One Class/Module Per File</li>
+                            <li class="complete">Group Related Methods into Included Ruby Modules</li>
+                            <li class="complete">
+                                Break up into classes
+                                <ul class="task">
+                                    <li class="complete">Separate extracted class from source class</li>
+                                    <li class="complete">Extract external dependencies from internal represenation</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="fragment">
+                        <h2>Goals</h2>
+                        <ul class="task">
+                            <li class="complete">Eliminate <code>require_relative</code> in <code>prosvc</code></li>
+                            <li class="complete">Eliminate explicit
+                                <code>require</code>s in
+                                <code>prosvc</code>
+                            </li>
+                            <li class="complete">
+                                Share <code>autoload_paths</code> between UI and <code>prosvc</code>
+                                <ul class="task">
+                                    <li class="complete">
+                                        Find <code>Module.new</code> usages
+                                    </li>
+                                    <li class="complete">
+                                        Replace <code>Module.new</code> in <code>Msf::ModuleManager#load_module_from_file</code>
+                                    </li>
+                                    <li class="complete">
+                                        Replace <code>Module.new</code> in <code>Msf::ModuleManager#reload_module</code>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                    <aside class="notes">
+                        The refactoring is complete and it has had the benefit of completing the last of the original
+                        goals.
+                    </aside>
+                </section>
+                <section>
+                    <p>Congratulation! The test case works, but... does the test case cover all ways that all 1851 Metasploit Modules are actually written?</p><p class="fragment">NOPE!</p>
+                </section>
+            </section>
+            <section class="stack">
+                <section>
+                    <img class="stretch" src="images/msf-modules-loader-base-load-module-module-eval-with-lexical-scope.png">
+                    <table>
+                        <tr>
+                            <th>Module Creation</th>
+                            <td><code>#create_module_namespace</code></td>
+                        </tr>
+                        <tr>
+                            <th>Module Evaluation</th>
+                            <td><code>#module_eval_with_lexical_scope</code></td>
+                        </tr>
+                    </table>
+                </section>
+                <section>
+                    <h1>Why doesn't <code>Module#module_eval</code> work?</h1>
+                    <ul>
+                        <li>Refactoring lost <code>Msf</code> from lexical scope</li>
+                        <li>Some Metasploit Modules didn't fully-qualify constants</li>
+                    </ul>
+                    <img class="stretch" src="images/auxiliary-dos-ssl-dtls-changecipherspec.png">
+                    <aside class="notes">
+                        There is no top-level <code>Exploit::Remote::Tcp</code>, but there is a <code>Msf::Exploit::Remote::Tcp</code>,
+                        so how is <code>include Exploit::Remote::Tcp</code> finding
+                        <code>Msf::Exploit::Remote::Tcp</code>?
+                    </aside>
+                </section>
+            </section>
+            <section class="stack">
+                <section>
+                    <h1>Constant look-up in Ruby</h1>
+                    <ol>
+                        <li>Look at the lexically scoped constants</li>
+                        <li>Look at the ancestors of the current <code>Module</code> or <code>Class</code></li>
+                    </ol>
+                </section>
+                <section>
+                    <pre><code>
+module Msf::ModuleManager
+  puts Module.nesting.inspect # [Msf::ModuleManager]
+end
+                    </code></pre>
+                    <pre><code>
+module Msf
+  module ModuleManager
+    puts Module.nesting.inspect # [Msf::ModuleManager, Msf]
+  end
+end
+                    </code></pre>
+                    <aside class="notes">
+                        The tricky part comes in what counts as the lexical scope. It turns out that the lexical scope
+                        is not as simple as listing the namespace modules.
+                    </aside>
+                </section>
+                <section>
+                    <h1>Constant look-up when loading Metasploit Modules</h1>
+                    <figure style="float: left; width: 50%">
+                        <img src="images/msf-module-manager-nested-modules.png">
+                        <figcaption><code>[Msf::ModuleManager, Msf]</code></figcaption>
+                    </figure>
+                    <figure style="float: right; width: 50%">
+                        <img src="images/msf-modules-loader-base-unnested-modules.png">
+                        <figcaption><code>[Msf::Modules::Loader::Base]</code></figcaption>
+                    </figure>
+                    <aside class="notes">
+                        <p>In the original <code>Msf::ModuleManager</code> that called <code>module_eval</code>, the
+                            lexical scope was <code>[Msf::ModuleManager, Msf]</code> because of the nested Ruby Module
+                            declaration.</p>
+
+                        <p>But, because I didn’t want deeply indented code (or for the namespace Ruby Modules to be
+                            defined in more than one file), I went with compact, unnested Ruby Module declarations
+                            during the refactor</p>
+                    </aside>
+                </section>
+            </section>
+            <section class="stack">
+                <section>
+                    <h2>Goals</h2>
+                    <ul class="task">
+                        <li class="complete">Eliminate <code>require_relative</code> in <code>prosvc</code></li>
+                        <li class="complete">Eliminate explicit
+                            <code>require</code>s in
+                            <code>prosvc</code>
+                        </li>
+                        <li class="complete">
+                            Share <code>autoload_paths</code> between UI and <code>prosvc</code>
+                            <ul class="task">
+                                <li class="complete">
+                                    Find <code>Module.new</code> usages
+                                </li>
+                                <li class="complete">
+                                    Replace <code>Module.new</code> in <code>Msf::ModuleManager#load_module_from_file</code>
+                                </li>
+                                <li class="complete">
+                                    Replace <code>Module.new</code> in <code>Msf::ModuleManager#reload_module</code>
+                                </li>
+                                <li class="fragment incomplete">
+                                    Fix resolving constants under <code>Msf</code>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <aside class="notes">
+                        Let's add a new goal to this list to fix the bug that was introduced by the earlier changes
+                    </aside>
+                </section>
+                <section>
+                    <h1>Ways to fix constant look-up</h1>
+                    <ul>
+                        <li>
+                            Restore nested namespaces
+                            <ul class="procon">
+                                <li class="pro">Easy, small change</li>
+                                <li class="con">Adds 3 levels of indentation</li>
+                                <li class="con">Ties loading behavior to implementation detail (loader namespace)</li>
+                                <li class="con">Forces loader to remain in <code>Msf</code> namespace, which is invalid for metasploit-framework (<code>Metasploit::Framework</code> is correct)</li>
+                            </ul>
+                        </li>
+                        <li>
+                            Fake lexical scope
+                            <ul class="procon">
+                                <li class="con">Hard, large change</li>
+                                <li class="con"><code>Module#module_eval</code> with block doesn't capture lexical scope; have to use <code>String</code></li>
+                                <li class="pro">Namespace for loaded module is separated from namespace of loader</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </section>
+                <section>
+                    <h2>Goals</h2>
+                    <ul class="task">
+                        <li class="complete">Eliminate <code>require_relative</code> in <code>prosvc</code></li>
+                        <li class="complete">Eliminate explicit
+                            <code>require</code>s in
+                            <code>prosvc</code>
+                        </li>
+                        <li class="complete">
+                            Share <code>autoload_paths</code> between UI and <code>prosvc</code>
+                            <ul class="task">
+                                <li class="complete">
+                                    Find <code>Module.new</code> usages
+                                </li>
+                                <li class="complete">
+                                    Replace <code>Module.new</code> in <code>Msf::ModuleManager#load_module_from_file</code>
+                                </li>
+                                <li class="complete">
+                                    Replace <code>Module.new</code> in <code>Msf::ModuleManager#reload_module</code>
+                                </li>
+                                <li class="fragment fade-out incomplete">
+                                    Fix resolving constants under <code>Msf</code>
+                                </li>
+                                <li class="fragment incomplete">
+                                    Fake <code>Msf</code> in lexical scope using <code>Module#module_eval(String)</code>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <aside class="notes">
+                        Let's add a new goal to this list to fix the bug that was introduced by the earlier changes
+                    </aside>
+                </section>
+                <section>
+                    <figure>
+                        <img src="images/msf-module-manager-wrapper-module-hex-encoding.png">
+                        <figcaption><code>wrapper_module (bugged)</code></figcaption>
+                    </figure>
+                    <figure>
+                        <img src="images/msf-modules-loader-base-namespace-module-names.png">
+                        <figcaption><code>namespace_module_names (fixed)</code></figcaption>
+                    </figure>
+                    <aside class="notes">
+                        After the escaping, <code>NAMESPACE_MODULE_NAMES</code> is prefixed. <code>NAMESPACE_MODULE_NAMES</code>
+                        is <code>['Msf', 'Modules']</code>. The <code>'Msf'</code> as the first element of the namespace
+                        is the key to reintroducing the <code>Msf</code> into the lexical scope.
+                    </aside>
+                </section>
+                <section>
+                    <img class="stretch" src="images/msf-modules-loader-base-create-namespace-module.png">
+                </section>
+                <section>
+                    <h1>Nesting string Modules</h1>
+                    <img class="stretch" src="images/msf-modules-loader-base-create-namespace-module-namespace-module-content.png">
+                    <aside class="notes">
+                        <p>
+                        To build up a lexical scope, the code needs to wrap child Ruby Modules in <code>module Parent
+                        ... end</code> blocks. Instead of have to prepend <code>module Parent</code> to the front of a
+                        string and append <code>end</code> to the end of the a string, I reverse the
+                        <code>namespace_module_names</code>, so I can build the inner <code>module</code>s first and
+                        then wrap them with the parent module like Russian nesting dolls.
+                        </p>
+                        <p>
+                            You can tell how long it took me to figure this out based on the size of the comments.  I
+                            actually ended up look at the Ruby MRI C code to figure out that <code>module_eval</code>
+                            with blocks won't capture lexical scope.
+                        </p>
+                    </aside>
+                </section>
+                <section>
+                    <h1>Better backtraces with <code>module_eval</code></h1>
+                    <img class="stretch" src="images/msf-modules-loader-base-create-namespace-module-module-eval.png">
+                    <aside class="notes">
+                        To make nicer backtrace and allow for easier debugging, the code evaluates <code>namespace_module_content</code>
+                        by giving it’s path as the current file and it’s starting line as the first line of <code>NAMESPACE_MODULE_CONTENT</code>,
+                        but it needs to be adjusted for all the outer namespaces.
+                    </aside>
+                </section>
+                <section>
+                    <iframe class="stretch" src="//www.youtube.com/embed/blKRYmbpDas" frameborder="0" allowfullscreen>
+                    </iframe>
+                    <aside class="notes">
+                        With the path and line correct we get the neat power to put break points in body of the `NAMESPACE_MODULE_CONTENT` string:
+                        <ol>
+                            <li>Open ~/git/rapid7/metasploit-framework master in Rubymine</li>
+                            <li>Place break point at /Users/luke.imhoff/git/limhoff-r7/metasploit-framework/lib/msf/core/modules/loader/base.rb:52</li>
+                            <li>Run `rdebug-ide --host 0.0.0.0 --port 1234 --dispatcher-port 26162 -- $PWD/msfconsole --environment development` in Terminal Pane</li>
+                            <li>Run msfconsole remote debugger run configuration in Rubymine</li>
+                            <li>Click up stack</li>
+                            <li>Step through string to Metasploit Module being loaded</li>
+                        </ol>
+                    </aside>
+                </section>
+            </section>
+            <section>
+                <h2>Goals</h2>
+                <ul class="task">
+                    <li class="complete">Eliminate <code>require_relative</code> in <code>prosvc</code></li>
+                    <li class="complete">Eliminate explicit
+                        <code>require</code>s in
+                        <code>prosvc</code>
+                    </li>
+                    <li class="complete">
+                        Share <code>autoload_paths</code> between UI and <code>prosvc</code>
+                        <ul class="task">
+                            <li class="complete">
+                                Find <code>Module.new</code> usages
+                            </li>
+                            <li class="complete">
+                                Replace <code>Module.new</code> in <code>Msf::ModuleManager#load_module_from_file</code>
+                            </li>
+                            <li class="complete">
+                                Replace <code>Module.new</code> in <code>Msf::ModuleManager#reload_module</code>
+                            </li>
+                            <li class="complete">
+                                Fake <code>Msf</code> in lexical scope using <code>Module#module_eval(String)</code>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </section>
+            <section>
+                <h1>Review</h1>
+                <ul>
+                    <li>
+                        Tools
+                        <ul>
+                            <li>Use Rails Guides when you don't know where to start in the code</li>
+                            <li>Use Rubygems.org when you need to find source or documentation</li>
+                            <li>Use Github when you need to look up bugs or follow git history backwards in time</li>
+                            <li>Use ack when you need to search code in the past</li>
+                            <li>Use Rubymine to quickly understand code</li>
+                        </ul>
+                    </li>
+                    <li><code>Module.new</code> creates anonymous Ruby Modules
+                        <ul>
+                            <li>They get a <code>Module#name</code> when a constant is set to the <code>Module</code></li>
+                            <li>They break <code>ActiveSupport::Dependencies</code>’s <code>const_missing</code></li>
+                        </ul>
+                    </li>
+                    <li>When files are too big they can be broken up
+                        <ul>
+                            <li>Ensure there is one <code>Class</code> or <code>Module</code> per file</li>
+                            <li>Group related methods into <code>include</code>d <code>Module</code>s</li>
+                            <li>Break up hierarchies of methods into <code>Class</code> hierarchies</li>
+                        </ul>
+                    </li>
+                    <li>Parts of files or entire files can be loaded by <code>module_eval</code>
+                        <ul>
+                            <li><code>module_eval</code> captures the lexical scope only with String</li>
+                        </ul>
+                    </li>
+                    <li>Lexical scope influences constant look-up
+                        <ul>
+                            <li>Nesting <code>module</code> declaration has a different lexical scope than <code>::</code> separated names</li>
+                            <li>The lexical scope can be retrieved with <code>Module.nesting</code></li>
+                        </ul>
+                    </li>
+                    <li>Passing the path and line to <code>module_eval</code> allows debugging in string code.</li>
+                </ul>
+            </section>
+            <section>
+                <h1>Acknowledgements</h1>
+
+                <p>I’d like to thank <a href="https://github.com/jlee-r7">James “Egypt” Lee</a> for <a
+                        href="https://github.com/rapid7/metasploit-framework/pull/843">imparting his knowledge of how to
+                    use the various msfconsole commands to ensure my changes didn’t break anything</a>, fixing my <a
+                        href="https://github.com/rapid7/metasploit-framework/commit/3a572625f5d264fff38bb83c97a76167f45ccf04">lambda
+                    vs proc bug</a>, and <a
+                        href="https://github.com/rapid7/metasploit-framework/commit/10dafcd09f2764b8b3e1239752a5b8654b795af4">Ruby
+                    1.8-incompatibility</a>. I’d like to thank <a href="https://github.com/shuckins-r7">Samuel
+                    “Shuckins” Huckins</a> for <a
+                        href="https://github.com/rapid7/metasploit-framework/pull/843#issuecomment-9045438">testing
+                    these changes against Metasploit Pro</a>. I’d like to thank <a href="https://github.com/hmoore-r7">HD
+                    Moore</a> for <a
+                        href="https://github.com/rapid7/metasploit-framework/commit/2dce6e63472a7594bf53a6793163cd7cb088d484">spotting</a>
+                    when I missed automatic namespace names colliding with real Ruby Modules. I’d like to thank <a
+                            href="https:/github.com/trosen-r7">Trevor Rosen</a> for allowing me to spend weeks to fix
+                    this the right way. I’d like to thank <a href="https://github.com/StabbyMcDuck">Regina Imhoff</a>
+                    and <a href="https://github.com/sgonzalez-r7">Sonny Gonzalez</a> for reviewing the accompanying
+                    article. I'd like to thank the Metasploit team for reviewing this presentation.</p>
+            </section>
+        </div>
+    </div>
+</div>
+
+<script src="lib/js/head.min.js"></script>
+<script src="js/reveal.js"></script>
+
+<script>
+
+    // Full list of configuration options available at:
+    // https://github.com/hakimel/reveal.js#configuration
+    Reveal.initialize({
+        controls: true,
+        progress: true,
+        history: true,
+        center: true,
+
+        transition: 'slide', // none/fade/slide/convex/concave/zoom
+        width: 1920,
+        height: 1200,
+        slideNumber: true,
+
+        // Optional reveal.js plugins
+        dependencies: [
+            {
+                src: 'lib/js/classList.js', condition: function () {
+                return !document.body.classList;
+            }
+            },
+            {
+                src: 'plugin/markdown/marked.js', condition: function () {
+                return !!document.querySelector('[data-markdown]');
+            }
+            },
+            {
+                src: 'plugin/markdown/markdown.js', condition: function () {
+                return !!document.querySelector('[data-markdown]');
+            }
+            },
+            {
+                src: 'plugin/highlight/highlight.js', async: true, condition: function () {
+                return !!document.querySelector('pre code');
+            }, callback: function () {
+                hljs.initHighlightingOnLoad();
+            }
+            },
+            {src: 'plugin/zoom-js/zoom.js', async: true},
+            {src: 'plugin/notes/notes.js', async: true}
+        ]
+    });
+
+</script>
+
+</body>
 </html>
